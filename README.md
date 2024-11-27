@@ -2,7 +2,7 @@
 
 „Gamebook “ bude ve stylu dungeon rpg, kde hráč-rytíř si bude mít nevýběr z několika dungeonů (3-4), podle obtížnosti, jednotlivé dungeony, budou generovány na začátku a hráč poté celý dungeony projde a dostane odměnu peníze/sláva. Cílém hry bude získat co nejviší slávu. 
 
-**Počátek hry **
+Počátek hry
 
 Hra začíná monologem o tom, co se vlastně stalo, proč jsme tam kde jsme a co je naším cílem.  
 
