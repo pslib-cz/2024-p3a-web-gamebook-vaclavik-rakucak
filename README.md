@@ -1,4 +1,4 @@
-# Dungeon of Insanity
+# Dungeonborne
 
 Dungeon of Insanity je **gamebook-style dungeon RPG**, kde se hráč-rytíř vydává do různých dungeonů (3–4) podle obtížnosti. Každý dungeon je generován předem a hráč si klade za cíl projít jej celý a získat **peníze** a **slávu**. Hlavním cílem hry je dosáhnout co nejvyšší slávy.
 
