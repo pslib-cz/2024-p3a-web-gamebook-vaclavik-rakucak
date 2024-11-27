@@ -1,40 +1,78 @@
-# Dungeone of Insanity
+# Dungeon of Insanity
 
-„Gamebook “ bude ve stylu dungeon rpg, kde hráč-rytíř si bude mít nevýběr z několika dungeonů (3-4), podle obtížnosti, jednotlivé dungeony, budou generovány na začátku a hráč poté celý dungeony projde a dostane odměnu peníze/sláva. Cílém hry bude získat co nejviší slávu. 
+Dungeon of Insanity je **gamebook-style dungeon RPG**, kde se hráč-rytíř vydává do různých dungeonů (3–4) podle obtížnosti. Každý dungeon je generován předem a hráč si klade za cíl projít jej celý a získat **peníze** a **slávu**. Hlavním cílem hry je dosáhnout co nejvyšší slávy.
 
-Počátek hry
+---
 
-Hra začíná monologem o tom, co se vlastně stalo, proč jsme tam kde jsme a co je naším cílem.  
+## Počátek hry
 
-Samotná hra začíná po dialogu, hráč se objeví ve městě a dostane úkol do prvního dungeonu, přinést item který padne po zabití monstra (možnost že hráč musí dungeon projít vícekrát) 
-nasledovat budou ukoly a pribehova linka
+Hra začíná **monologem**, který vysvětluje:
+- Co se stalo.
+- Proč je hráč tam, kde je.
+- Jaký je jeho cíl.
 
- 
+Po úvodním dialogu se hráč objeví ve **městě**, kde obdrží svůj první úkol:
+- **Přinést předmět** získaný po zabití monstra.
+- (Poznámka: Hráč může být nucen projít dungeon vícekrát.)
 
-Technická část
+Hra postupně pokračuje úkoly a příběhovou linkou.
 
-Dugeony 
+---
 
-Generování dugeonu:  
- Každá dugeon je vytvořen s předstihem, než do něj hráč vstoupí. Když je hráč v místnosti, následné křižovatky budou řešeny že místnost ude muset mít pevně dané další místnosti - řešené ve funkci pro generování. 
+## Technická část hry
 
-Pool map:  
- Místnosti jsou spravovány v "poolu" ze kterého se bude losovat další mapa v generaci světa 
- 
-Itemy a inventář
- ve městě bude trade u kterého se bude moci vylepšovat/koupit nové.
- zakladní vybavení - zbrň, armor, druha ruka(obouruční meče, shield, podobné)
- v inventáři bude armor a políčka pro itemy - heal/dmg potiony a podobné
+### Generování dungeonů
+- Každý dungeon je vytvořen před vstupem hráče.
+- Při pohybu hráče mezi místnostmi se rozhoduje pevně, jaké místnosti budou následovat.
+- Funkce pro generování dungeonu zajišťuje strukturované větvení a křižovatky.
 
-Nepřátelé
- Fantasy stvoření  - taé "náhodné" - zavislé na místnosti
- pevně dané dmg a hp
- odměna po zabití peníze/item/vybavení
+### Pool map
+- Místnosti jsou spravovány v **"poolu"**, odkud jsou náhodně vybírány během generace světa.
 
- hráč bude bojovat podle vybavených zbraní a udělovat poškození nepříteli
- nepřítel bude mmít buĎ utok od do, nebo pevně daný -> hráč bude mítbrnění negující nějaké příchozí poškození
+---
 
-Místnosti
- místnost se bude skládat z pozadí text který ji nějak popíše, něco příbehového
- některíé místnosti budou mít poklad truhla/zamčené dveře pro kterou budeme potřebovat klíč -> křiovatky
+## Herní mechaniky
+
+### Itemy a inventář
+- **Město**:
+  - Obchod, kde lze nakupovat/vylepšovat vybavení.
+- **Základní vybavení**:
+  - Zbraně (např. obouruční meče, štíty).
+  - Brnění.
+  - Doplňky (např. léčivé/dmg elixíry).
+- **Inventář**:
+  - Pole pro vybavení a další předměty, které hráč sbírá během hry.
+
+### Nepřátelé
+- **Fantasy stvoření**:
+  - Náhodně generováni v závislosti na typu místnosti.
+- **Statistiky**:
+  - Pevně dané hodnoty HP a DMG.
+- **Odměny**:
+  - Peníze, předměty nebo vybavení.
+- **Mechanika boje**:
+  - Hráč uděluje poškození podle zbraní, které má vybavené.
+  - Nepřátelé mají pevné nebo náhodné útoky. Brnění hráče neguje část poškození.
+
+---
+
+## Struktura dungeonů
+
+### Místnosti
+- Každá místnost obsahuje:
+  - **Popis** – atmosférický text s příběhovým pozadím.
+  - **Speciální prvky** – například:
+    - Poklad (truhly).
+    - Zamčené dveře (vyžadující klíč).
+    - Křižovatky (více cest dál).
+
+---
+
+## Cíle hry
+- Prozkoumat dungeony.
+- Porazit nepřátele.
+- Sbírat předměty, peníze a zvyšovat slávu.
+- Stát se nejslavnějším rytířem všech dob!
+
+---
 
