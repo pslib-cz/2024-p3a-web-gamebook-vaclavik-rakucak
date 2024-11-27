@@ -11,7 +11,7 @@ nasledovat budou ukoly a pribehova linka
 
  
 
-**Technická část**
+Technická část
 
 Dugeony 
 
