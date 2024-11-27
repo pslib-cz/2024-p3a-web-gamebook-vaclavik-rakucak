@@ -10,7 +10,7 @@ Samotná hra začíná po dialogu, hráč se objeví ve městě a dostane úkol 
 
  
 
-**Technická část **
+Technická část
 
 Dugeony 
 
