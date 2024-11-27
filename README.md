@@ -24,6 +24,7 @@ Pool map:
 Itemy a inventář
  ve městě bude trade u kterého se bude moci vylepšovat/koupit nové.
  zakladní vybavení - zbrň, armor, druha ruka(obouruční meče, shield, podobné)
+ v inventáři bude armor a políčka pro itemy - heal/dmg potiony a podobné
 
 Nepřátelé
  Fantasy stvoření  - taé "náhodné" - zavislé na místnosti
