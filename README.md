@@ -1,4 +1,4 @@
-**Dungeone of Insanity**
+# Dungeone of Insanity
 
 „Gamebook “ bude ve stylu dungeon rpg, kde hráč si bude mít nevýběr z několika dungeonů (3-4), podle obtížnosti, jednotlivé dungeony, budou generovány na začátku a hráč poté celý dungeony projde a dostane odměnu peníze/sláva. Cílém hry bude získat co nejviší slávu. 
 
@@ -10,7 +10,7 @@ Samotná hra začíná po dialogu, hráč se objeví ve městě a dostane úkol 
 
  
 
-Technická část
+**Technická část**
 
 Dugeony 
 
