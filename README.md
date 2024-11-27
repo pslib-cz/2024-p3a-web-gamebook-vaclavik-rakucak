@@ -30,4 +30,10 @@ Nepřátelé
  pevně dané dmg a hp
  odměna po zabití peníze/item/vybavení
 
+ hráč bude bojovat podle vybavených zbraní a udělovat poškození nepříteli
+ nepřítel bude mmít buĎ utok od do, nebo pevně daný -> hráč bude mítbrnění negující nějaké příchozí poškození
+
+Místnosti
+ místnost se bude skládat z pozadí text který ji nějak popíše, něco příbehového
+ některíé místnosti budou mít poklad truhla/zamčené dveře pro kterou budeme potřebovat klíč -> křiovatky
 
