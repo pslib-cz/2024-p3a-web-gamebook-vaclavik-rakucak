@@ -6,7 +6,7 @@ Dungeon of Insanity je **gamebook-style dungeon RPG**, kde se hráč-rytíř vyd
 
 ## Počátek hry
 
-Hra začíná **monologem**, který vysvětluje:
+Hra začíná **prologem**, který vysvětluje:
 - Co se stalo.
 - Proč je hráč tam, kde je.
 - Jaký je jeho cíl.
