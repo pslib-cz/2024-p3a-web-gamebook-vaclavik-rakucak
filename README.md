@@ -79,9 +79,9 @@ Hra postupně pokračuje úkoly a příběhovou linkou.
 Figma: https://www.figma.com/design/b54s3MtwBzVlaA67LxV5FN/Project?node-id=0-1&node-type=canvas&t=rHwrmVZMOWlQkJkR-0
 
 ---
-# Prastarý rituál  
+# Příbeh
 
-## Prolog  
+## Prastarý rituál
 Království Eldros bylo kdysi domovem mírumilovných obyvatel, kteří žili v harmonii s přírodou. Tato rovnováha byla udržována díky prastarému artefaktu, **Srdci světa**, který ukrýval nesmírnou magickou sílu. Po tisíciletí byl artefakt nečinný, zapečetěný ve čtyřech tajemných svatyních roztroušených po celé zemi.  
 
 Nyní však kult známý jako **Stíny pravdy** narušil rovnováhu, když se pokusil artefakt probudit a zneužít jeho sílu k vyvolání boha chaosu, známého jako **Malakar**. Rituál selhal, ale rozbil pečeti, a síla Srdce světa začala proudit ven. Z podzemí se vynořily příšery, země se otřásla, a v Eldrosu zavládl chaos.  
@@ -90,7 +90,7 @@ Jsi vyvolený strážce, pověřený znovu zapečetěním Srdce světa. Tvůj ú
 
 ---
 
-## Příběhová část
+## Dungeony a questy 
 
 ### Dungeon 1: Jeskyně hlubin  
 - **Volání temnoty:** Prozkoumej jeskyně, najdi vůdce kultistů a zjisti, co způsobilo narušení pečetě.  
