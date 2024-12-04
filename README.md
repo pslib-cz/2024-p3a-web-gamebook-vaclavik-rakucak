@@ -77,7 +77,7 @@ Hra postupně pokračuje úkoly a příběhovou linkou.
 ---
 ### Odkazy
 Figma: https://www.figma.com/design/b54s3MtwBzVlaA67LxV5FN/Project?node-id=0-1&node-type=canvas&t=rHwrmVZMOWlQkJkR-0
-##Navigace: 
+## Navigace: 
 - Main Page - navrh hry
 - Database - navrh databaze
 
