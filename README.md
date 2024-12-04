@@ -130,5 +130,4 @@ Jsi vyvolený strážce, pověřený znovu zapečetěním Srdce světa. Tvůj ú
 ### Tharok, Válečník klanu Skalních štítů  
 - Hrubý, ale loajální bojovník, který se přidal k tobě, aby ochránil svůj lid před následky kultistických útoků. Nabízí fyzickou pomoc a informace o podzemních oblastech.  
 - **Osobnost:** Přímočarý, někdy netrpělivý, ale oddaný své misi.
-- 
 ---
