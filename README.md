@@ -1,6 +1,6 @@
 # Dungeonborne
 
-**Gamebook-style dungeon RPG**, kde se hráč-rytíř vydává do různých dungeonů (3–4) podle obtížnosti. Každý dungeon je generován předem a hráč si klade za cíl projít jej celý a získat **peníze** a **slávu**. Hlavním cílem hry je dosáhnout co nejvyšší slávy.
+**Gamebook-style dungeon RPG**, kde se hráč-rytíř vydává do různých dungeonů (3–4) podle obtížnosti. Každý dungeon je generován předem a hráč si klade za cíl projít jej celý a získat **peníze**. Hlavním cílem hry je dosáhnout co nejvyšší slávy.
 
 ---
 
