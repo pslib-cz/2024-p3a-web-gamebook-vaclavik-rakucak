@@ -125,9 +125,53 @@ Jsi vyvolený strážce, pověřený znovu zapečetěním Srdce světa. Tvůj ú
 
 ### Kaela, Lovkyně kultistů  
 - Bývalá členka kultu, která se odvrátila od temnoty poté, co viděla zkázu, kterou její bratři způsobili. Nabízí vhled do plánů kultistů.  
-- **Osobnost:** Tvrdá, ale skrývá pocit viny za své minulé činy.  
-
+- **Osobnost:** Tvrdá, ale skrývá pocit viny za své minulé činy.
+---
 ### Tharok, Válečník klanu Skalních štítů  
 - Hrubý, ale loajální bojovník, který se přidal k tobě, aby ochránil svůj lid před následky kultistických útoků. Nabízí fyzickou pomoc a informace o podzemních oblastech.  
 - **Osobnost:** Přímočarý, někdy netrpělivý, ale oddaný své misi.
+- 
+---
+
+## Obtížnosti - vybaveni hráče a nepřátel
+- 1000 testovacich kol
+  
+**Dungeon 1**: 
+Hráč vyhrál: 1000x
+Nepřítel vyhrál: 0x
+Uspešnost: Hráč: 100% Nepřítel: 0%
+
+**Dungeon 2**:
+Hráč vyhrál: 860x
+Nepřítel vyhrál: 142x
+Uspešnost: Hráč: 86% Nepřítel: 14,2%
+
+**Dungeon 3**:
+Hráč vyhrál: 648x
+Nepřítel vyhrál: 354x
+Uspešnost: Hráč: 64,8% Nepřítel: 35,4%
+
+**Dungeon 4**:
+Hráč vyhrál: 551x
+Nepřítel vyhrál: 451x
+Uspešnost: Hráč: 55,1% Nepřítel: 45,1%
+
+### Hráč
+- playerHP = 50;
+- playerHealAmount = 15; 
+- maxHeals = 2;
+#### Zbraně a brnění
+- zozptyl zbraní pod dungeonech
+1. { 8, 14 }
+2. { 10, 16 }
+3. { 16, 24 }
+4. { 25, 31 }
+- brnění:  3, 5, 6, 8 
+   
+### Nepřátelé
+- minHP, maxHp, minDmg, maxDmg
+1. { 50, 60, 8, 12 }
+2. { 70, 80, 13, 16 }
+3. { 80, 100, 13, 18 }
+4. { 110, 120, 12, 20 }
 ---
