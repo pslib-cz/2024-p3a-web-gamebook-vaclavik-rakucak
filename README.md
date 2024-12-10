@@ -127,7 +127,7 @@ Jsi vyvolený strážce, pověřený znovu zapečetěním Srdce světa. Tvůj ú
 ### Kaela, Lovkyně kultistů  
 - Bývalá členka kultu, která se odvrátila od temnoty poté, co viděla zkázu, kterou její bratři způsobili. Nabízí vhled do plánů kultistů.  
 - **Osobnost:** Tvrdá, ale skrývá pocit viny za své minulé činy.
----
+
 ### Tharok, Válečník klanu Skalních štítů  
 - Hrubý, ale loajální bojovník, který se přidal k tobě, aby ochránil svůj lid před následky kultistických útoků. Nabízí fyzickou pomoc a informace o podzemních oblastech.  
 - **Osobnost:** Přímočarý, někdy netrpělivý, ale oddaný své misi.
