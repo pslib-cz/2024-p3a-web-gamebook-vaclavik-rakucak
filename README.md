@@ -19,8 +19,6 @@ Hra postupně pokračuje úkoly a příběhovou linkou.
 
 ---
 
-https://pslib.sharepoint.com/sites/studium/it/web/SitePages/Project-Gamebook.aspx
-
 ## Technická část hry
 
 ### Generování dungeonů
@@ -78,7 +76,8 @@ https://pslib.sharepoint.com/sites/studium/it/web/SitePages/Project-Gamebook.asp
 
 ---
 ## Odkazy
-Figma: https://www.figma.com/design/b54s3MtwBzVlaA67LxV5FN/Project?node-id=0-1&node-type=canvas&t=rHwrmVZMOWlQkJkR-0
+- Figma: https://www.figma.com/design/b54s3MtwBzVlaA67LxV5FN/Project?node-id=0-1&node-type=canvas&t=rHwrmVZMOWlQkJkR-0
+- SharePoint: https://pslib.sharepoint.com/sites/studium/it/web/SitePages/Project-Gamebook.aspx
 
 ---
 # Příbeh
