@@ -19,6 +19,8 @@ Hra postupně pokračuje úkoly a příběhovou linkou.
 
 ---
 
+https://pslib.sharepoint.com/sites/studium/it/web/SitePages/Project-Gamebook.aspx
+
 ## Technická část hry
 
 ### Generování dungeonů
