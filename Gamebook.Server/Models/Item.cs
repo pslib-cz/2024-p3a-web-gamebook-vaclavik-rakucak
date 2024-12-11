@@ -1,15 +1,19 @@
-﻿namespace Gamebook.Server.Models
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Gamebook.Server.Models
 {
     public class Item
     {
         [Key]
         public int IdItem { get; set; }
 
-        public string Name { get; set; }
+        public required string Name { get; set; }
 
-        public string Type { get; set; }
+        public required string Type { get; set; }
 
-        public string Image { get; set; }
+        public required string Image { get; set; }
 
         public int BaseStat { get; set; }
 
