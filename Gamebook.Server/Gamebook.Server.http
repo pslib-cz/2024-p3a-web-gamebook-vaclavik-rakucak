@@ -1,6 +1,6 @@
-@Gamebook.Server_HostAddress = http://localhost:5036
+@Gamebook.Server_HostAddress = http://localhost:5102
 
-GET {{Gamebook.Server_HostAddress}}/api/
+GET {{Gamebook.Server_HostAddress}}/weatherforecast/
 Accept: application/json
 
 ###

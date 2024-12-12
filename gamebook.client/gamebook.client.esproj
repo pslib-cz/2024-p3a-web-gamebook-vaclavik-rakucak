@@ -8,10 +8,4 @@
     <!-- Folder where production build objects will be placed -->
     <BuildOutputFolder>$(MSBuildProjectDirectory)\dist</BuildOutputFolder>
   </PropertyGroup>
-  <ItemGroup>
-    <Folder Include="src\hooks\" />
-    <Folder Include="src\hocs\" />
-    <Folder Include="src\providers\" />
-    <Folder Include="src\pages\" />
-  </ItemGroup>
 </Project>

@@ -1,6 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Gamebook.Server.Data;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.OpenApi;
+using Microsoft.EntityFrameworkCore;
 
 namespace Gamebook.Server.Models
 {
@@ -24,4 +28,5 @@ namespace Gamebook.Server.Models
 
         public ICollection<Quest> Quests { get; set; } = new List<Quest>();
     }
+
 }

@@ -18,11 +18,11 @@ namespace Gamebook.Server.Models
         [ForeignKey("Dungeon")]
         public int IdDungeon { get; set; }
 
-        public Dungeon Dungeon { get; set; }
+        public required Dungeon Dungeon { get; set; }
 
-        public Hall Hall { get; set; }
+        public required Hall Hall { get; set; }
 
-        public Monster Monster { get; set; }
+        public required Monster Monster { get; set; }
 
         public ICollection<Item> Items { get; set; } = new List<Item>();
     }

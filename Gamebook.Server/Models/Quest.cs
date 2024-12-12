@@ -18,6 +18,6 @@ namespace Gamebook.Server.Models
         [ForeignKey("Dungeon")]
         public int IdDungeon { get; set; }
 
-        public Dungeon Dungeon { get; set; }
+        public required Dungeon Dungeon { get; set; }
     }
 }

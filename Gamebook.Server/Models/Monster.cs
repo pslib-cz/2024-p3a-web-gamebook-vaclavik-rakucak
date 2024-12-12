@@ -20,6 +20,6 @@ namespace Gamebook.Server.Models
         [ForeignKey("Room")]
         public int IdRoom { get; set; }
 
-        public Room Room { get; set; }
+        public required Room Room { get; set; }
     }
 }

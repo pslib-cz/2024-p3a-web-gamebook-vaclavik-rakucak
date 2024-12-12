@@ -19,13 +19,13 @@ namespace Gamebook.Server.Models
 
         public int BasePrice { get; set; }
 
-        public string SpecEffect { get; set; }
+        public required string SpecEffect { get; set; }
 
         public int SpecEffectStat { get; set; }
 
         [ForeignKey("Room")]
         public int IdRoom { get; set; }
 
-        public Room Room { get; set; }
+        public required Room Room { get; set; }
     }
 }
