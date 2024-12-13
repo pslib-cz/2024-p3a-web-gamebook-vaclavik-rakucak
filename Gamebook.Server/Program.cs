@@ -57,4 +57,6 @@ app.MapHallEndpoints();
 
 app.MapImageEndpoints();
 
+app.MapFullDungeonEndpoints();
+
 app.Run();

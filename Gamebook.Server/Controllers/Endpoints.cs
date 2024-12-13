@@ -66,7 +66,6 @@ public static class Endpoints
         .WithName("DeleteDungeon")
         .WithOpenApi();
     }
-	
 	public static void MapItemEndpoints (this IEndpointRouteBuilder routes)
     {
         var group = routes.MapGroup("/api/Item").WithTags(nameof(Item));
@@ -468,7 +467,6 @@ public static class Endpoints
         .WithName("DeleteHall")
         .WithOpenApi();
     }
-
     public static void MapImageEndpoints(this IEndpointRouteBuilder routes)
     {
         var group = routes.MapGroup("/api/Image").WithTags(nameof(Image));
@@ -550,5 +548,70 @@ public static class Endpoints
         .WithName("DeleteImage")
         .WithOpenApi();
     }
+    public static void MapFullDungeonEndpoints(this IEndpointRouteBuilder routes)
+    {
+        var group = routes.MapGroup("/api/Room").WithTags(nameof(Room));
+
+        // Endpoint pro získání řetězce místností na základě názvu dungeonu
+        group.MapGet("/chain/{dungeonName}", GetRoomChain)
+            .WithName("GetRoomChain")
+            .WithOpenApi();
+    }
+
+    // Statická metoda pro logiku výběru místností
+    static async Task<IResult> GetRoomChain(string dungeonName, GamebookDbContext db)
+    {
+        // Validace vstupního parametru
+        if (string.IsNullOrWhiteSpace(dungeonName))
+        {
+            return Results.BadRequest("Dungeon name is required.");
+        }
+
+        // Načtení místností s vazbami na Hall a Dungeon podle zadaného názvu dungeonu
+        var rooms = await db.Rooms
+            .Include(r => r.Dungeon) // Načtení vazby na Dungeon
+            .Include(r => r.IdHall)   // Načtení vazby na Hall
+            .Where(r => r.Dungeon.Name == dungeonName) // Filtrování podle názvu dungeonu
+            .OrderBy(r => Guid.NewGuid())             // Náhodné pořadí místností
+            .Take(10)                                 // Omezení na 10 místností
+            .ToListAsync();
+
+        // Pokud nebyly nalezeny žádné místnosti
+        if (!rooms.Any())
+        {
+            return Results.NotFound($"No rooms found for dungeon '{dungeonName}'");
+        }
+
+        // Vytvoření datové struktury pro návrat dat
+        var roomChain = new List<RoomChainDto>();
+
+        for (int i = 0; i < rooms.Count; i++)
+        {
+            var currentRoom = rooms[i];
+            var nextRoom = (i < rooms.Count - 1) ? rooms[i + 1] : null; // Další místnost (pokud existuje)
+
+            var hallDto = new HallDto
+            {
+//sem doplnit co se bude posilat i guess
+                IdHall = currentRoom.IdHall,
+                NextRoom = nextRoom != null ? new RoomChainDto
+                {
+                    IdRoom = nextRoom.IdRoom,
+                    RoomDescription = nextRoom.Description
+                } : null
+            };
+
+            roomChain.Add(new RoomChainDto
+            {
+                IdRoom = currentRoom.IdRoom,
+                RoomDescription = currentRoom.Description,
+                LinkedHall = hallDto
+            });
+        }
+
+        // Vrácení výsledku
+        return Results.Ok(roomChain);
+    }
+
 
 }
