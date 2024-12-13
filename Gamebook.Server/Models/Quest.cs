@@ -19,5 +19,9 @@ namespace Gamebook.Server.Models
         public int IdDungeon { get; set; }
 
         public required Dungeon Dungeon { get; set; }
+        [ForeignKey("Image")]
+        public string IdImage { get; set; }
+
+        public Image Image { get; set; } // Navigační vlastnost na Image (nepovinná)
     }
 }

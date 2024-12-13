@@ -11,7 +11,6 @@ namespace Gamebook.Server.Models
 
         public required string Type { get; set; }
 
-        public required string Image { get; set; }
 
         public required string Description { get; set; }
 
@@ -20,10 +19,16 @@ namespace Gamebook.Server.Models
 
         public required Dungeon Dungeon { get; set; }
 
-        public required Hall Hall { get; set; }
-
         public required Monster Monster { get; set; }
 
         public ICollection<Item> Items { get; set; } = new List<Item>();
+
+        // Navigační vlastnost pro Halls, které odkazují na tuto Room
+        public ICollection<Hall> Halls { get; set; } = new List<Hall>();
+        [ForeignKey("Image")]
+        public string IdImage { get; set; }
+
+        public Image Image { get; set; } // Navigační vlastnost na Image (nepovinná)
     }
+
 }

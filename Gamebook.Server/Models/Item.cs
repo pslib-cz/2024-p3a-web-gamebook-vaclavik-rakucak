@@ -13,8 +13,6 @@ namespace Gamebook.Server.Models
 
         public required string Type { get; set; }
 
-        public required string Image { get; set; }
-
         public int BaseStat { get; set; }
 
         public int BasePrice { get; set; }
@@ -27,5 +25,9 @@ namespace Gamebook.Server.Models
         public int IdRoom { get; set; }
 
         public required Room Room { get; set; }
+        [ForeignKey("Image")]
+        public string IdImage { get; set; }
+
+        public Image Image { get; set; } // Navigační vlastnost na Image (nepovinná)
     }
 }

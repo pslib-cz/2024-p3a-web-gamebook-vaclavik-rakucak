@@ -15,5 +15,9 @@ namespace Gamebook.Server.Models
         public int SpecEffectStat { get; set; }
 
         public required string SpecEffect { get; set; }
+        [ForeignKey("Image")]
+        public string IdImage { get; set; }
+
+        public Image Image { get; set; } // Navigační vlastnost na Image (nepovinná)
     }
 }

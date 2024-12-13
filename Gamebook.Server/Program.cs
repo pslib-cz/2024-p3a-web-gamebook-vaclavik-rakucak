@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Gamebook.Server.Data;
+using Gamebook.Server.Controllers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -38,5 +39,22 @@ app.MapControllers();
 
 app.MapFallbackToFile("/index.html");
 
+app.MapDungeonEndpoints();
+
+app.MapItemEndpoints();
+
+app.MapMonsterEndpoints();
+
+app.MapPlayerItemEndpoints();
+
+app.MapQuestEndpoints();
+
+app.MapRoomEndpoints();
+
+app.MapTownEndpoints();
+
+app.MapHallEndpoints();
+
+app.MapImageEndpoints();
 
 app.Run();

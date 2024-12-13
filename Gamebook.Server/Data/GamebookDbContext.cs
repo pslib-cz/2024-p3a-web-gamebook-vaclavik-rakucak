@@ -15,6 +15,7 @@ namespace Gamebook.Server.Data
         public DbSet<Quest> Quests { get; set; }
         public DbSet<Room> Rooms { get; set; }
         public DbSet<Town> Towns { get; set; }
+        public DbSet<Image> Images { get; set; }
     }
 }
 

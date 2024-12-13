@@ -27,6 +27,10 @@ namespace Gamebook.Server.Models
         public ICollection<Room> Rooms { get; set; } = new List<Room>();
 
         public ICollection<Quest> Quests { get; set; } = new List<Quest>();
+        [ForeignKey("Image")]
+        public string IdImage { get; set; }
+
+        public Image Image { get; set; } // Navigační vlastnost na Image (nepovinná)
     }
 
 }
