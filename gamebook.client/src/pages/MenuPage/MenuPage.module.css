@@ -1,0 +1,22 @@
+.menuPage {
+    width: 100vw;
+    height: 100vh;
+    background-color: #282c34;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    color: white;
+}
+
+.title {
+    margin: 20px;
+    font-size: 24px;
+}
+
+.buttonContainer {
+    position: absolute;
+    bottom: 80px; 
+    left: 50%; 
+    transform: translateX(-50%); 
+}
