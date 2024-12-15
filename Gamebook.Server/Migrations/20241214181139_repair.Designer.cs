@@ -3,6 +3,7 @@ using System;
 using Gamebook.Server.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Gamebook.Server.Migrations
 {
     [DbContext(typeof(GamebookDbContext))]
-    partial class GamebookDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241214181139_repair")]
+    partial class repair
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.11");
@@ -61,17 +64,12 @@ namespace Gamebook.Server.Migrations
                     b.Property<string>("IdImage")
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("IdRoom")
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("Type")
                         .HasColumnType("TEXT");
 
                     b.HasKey("IdHall");
 
                     b.HasIndex("IdImage");
-
-                    b.HasIndex("IdRoom");
 
                     b.ToTable("Halls");
                 });
@@ -253,7 +251,8 @@ namespace Gamebook.Server.Migrations
 
                     b.HasIndex("IdDungeon");
 
-                    b.HasIndex("IdHall");
+                    b.HasIndex("IdHall")
+                        .IsUnique();
 
                     b.HasIndex("IdImage");
 
@@ -301,13 +300,7 @@ namespace Gamebook.Server.Migrations
                         .WithMany()
                         .HasForeignKey("IdImage");
 
-                    b.HasOne("Gamebook.Server.Models.Room", "Room")
-                        .WithMany()
-                        .HasForeignKey("IdRoom");
-
                     b.Navigation("Image");
-
-                    b.Navigation("Room");
                 });
 
             modelBuilder.Entity("Gamebook.Server.Models.Item", b =>
@@ -387,8 +380,8 @@ namespace Gamebook.Server.Migrations
                         .IsRequired();
 
                     b.HasOne("Gamebook.Server.Models.Hall", "Hall")
-                        .WithMany()
-                        .HasForeignKey("IdHall");
+                        .WithOne("Room")
+                        .HasForeignKey("Gamebook.Server.Models.Room", "IdHall");
 
                     b.HasOne("Gamebook.Server.Models.Image", "Image")
                         .WithMany()
@@ -423,6 +416,12 @@ namespace Gamebook.Server.Migrations
                     b.Navigation("Quests");
 
                     b.Navigation("Rooms");
+                });
+
+            modelBuilder.Entity("Gamebook.Server.Models.Hall", b =>
+                {
+                    b.Navigation("Room")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Gamebook.Server.Models.Room", b =>

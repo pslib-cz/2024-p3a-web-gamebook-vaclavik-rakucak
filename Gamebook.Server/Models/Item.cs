@@ -9,15 +9,15 @@ namespace Gamebook.Server.Models
         [Key]
         public int IdItem { get; set; }
 
-        public required string Name { get; set; }
+        public string? Name { get; set; }
 
-        public required string Type { get; set; }
+        public string? Type { get; set; }
 
         public int BaseStat { get; set; }
 
         public int BasePrice { get; set; }
 
-        public required string SpecEffect { get; set; }
+        public string? SpecEffect { get; set; }
 
         public int SpecEffectStat { get; set; }
 

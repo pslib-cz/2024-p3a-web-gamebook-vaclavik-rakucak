@@ -3,6 +3,7 @@ using System;
 using Gamebook.Server.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Gamebook.Server.Migrations
 {
     [DbContext(typeof(GamebookDbContext))]
-    partial class GamebookDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241214180409_somechanges-2")]
+    partial class somechanges2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.11");
@@ -61,7 +64,7 @@ namespace Gamebook.Server.Migrations
                     b.Property<string>("IdImage")
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("IdRoom")
+                    b.Property<int>("IdRoom")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Type")
@@ -303,7 +306,9 @@ namespace Gamebook.Server.Migrations
 
                     b.HasOne("Gamebook.Server.Models.Room", "Room")
                         .WithMany()
-                        .HasForeignKey("IdRoom");
+                        .HasForeignKey("IdRoom")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Image");
 

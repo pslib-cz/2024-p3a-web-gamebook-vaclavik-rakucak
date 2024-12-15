@@ -9,7 +9,7 @@ namespace Gamebook.Server.Models
         [Key]
         public int IdMonster { get; set; }
 
-        public required string Name { get; set; }
+        public string? Name { get; set; }
 
         public int Hitpoints { get; set; }
 

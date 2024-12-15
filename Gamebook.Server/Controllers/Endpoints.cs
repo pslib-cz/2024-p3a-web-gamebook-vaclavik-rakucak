@@ -441,7 +441,7 @@ public static class Endpoints
                   .SetProperty(m => m.IdHall, hall.IdHall)
                   .SetProperty(m => m.Type, hall.Type)
                   .SetProperty(m => m.Description, hall.Description)
-                  .SetProperty(m => m.IdRoom, hall.IdRoom)
+                  .SetProperty(m => m.Room, hall.Room)
                   );
             return affected == 1 ? TypedResults.Ok() : TypedResults.NotFound();
         })
@@ -569,11 +569,11 @@ public static class Endpoints
 
         // Načtení místností s vazbami na Hall a Dungeon podle zadaného názvu dungeonu
         var rooms = await db.Rooms
-            .Include(r => r.Dungeon) // Načtení vazby na Dungeon
-            .Include(r => r.IdHall)   // Načtení vazby na Hall
-            .Where(r => r.Dungeon.Name == dungeonName) // Filtrování podle názvu dungeonu
-            .OrderBy(r => Guid.NewGuid())             // Náhodné pořadí místností
-            .Take(10)                                 // Omezení na 10 místností
+            .Include(r => r.Dungeon)
+            .Include(r => r.Hall)    // Správné načítání vazby na Hall
+            .Where(r => r.Dungeon.Name == dungeonName)
+            .OrderBy(r => EF.Functions.Random())
+            .Take(10)
             .ToListAsync();
 
         // Pokud nebyly nalezeny žádné místnosti
@@ -588,12 +588,11 @@ public static class Endpoints
         for (int i = 0; i < rooms.Count; i++)
         {
             var currentRoom = rooms[i];
-            var nextRoom = (i < rooms.Count - 1) ? rooms[i + 1] : null; // Další místnost (pokud existuje)
+            var nextRoom = (i < rooms.Count - 1) ? rooms[i + 1] : null;
 
             var hallDto = new HallDto
             {
-//sem doplnit co se bude posilat i guess
-                IdHall = currentRoom.IdHall,
+                IdHall = currentRoom.Hall?.IdHall ?? 0,
                 NextRoom = nextRoom != null ? new RoomChainDto
                 {
                     IdRoom = nextRoom.IdRoom,

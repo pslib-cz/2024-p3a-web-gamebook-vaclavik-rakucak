@@ -9,11 +9,11 @@ namespace Gamebook.Server.Models
         [Key]
         public int IdQuest { get; set; }
 
-        public required string Description { get; set; }
+        public string? Description { get; set; }
 
-        public required string QuestCondition { get; set; }
+        public string? QuestCondition { get; set; }
 
-        public required string QuestParametr { get; set; }
+        public string? QuestParametr { get; set; }
 
         [ForeignKey("Dungeon")]
         public int IdDungeon { get; set; }

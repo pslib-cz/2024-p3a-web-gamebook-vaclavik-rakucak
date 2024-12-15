@@ -9,30 +9,29 @@ namespace Gamebook.Server.Models
         [Key]
         public int IdRoom { get; set; }
 
-        public required string Type { get; set; }
+        public string? Type { get; set; }
 
-
-        public required string Description { get; set; }
+        public string? Description { get; set; }
 
         [ForeignKey("Dungeon")]
         public int IdDungeon { get; set; }
 
-        public required Dungeon Dungeon { get; set; }
+        public Dungeon Dungeon { get; set; }
 
-        public required Monster Monster { get; set; }
+        public Monster? Monster { get; set; }
 
         public ICollection<Item> Items { get; set; } = new List<Item>();
 
-        // Navigační vlastnost pro Hall, která odkazuje na tuto Room
-        [ForeignKey("IdHall")]
-        public int IdHall { get; set; }
-            
+        [ForeignKey("Hall")]
+        public int? IdHall { get; set; } // Cizí klíč na Hall
+
+        public Hall? Hall { get; set; }
+
         [ForeignKey("Image")]
-        public string IdImage { get; set; }
+        public string? IdImage { get; set; }
 
-        public Image Image { get; set; } // Navigační vlastnost na Image (nepovinná)
+        public Image? Image { get; set; } // Navigační vlastnost na Image (nepovinná)
     }
-
     public class RoomChainDto
     {
         public int IdRoom { get; set; }
@@ -46,5 +45,4 @@ namespace Gamebook.Server.Models
         public string HallDescription { get; set; }
         public RoomChainDto NextRoom { get; set; } // Navazující místnost
     }
-
 }

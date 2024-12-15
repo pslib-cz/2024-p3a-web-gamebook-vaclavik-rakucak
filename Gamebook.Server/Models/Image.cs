@@ -6,13 +6,13 @@ namespace Gamebook.Server.Models
     public class Image
     {
         [Key]
-        public required string IdImage { get; set; }
+        public string IdImage { get; set; }
 
-        public required string Name { get; set; }
+        public string? Name { get; set; }
 
         public required byte[] Data { get; set; } // Obrázek uložen jako binární data
 
-        public required string ContentType { get; set; } // Např. "image/png"
+        public string? ContentType { get; set; } // Např. "image/png"
 
     }
 

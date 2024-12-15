@@ -14,11 +14,11 @@ namespace Gamebook.Server.Models
         public int IdDungeon { get; set; }
 
         [Required]
-        public required string Name { get; set; }
+        public string? Name { get; set; }
 
         public int MaxRooms { get; set; }
 
-        public required string Description { get; set; }
+        public string? Description { get; set; }
 
         public required int Reward { get; set; }
 
@@ -28,9 +28,9 @@ namespace Gamebook.Server.Models
 
         public ICollection<Quest> Quests { get; set; } = new List<Quest>();
         [ForeignKey("Image")]
-        public string IdImage { get; set; }
+        public string? IdImage { get; set; }
 
-        public Image Image { get; set; } // Navigační vlastnost na Image (nepovinná)
+        public Image? Image { get; set; } // Navigační vlastnost na Image (nepovinná)
     }
 
 }

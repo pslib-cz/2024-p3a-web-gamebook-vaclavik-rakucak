@@ -12,9 +12,9 @@ namespace Gamebook.Server.Models
 
         public int BasePrice { get; set; }
 
-        public int SpecEffectStat { get; set; }
+        public int? SpecEffectStat { get; set; }
 
-        public required string SpecEffect { get; set; }
+        public string? SpecEffect { get; set; }
         [ForeignKey("Image")]
         public string IdImage { get; set; }
 
