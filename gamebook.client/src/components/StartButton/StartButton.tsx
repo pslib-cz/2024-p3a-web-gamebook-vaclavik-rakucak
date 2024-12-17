@@ -6,7 +6,7 @@ const StartButton: React.FC = () => {
     const navigate = useNavigate();
 
     const handleStart = () => {
-        navigate('/game');
+        navigate('/set-name');
     };
 
     return (
