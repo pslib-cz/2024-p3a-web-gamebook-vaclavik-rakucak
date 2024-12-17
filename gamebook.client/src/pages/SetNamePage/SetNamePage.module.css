@@ -60,3 +60,19 @@
     text-align: center;
     font-weight: bold;
 }
+
+.enterButton {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #541f1f;;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.enterButton:hover {
+    background-color: #6a2727;
+}

@@ -23,7 +23,6 @@
 
 .buttonContainer {
     position: absolute;
-    background-color: #541f1f;
     bottom: 80px; 
     left: 50%; 
     transform: translateX(-50%); 

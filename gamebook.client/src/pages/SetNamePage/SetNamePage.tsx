@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styles from '../SetNamePage/SetNamePage.module.css';
 
 const NamePage: React.FC = () => {
     const [name, setName] = useState('');
     const [warning, setWarning] = useState('');
+    const navigate = useNavigate();
 
+    // Handle input change
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const input = e.target.value;
         if (input.length > 26) {
@@ -13,6 +16,27 @@ const NamePage: React.FC = () => {
             setWarning('');
         }
         setName(input);
+    };
+
+    // Navigate to /map when Enter key is pressed
+    useEffect(() => {
+        const handleKeyPress = (e: KeyboardEvent) => {
+            if (e.key === 'Enter') {
+                navigateToMap();
+            }
+        };
+
+        document.addEventListener('keydown', handleKeyPress);
+        return () => document.removeEventListener('keydown', handleKeyPress);
+    }, []);
+
+    // Navigate to /map
+    const navigateToMap = () => {
+        if (name.trim() === '') {
+            setWarning('Please enter a name before proceeding.');
+        } else {
+            navigate('/map');
+        }
     };
 
     return (
@@ -29,10 +53,15 @@ const NamePage: React.FC = () => {
                     onChange={handleInputChange}
                     placeholder="Name example"
                     className={styles.inputField}
-                    maxLength={40} /* Prevent absurdly long input */
+                    maxLength={40}
                 />
             </div>
             {warning && <p className={styles.warning}>{warning}</p>}
+
+            {/* "Enter" Button */}
+            <button onClick={navigateToMap} className={styles.enterButton}>
+                Enter
+            </button>
         </div>
     );
 };
