@@ -328,7 +328,7 @@ public static class Endpoints
                 .ExecuteUpdateAsync(setters => setters
                   .SetProperty(m => m.IdRoom, room.IdRoom)
                   .SetProperty(m => m.Type, room.Type)
-                  .SetProperty(m => m.Image, room.Image)
+                  .SetProperty(m => m.IdImage, room.IdImage)
                   .SetProperty(m => m.Description, room.Description)
                   .SetProperty(m => m.IdDungeon, room.IdDungeon)
                   );
@@ -441,7 +441,7 @@ public static class Endpoints
                   .SetProperty(m => m.IdHall, hall.IdHall)
                   .SetProperty(m => m.Type, hall.Type)
                   .SetProperty(m => m.Description, hall.Description)
-                  .SetProperty(m => m.Room, hall.Room)
+                  .SetProperty(m => m.IdRoom, hall.IdRoom)
                   );
             return affected == 1 ? TypedResults.Ok() : TypedResults.NotFound();
         })
@@ -592,7 +592,7 @@ public static class Endpoints
 
             var hallDto = new HallDto
             {
-                IdHall = currentRoom.Hall?.IdHall ?? 0,
+                IdIdHall = currentRoom.IdHall ?? 0,
                 NextRoom = nextRoom != null ? new RoomChainDto
                 {
                     IdRoom = nextRoom.IdRoom,

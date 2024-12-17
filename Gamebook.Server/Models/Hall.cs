@@ -13,10 +13,9 @@ namespace Gamebook.Server.Models
         public string? Description { get; set; }
         [ForeignKey("Room")]
         public int? IdRoom{ get; set; } // Cizí klíč na Room
-        public Room? Room { get; set; } // Navigační vlastnost na Room
+
         [ForeignKey("Image")]
         public string? IdImage { get; set; }
 
-        public Image? Image { get; set; } // Navigační vlastnost na Image (nepovinná)
     }
 }

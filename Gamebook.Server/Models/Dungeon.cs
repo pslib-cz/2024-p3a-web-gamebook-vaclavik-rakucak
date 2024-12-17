@@ -23,7 +23,6 @@ namespace Gamebook.Server.Models
         public required int Reward { get; set; }
 
         public required int DmgCondition { get; set; }
-
         public ICollection<Room> Rooms { get; set; } = new List<Room>();
 
         public ICollection<Quest> Quests { get; set; } = new List<Quest>();

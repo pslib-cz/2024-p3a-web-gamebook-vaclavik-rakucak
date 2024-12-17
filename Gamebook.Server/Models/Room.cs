@@ -24,13 +24,11 @@ namespace Gamebook.Server.Models
 
         [ForeignKey("Hall")]
         public int? IdHall { get; set; } // Cizí klíč na Hall
-
-        public Hall? Hall { get; set; }
+        public Hall Hall { get; set; }
 
         [ForeignKey("Image")]
         public string? IdImage { get; set; }
 
-        public Image? Image { get; set; } // Navigační vlastnost na Image (nepovinná)
     }
     public class RoomChainDto
     {
@@ -41,7 +39,7 @@ namespace Gamebook.Server.Models
 
     public class HallDto
     {
-        public int IdHall { get; set; }
+        public int IdIdHall { get; set; }
         public string HallDescription { get; set; }
         public RoomChainDto NextRoom { get; set; } // Navazující místnost
     }
