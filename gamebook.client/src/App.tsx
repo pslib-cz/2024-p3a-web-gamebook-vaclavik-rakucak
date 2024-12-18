@@ -11,7 +11,7 @@ const App: React.FC = () => {
             <Routes>
                 <Route path="/" element={<MenuPage />} />
                 <Route path="/set-name" element={<SetNamePage />} />
-                <Route path="/map" element={<RoomViewer />} />
+                <Route path="/RoomViewer" element={<RoomViewer />} />
 
             </Routes>
         </BrowserRouter>

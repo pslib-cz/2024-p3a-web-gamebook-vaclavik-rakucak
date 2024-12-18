@@ -6,57 +6,66 @@ using Gamebook.Server.Controllers;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
+// Přidání služeb do kontejneru.
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
+// Nastavení Swagger pro API dokumentaci
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-
+// Připojení k databázi (SQLite)
 builder.Services.AddDbContext<GamebookDbContext>(options =>
     options.UseSqlite("Data Source=gamebook.db"));
 
+// Povolení CORS pro požadavky z React aplikace
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        // Ujisti se, že používáš správnou URL pro tvoji React aplikaci (port 63851)
+        policy.WithOrigins("https://localhost:63851")  // URL React aplikace
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
 var app = builder.Build();
 
-app.MapGet("/", async (GamebookDbContext db) => await db.Dungeons.ToListAsync());
+// Povolení CORS middleware - musí být před 'UseAuthorization'
+app.UseCors();
 
+// Povolení statických souborů a souborů index.html
 app.UseDefaultFiles();
 app.UseStaticFiles();
 
-// Configure the HTTP request pipeline.
+// Vytvoření mapování pro Swagger, pouze v režimu vývoje
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+app.UseHttpsRedirection(); // Povolení HTTPS
 
-app.UseAuthorization();
+app.UseAuthorization(); // Použití autorizace
 
+// Mapování kontrolerů API
 app.MapControllers();
 
-app.MapFallbackToFile("/index.html");
-
+// Mapování všech endpointů
 app.MapDungeonEndpoints();
-
 app.MapItemEndpoints();
-
 app.MapMonsterEndpoints();
-
 app.MapPlayerItemEndpoints();
-
 app.MapQuestEndpoints();
-
 app.MapRoomEndpoints();
-
 app.MapTownEndpoints();
-
 app.MapHallEndpoints();
-
 app.MapImageEndpoints();
-
 app.MapFullDungeonEndpoints();
 
+// Pokud žádná cesta neodpovídá, bude směrováno na index.html (pro React SPA)
+app.MapFallbackToFile("/index.html");
+
+// Spuštění aplikace
 app.Run();

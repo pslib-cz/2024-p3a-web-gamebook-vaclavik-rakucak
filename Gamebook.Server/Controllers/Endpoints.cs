@@ -553,13 +553,13 @@ public static class Endpoints
         var group = routes.MapGroup("/api/Room").WithTags(nameof(Room));
 
         // Endpoint pro získání řetězce místností na základě názvu dungeonu
-        group.MapGet("/chain/{dungeonName}", GetRoomChain)
+        group.MapGet("/chain/Kobka", GetRoomChain)
             .WithName("GetRoomChain")
             .WithOpenApi();
     }
 
     // Statická metoda pro logiku výběru místností
-    static async Task<IResult> GetRoomChain(string dungeonName, GamebookDbContext db)
+    static async Task<IResult> GetRoomChain(GamebookDbContext db, string dungeonName = "Kobka")
     {
         // Validace vstupního parametru
         if (string.IsNullOrWhiteSpace(dungeonName))
