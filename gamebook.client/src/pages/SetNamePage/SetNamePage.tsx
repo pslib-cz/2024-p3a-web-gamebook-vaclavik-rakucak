@@ -35,7 +35,7 @@ const NamePage: React.FC = () => {
         if (name.trim() === '') {
             setWarning('Please enter a name before proceeding.');
         } else {
-            navigate('/map');
+            navigate('/roomviewer');
         }
     };
 

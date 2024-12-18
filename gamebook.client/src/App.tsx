@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import MenuPage from './pages/MenuPage/MenuPage';
 import SetNamePage from './pages/SetNamePage/SetNamePage';
 import MainMapPage from './pages/MainMapPage/MainMapPage'
+import RoomViewer from './components/RoomViewer'
 
 const App: React.FC = () => {
     return (
@@ -10,7 +11,8 @@ const App: React.FC = () => {
             <Routes>
                 <Route path="/" element={<MenuPage />} />
                 <Route path="/set-name" element={<SetNamePage />} />
-                <Route path="/map" element={<MainMapPage />} />
+                <Route path="/map" element={<RoomViewer />} />
+
             </Routes>
         </BrowserRouter>
     );
