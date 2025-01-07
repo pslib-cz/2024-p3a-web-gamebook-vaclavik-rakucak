@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Gamebook.Server.Migrations
 {
     [DbContext(typeof(GamebookDbContext))]
-    [Migration("20241213164909_somechanges")]
-    partial class somechanges
+    [Migration("20250107165557_New")]
+    partial class New
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -20,9 +20,36 @@ namespace Gamebook.Server.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.11");
 
+            modelBuilder.Entity("Admin", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Admins");
+                });
+
             modelBuilder.Entity("Gamebook.Server.Models.Dungeon", b =>
                 {
-                    b.Property<int>("IdDungeon")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
@@ -30,128 +57,99 @@ namespace Gamebook.Server.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("DmgCondition")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("IdImage")
+                    b.Property<string>("DmgCondition")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("MaxRooms")
+                    b.Property<int>("ImageId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("Reward")
+                    b.Property<int>("RewardMoney")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("IdDungeon");
+                    b.HasKey("Id");
 
-                    b.HasIndex("IdImage");
+                    b.HasIndex("ImageId");
 
                     b.ToTable("Dungeons");
                 });
 
-            modelBuilder.Entity("Gamebook.Server.Models.Hall", b =>
+            modelBuilder.Entity("Gamebook.Server.Models.Equipment", b =>
                 {
-                    b.Property<int>("IdHall")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Description")
+                    b.Property<int>("ImageId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("LockedBy")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("IdImage")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("IdRoom")
+                    b.Property<int?>("Price")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Type")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.HasKey("IdHall");
+                    b.HasKey("Id");
 
-                    b.HasIndex("IdImage");
+                    b.HasIndex("ImageId");
 
-                    b.HasIndex("IdRoom");
+                    b.ToTable("Equipments");
+                });
+
+            modelBuilder.Entity("Gamebook.Server.Models.Hall", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("ImageId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ImageId");
 
                     b.ToTable("Halls");
                 });
 
             modelBuilder.Entity("Gamebook.Server.Models.Image", b =>
                 {
-                    b.Property<string>("IdImage")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("ContentType")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<byte[]>("Data")
+                    b.Property<string>("Data")
                         .IsRequired()
-                        .HasColumnType("BLOB");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.HasKey("IdImage");
+                    b.HasKey("Id");
 
                     b.ToTable("Images");
                 });
 
-            modelBuilder.Entity("Gamebook.Server.Models.Item", b =>
-                {
-                    b.Property<int>("IdItem")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("BasePrice")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("BaseStat")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("IdImage")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("IdRoom")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("SpecEffect")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("SpecEffectStat")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("IdItem");
-
-                    b.HasIndex("IdImage");
-
-                    b.HasIndex("IdRoom");
-
-                    b.ToTable("Items");
-                });
-
             modelBuilder.Entity("Gamebook.Server.Models.Monster", b =>
                 {
-                    b.Property<int>("IdMonster")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
@@ -161,94 +159,61 @@ namespace Gamebook.Server.Migrations
                     b.Property<int>("Hitpoints")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("IdImage")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("IdRoom")
+                    b.Property<int>("ImageId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.HasKey("IdMonster");
+                    b.Property<int?>("RoomId")
+                        .HasColumnType("INTEGER");
 
-                    b.HasIndex("IdImage");
+                    b.HasKey("Id");
 
-                    b.HasIndex("IdRoom")
-                        .IsUnique();
+                    b.HasIndex("ImageId");
+
+                    b.HasIndex("RoomId");
 
                     b.ToTable("Monsters");
                 });
 
-            modelBuilder.Entity("Gamebook.Server.Models.PlayerItem", b =>
-                {
-                    b.Property<int>("IdPlayerItem")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("BasePrice")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("BaseStat")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("IdImage")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("SpecEffect")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("SpecEffectStat")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("IdPlayerItem");
-
-                    b.HasIndex("IdImage");
-
-                    b.ToTable("PlayerItems");
-                });
-
             modelBuilder.Entity("Gamebook.Server.Models.Quest", b =>
                 {
-                    b.Property<int>("IdQuest")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("Condition")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("IdDungeon")
+                    b.Property<int>("ImageId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("IdImage")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("QuestCondition")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
+                    b.Property<int?>("RewardItemId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<string>("QuestParametr")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
+                    b.HasKey("Id");
 
-                    b.HasKey("IdQuest");
+                    b.HasIndex("ImageId");
 
-                    b.HasIndex("IdDungeon");
-
-                    b.HasIndex("IdImage");
+                    b.HasIndex("RewardItemId");
 
                     b.ToTable("Quests");
                 });
 
             modelBuilder.Entity("Gamebook.Server.Models.Room", b =>
                 {
-                    b.Property<int>("IdRoom")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
@@ -256,38 +221,71 @@ namespace Gamebook.Server.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("IdDungeon")
+                    b.Property<int>("DungeonId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("IdHall")
+                    b.Property<int>("HallId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("IdImage")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
+                    b.Property<int>("ImageId")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Type")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.HasKey("IdRoom");
+                    b.HasKey("Id");
 
-                    b.HasIndex("IdDungeon");
+                    b.HasIndex("DungeonId");
 
-                    b.HasIndex("IdImage");
+                    b.HasIndex("HallId")
+                        .IsUnique();
+
+                    b.HasIndex("ImageId");
 
                     b.ToTable("Rooms");
                 });
 
-            modelBuilder.Entity("Gamebook.Server.Models.Town", b =>
+            modelBuilder.Entity("Gamebook.Server.Models.RoomItem", b =>
                 {
-                    b.Property<int>("IdTown")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("IdImage")
+                    b.Property<int>("ImageId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("LockedBy")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("RoomId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ImageId");
+
+                    b.HasIndex("RoomId");
+
+                    b.ToTable("RoomItems");
+                });
+
+            modelBuilder.Entity("Gamebook.Server.Models.Town", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("ImageId")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -296,9 +294,9 @@ namespace Gamebook.Server.Migrations
                     b.Property<int?>("ParentTownId")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("IdTown");
+                    b.HasKey("Id");
 
-                    b.HasIndex("IdImage");
+                    b.HasIndex("ImageId");
 
                     b.HasIndex("ParentTownId");
 
@@ -309,7 +307,18 @@ namespace Gamebook.Server.Migrations
                 {
                     b.HasOne("Gamebook.Server.Models.Image", "Image")
                         .WithMany()
-                        .HasForeignKey("IdImage")
+                        .HasForeignKey("ImageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Image");
+                });
+
+            modelBuilder.Entity("Gamebook.Server.Models.Equipment", b =>
+                {
+                    b.HasOne("Gamebook.Server.Models.Image", "Image")
+                        .WithMany()
+                        .HasForeignKey("ImageId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -320,51 +329,85 @@ namespace Gamebook.Server.Migrations
                 {
                     b.HasOne("Gamebook.Server.Models.Image", "Image")
                         .WithMany()
-                        .HasForeignKey("IdImage")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Gamebook.Server.Models.Room", "Room")
-                        .WithMany()
-                        .HasForeignKey("IdRoom")
+                        .HasForeignKey("ImageId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Image");
-
-                    b.Navigation("Room");
-                });
-
-            modelBuilder.Entity("Gamebook.Server.Models.Item", b =>
-                {
-                    b.HasOne("Gamebook.Server.Models.Image", "Image")
-                        .WithMany()
-                        .HasForeignKey("IdImage")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Gamebook.Server.Models.Room", "Room")
-                        .WithMany("Items")
-                        .HasForeignKey("IdRoom")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Image");
-
-                    b.Navigation("Room");
                 });
 
             modelBuilder.Entity("Gamebook.Server.Models.Monster", b =>
                 {
                     b.HasOne("Gamebook.Server.Models.Image", "Image")
                         .WithMany()
-                        .HasForeignKey("IdImage")
+                        .HasForeignKey("ImageId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Gamebook.Server.Models.Room", "Room")
-                        .WithOne("Monster")
-                        .HasForeignKey("Gamebook.Server.Models.Monster", "IdRoom")
+                        .WithMany()
+                        .HasForeignKey("RoomId");
+
+                    b.Navigation("Image");
+
+                    b.Navigation("Room");
+                });
+
+            modelBuilder.Entity("Gamebook.Server.Models.Quest", b =>
+                {
+                    b.HasOne("Gamebook.Server.Models.Image", "Image")
+                        .WithMany()
+                        .HasForeignKey("ImageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Gamebook.Server.Models.Equipment", "RewardItem")
+                        .WithMany()
+                        .HasForeignKey("RewardItemId");
+
+                    b.Navigation("Image");
+
+                    b.Navigation("RewardItem");
+                });
+
+            modelBuilder.Entity("Gamebook.Server.Models.Room", b =>
+                {
+                    b.HasOne("Gamebook.Server.Models.Dungeon", "Dungeon")
+                        .WithMany("Rooms")
+                        .HasForeignKey("DungeonId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Gamebook.Server.Models.Hall", "Hall")
+                        .WithOne("Room")
+                        .HasForeignKey("Gamebook.Server.Models.Room", "HallId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Gamebook.Server.Models.Image", "Image")
+                        .WithMany()
+                        .HasForeignKey("ImageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Dungeon");
+
+                    b.Navigation("Hall");
+
+                    b.Navigation("Image");
+                });
+
+            modelBuilder.Entity("Gamebook.Server.Models.RoomItem", b =>
+                {
+                    b.HasOne("Gamebook.Server.Models.Image", "Image")
+                        .WithMany()
+                        .HasForeignKey("ImageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Gamebook.Server.Models.Room", "Room")
+                        .WithMany()
+                        .HasForeignKey("RoomId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -373,60 +416,11 @@ namespace Gamebook.Server.Migrations
                     b.Navigation("Room");
                 });
 
-            modelBuilder.Entity("Gamebook.Server.Models.PlayerItem", b =>
-                {
-                    b.HasOne("Gamebook.Server.Models.Image", "Image")
-                        .WithMany()
-                        .HasForeignKey("IdImage")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Image");
-                });
-
-            modelBuilder.Entity("Gamebook.Server.Models.Quest", b =>
-                {
-                    b.HasOne("Gamebook.Server.Models.Dungeon", "Dungeon")
-                        .WithMany("Quests")
-                        .HasForeignKey("IdDungeon")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Gamebook.Server.Models.Image", "Image")
-                        .WithMany()
-                        .HasForeignKey("IdImage")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Dungeon");
-
-                    b.Navigation("Image");
-                });
-
-            modelBuilder.Entity("Gamebook.Server.Models.Room", b =>
-                {
-                    b.HasOne("Gamebook.Server.Models.Dungeon", "Dungeon")
-                        .WithMany("Rooms")
-                        .HasForeignKey("IdDungeon")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Gamebook.Server.Models.Image", "Image")
-                        .WithMany()
-                        .HasForeignKey("IdImage")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Dungeon");
-
-                    b.Navigation("Image");
-                });
-
             modelBuilder.Entity("Gamebook.Server.Models.Town", b =>
                 {
                     b.HasOne("Gamebook.Server.Models.Image", "Image")
                         .WithMany()
-                        .HasForeignKey("IdImage")
+                        .HasForeignKey("ImageId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -441,16 +435,12 @@ namespace Gamebook.Server.Migrations
 
             modelBuilder.Entity("Gamebook.Server.Models.Dungeon", b =>
                 {
-                    b.Navigation("Quests");
-
                     b.Navigation("Rooms");
                 });
 
-            modelBuilder.Entity("Gamebook.Server.Models.Room", b =>
+            modelBuilder.Entity("Gamebook.Server.Models.Hall", b =>
                 {
-                    b.Navigation("Items");
-
-                    b.Navigation("Monster")
+                    b.Navigation("Room")
                         .IsRequired();
                 });
 

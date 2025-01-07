@@ -7,20 +7,17 @@ namespace Gamebook.Server.Models
     public class Town
     {
         [Key]
-        public int IdTown { get; set; }
-        public required string Name { get; set; }
-        [ForeignKey("Image")]
-        public string IdImage { get; set; }
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public int ImageId { get; set; }
+        [ForeignKey("ImageId")]
+        public Image Image { get; set; }
 
-        public Image Image { get; set; } // Navigační vlastnost na Image (nepovinná)
-
-        // Cizí klíč pro self-referencing
-        public int? ParentTownId { get; set; } // Může být NULL, pokud město nemá nadřazené město
-
+        public int? ParentTownId { get; set; }
         [ForeignKey("ParentTownId")]
-        public Town? ParentTown { get; set; } // Navigační vlastnost pro nadřazené město
+        public Town ParentTown { get; set; }
 
-        public ICollection<Town> ChildTowns { get; set; } = new List<Town>(); // Navigační vlastnost pro podřízená města
+        public ICollection<Town> ChildTowns { get; set; }
 
     }
 }

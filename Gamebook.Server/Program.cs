@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Gamebook.Server.Data;
-using Gamebook.Server.Controllers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,7 +22,7 @@ builder.Services.AddCors(options =>
     options.AddDefaultPolicy(policy =>
     {
         // Ujisti se, že používáš správnou URL pro tvoji React aplikaci (port 63851)
-        policy.WithOrigins("https://localhost:63851")  // URL React aplikace
+        policy.WithOrigins("https://localhost:63852")  // URL React aplikace
               .AllowAnyHeader()
               .AllowAnyMethod();
     });
@@ -51,18 +50,6 @@ app.UseAuthorization(); // Použití autorizace
 
 // Mapování kontrolerů API
 app.MapControllers();
-
-// Mapování všech endpointů
-app.MapDungeonEndpoints();
-app.MapItemEndpoints();
-app.MapMonsterEndpoints();
-app.MapPlayerItemEndpoints();
-app.MapQuestEndpoints();
-app.MapRoomEndpoints();
-app.MapTownEndpoints();
-app.MapHallEndpoints();
-app.MapImageEndpoints();
-app.MapFullDungeonEndpoints();
 
 // Pokud žádná cesta neodpovídá, bude směrováno na index.html (pro React SPA)
 app.MapFallbackToFile("/index.html");
