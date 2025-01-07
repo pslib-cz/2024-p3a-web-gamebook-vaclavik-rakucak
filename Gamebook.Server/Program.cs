@@ -2,8 +2,16 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Gamebook.Server.Data;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.DependencyInjection;
+using Gamebook.Server.Helpers; // Přidáno pro JwtKeyGenerator
+using System;
 
 var builder = WebApplication.CreateBuilder(args);
+var configuration = builder.Configuration; // Přidej konfiguraci
 
 // Přidání služeb do kontejneru.
 builder.Services.AddControllers();
@@ -13,8 +21,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // Připojení k databázi (SQLite)
-builder.Services.AddDbContext<GamebookDbContext>(options =>
-    options.UseSqlite("Data Source=gamebook.db"));
+builder.Services.AddDbContext<GamebookDbContext>(options =>  // Zmena DbContextu
+    options.UseSqlite(configuration.GetConnectionString("DefaultConnection")));  // Použití connection stringu z konfigurace
 
 // Povolení CORS pro požadavky z React aplikace
 builder.Services.AddCors(options =>
@@ -27,6 +35,24 @@ builder.Services.AddCors(options =>
               .AllowAnyMethod();
     });
 });
+
+// Konfigurace JWT autentizace
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = configuration["JwtSettings:Issuer"],
+            ValidAudience = configuration["JwtSettings:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JwtSettings:Key"])) //Načtení klíče z konfigurace
+        };
+    });
+builder.Services.AddAuthorization();
+builder.Services.AddHostedService<DatabaseMigrationService>(); // Registrace DatabaseMigrationService
 
 var app = builder.Build();
 
@@ -46,6 +72,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection(); // Povolení HTTPS
 
+app.UseAuthentication();  // Povolení autentizace
+
 app.UseAuthorization(); // Použití autorizace
 
 // Mapování kontrolerů API
@@ -56,3 +84,26 @@ app.MapFallbackToFile("/index.html");
 
 // Spuštění aplikace
 app.Run();
+
+
+public class DatabaseMigrationService : IHostedService
+{
+    private readonly IServiceProvider _serviceProvider;
+
+    public DatabaseMigrationService(IServiceProvider serviceProvider)
+    {
+        _serviceProvider = serviceProvider;
+    }
+
+    public async Task StartAsync(CancellationToken cancellationToken)
+    {
+        using (var scope = _serviceProvider.CreateScope())
+        {
+            var db = scope.ServiceProvider.GetRequiredService<GamebookDbContext>();
+            await db.Database.MigrateAsync(cancellationToken);
+
+        }
+    }
+
+    public Task StopAsync(CancellationToken cancellationToken) => Task.CompletedTask;
+}

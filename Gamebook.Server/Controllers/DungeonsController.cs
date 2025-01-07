@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Gamebook.Server.Data;
 using Gamebook.Server.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Gamebook.Server.Controllers
 {
@@ -75,6 +76,7 @@ namespace Gamebook.Server.Controllers
 
         // POST: api/Dungeons
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize(Roles = "admin")]
         [HttpPost]
         public async Task<ActionResult<Dungeon>> PostDungeon(Dungeon dungeon)
         {
