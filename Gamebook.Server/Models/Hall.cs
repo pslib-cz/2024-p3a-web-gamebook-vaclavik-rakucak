@@ -8,11 +8,10 @@ namespace Gamebook.Server.Models
     {
         [Key]
         public int Id { get; set; }
-        public int ImageId { get; set; }
+        public int? ImageId { get; set; }
         [ForeignKey("ImageId")]
-        public Image Image { get; set; }
+        public Image? Image { get; set; }
 
-        public Room Room { get; set; }
     }
 
 }

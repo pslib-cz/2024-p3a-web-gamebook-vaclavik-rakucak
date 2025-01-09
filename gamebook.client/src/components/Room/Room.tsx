@@ -9,23 +9,24 @@ const Room: React.FC = () => {
 
     // Načítání dat z API při prvním spuštění
     useEffect(() => {
-        const loadRoomData = async () => {
-            try {
-                const response = await fetch('https://localhost:7190/api/Rooms/dungeon/1'); // Přidej ID Dungeon, pro který chceš data
-                if (!response.ok) {
-                    throw new Error('Chyba při načítání dat ze serveru');
-                }
-                const data: RoomGraphDto[] = await response.json();
-                setCurrentRoom(data[0]); // Nastav první místnost
-            } catch (err) {
-                setError(err instanceof Error ? err.message : 'Neznámá chyba');
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        loadRoomData();
-    }, []);
+      const loadRoomData = async () => {
+          try {
+              // Upravená URL, aby odpovídala kontroleru
+              const response = await fetch('https://localhost:7190/api/FullDungeon/dungeon/1'); 
+              if (!response.ok) {
+                  throw new Error('Chyba při načítání dat ze serveru');
+              }
+              const data: RoomGraphDto[] = await response.json();
+              setCurrentRoom(data[0]); // Nastav první místnost
+          } catch (err) {
+              setError(err instanceof Error ? err.message : 'Neznámá chyba');
+          } finally {
+              setLoading(false);
+          }
+      };
+  
+      loadRoomData();
+  }, []);
 
     // Funkce pro přechod do další místnosti
    const goToNextRoom = () => {

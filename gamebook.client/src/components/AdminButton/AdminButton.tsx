@@ -1,8 +1,9 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import styles from '../StartButton/StartButton.module.css';
+import styles from '/AdminButton.module.css';
 
-const StartButton: React.FC = () => {
+
+const AdminButton: React.FC = () => {
     const navigate = useNavigate();
 
     const handleStart = () => {
@@ -16,4 +17,4 @@ const StartButton: React.FC = () => {
     );
 };
 
-export default StartButton;
+export default AdminButton;

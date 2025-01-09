@@ -3,6 +3,7 @@ using System;
 using Gamebook.Server.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Gamebook.Server.Migrations
 {
     [DbContext(typeof(GamebookDbContext))]
-    partial class GamebookDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250109094003_hall-change")]
+    partial class hallchange
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.11");
@@ -368,7 +371,7 @@ namespace Gamebook.Server.Migrations
             modelBuilder.Entity("Gamebook.Server.Models.Room", b =>
                 {
                     b.HasOne("Gamebook.Server.Models.Dungeon", "Dungeon")
-                        .WithMany()
+                        .WithMany("Rooms")
                         .HasForeignKey("DungeonId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -424,6 +427,11 @@ namespace Gamebook.Server.Migrations
                     b.Navigation("Image");
 
                     b.Navigation("ParentTown");
+                });
+
+            modelBuilder.Entity("Gamebook.Server.Models.Dungeon", b =>
+                {
+                    b.Navigation("Rooms");
                 });
 
             modelBuilder.Entity("Gamebook.Server.Models.Town", b =>
