@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import MenuPage from './pages/MenuPage/MenuPage';
 import SetNamePage from './pages/SetNamePage/SetNamePage';
-import Room from './components/Room/Room';
+import Room from './pages/RoomPage/Room';
 import Login from './components/Admin/Login';
 import AdminPanel from './components/Admin/AdminPanel';
 

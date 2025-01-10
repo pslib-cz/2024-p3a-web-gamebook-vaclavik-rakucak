@@ -14,95 +14,60 @@ namespace Gamebook.Server.Controllers
     [ApiController]
     public class ImagesController : ControllerBase
     {
-        private readonly GamebookDbContext _context;
 
-        public ImagesController(GamebookDbContext context)
+        private readonly GamebookDbContext _context; // Doplň DbContext
+
+        public ImagesController(GamebookDbContext context) // Doplň DbContext
         {
             _context = context;
         }
 
-        // GET: api/Images
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Image>>> GetImages()
+        [HttpPost("upload")]
+        public async Task<IActionResult> UploadImage(IFormFile image, string name)
         {
-            return await _context.Images.ToListAsync();
-        }
-
-        // GET: api/Images/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Image>> GetImage(int id)
-        {
-            var image = await _context.Images.FindAsync(id);
-
-            if (image == null)
+            if (image == null || image.Length == 0)
             {
-                return NotFound();
+                return BadRequest("No image file provided.");
             }
 
-            return image;
-        }
-
-        // PUT: api/Images/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutImage(int id, Image image)
-        {
-            if (id != image.Id)
+            if (string.IsNullOrEmpty(name))
             {
-                return BadRequest();
+                return BadRequest("Name is required");
             }
 
-            _context.Entry(image).State = EntityState.Modified;
-
-            try
+            using (var memoryStream = new MemoryStream())
             {
+                await image.CopyToAsync(memoryStream);
+
+                var imageEntity = new Image
+                {
+                    Name = name,
+                    Data = memoryStream.ToArray(),
+                    ContentType = image.ContentType
+                };
+
+                _context.Images.Add(imageEntity);
                 await _context.SaveChangesAsync();
+
+                return Ok(new { imageEntity.Id }); // Vracíme ID nahraného obrázku
             }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ImageExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
         }
-
-        // POST: api/Images
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Image>> PostImage(Image image)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetImage(int id)
         {
-            _context.Images.Add(image);
-            await _context.SaveChangesAsync();
+            var imageEntity = await _context.Images.FindAsync(id);
 
-            return CreatedAtAction("GetImage", new { id = image.Id }, image);
-        }
-
-        // DELETE: api/Images/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteImage(int id)
-        {
-            var image = await _context.Images.FindAsync(id);
-            if (image == null)
+            if (imageEntity == null)
             {
                 return NotFound();
             }
 
-            _context.Images.Remove(image);
-            await _context.SaveChangesAsync();
+            // Způsob 1: Vrácení Base64 stringu
+            //string base64String = Convert.ToBase64String(imageEntity.Data);
+            //return Ok(new { base64 = base64String, contentType = imageEntity.ContentType, name = imageEntity.Name });
 
-            return NoContent();
-        }
-
-        private bool ImageExists(int id)
-        {
-            return _context.Images.Any(e => e.Id == id);
+            // Způsob 2: Vrácení souboru přímo (pro zobrazení v img tagu)
+            return File(imageEntity.Data, imageEntity.ContentType); // tohle je pro zobrazeni v html, ne posilani jako json
         }
     }
 }
