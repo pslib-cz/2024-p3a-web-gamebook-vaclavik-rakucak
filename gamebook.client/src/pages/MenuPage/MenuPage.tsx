@@ -1,4 +1,3 @@
-// src/pages/MenuPage/MenuPage.tsx
 import React, { useState, useEffect } from 'react';
 import Button from '../../components/Button/Button';
 import styles from './MenuPage.module.css';

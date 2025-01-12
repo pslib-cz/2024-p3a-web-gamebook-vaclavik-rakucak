@@ -1,4 +1,3 @@
-// src/pages/RoomPage/RoomPage.tsx
 import React, { useEffect } from 'react';
 import RoomViewer from '../../components/RoomViewer/RoomViewer';
 import { useGameContext } from '../../contexts/GameContext';
@@ -9,12 +8,12 @@ import styles from './RoomPage.module.css';
 const RoomPage: React.FC = () => {
   const { setChain, setCurrentChainIndex } = useGameContext();
   const dungeonId = 2; // Změňte dle potřeby, později můžeme nahradit parametrem z URL
-  const { data: chainData, loading, error } = useFetch<ChainItemDto[]>(`https://localhost:7190/DungeonChain/${dungeonId}`); // Upravte URL podle vaší API
+  const { data: chainData, loading, error } = useFetch<ChainItemDto[]>(`https://localhost:7190/DungeonChain/${dungeonId}`);
 
   useEffect(() => {
     if (chainData) {
       setChain(chainData);
-      setCurrentChainIndex(0); // Začneme od prvního prvku
+      setCurrentChainIndex(0);
     }
   }, [chainData, setChain, setCurrentChainIndex]);
 

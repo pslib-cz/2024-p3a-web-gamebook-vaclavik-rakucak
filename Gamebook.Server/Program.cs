@@ -29,7 +29,6 @@ builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
     {
-        // Ujisti se, že používáš správnou URL pro tvoji React aplikaci (port 63851)
         policy.WithOrigins("https://localhost:63851")  // URL React aplikace
               .AllowAnyHeader()
               .AllowAnyMethod();
