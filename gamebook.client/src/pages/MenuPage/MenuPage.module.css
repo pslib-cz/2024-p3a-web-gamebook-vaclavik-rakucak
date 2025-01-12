@@ -1,29 +1,27 @@
-.namePage {
-    width: 100vw;
-    height: 100vh;
-    background: url('../assets/image.png') no-repeat center center;
-    background-size: cover;
+.menuPage {
+    font-family: "Linden Hill", serif;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    color: white;
-    font-family: 'Arial', sans-serif;
-    position: relative;
-}
-
-.title {
+    justify-content: end;
+    min-height: 100vh;
+    width: 100vw;
+    
+  }
+  
+  .title {
     position: absolute;
-    top: 20px;
-    left: 20px;
-    font-size: 36px;
-    font-weight: bold;
-}
+    top: 0;
+    left: 0;
+    font-size: 8rem;
+    margin: 2rem;
+    margin-top: 4rem;
+  }
+  
+  .buttonContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 4rem;
+  }
 
-
-.buttonContainer {
-    position: absolute;
-    bottom: 80px; 
-    left: 50%; 
-    transform: translateX(-50%); 
-}

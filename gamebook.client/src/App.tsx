@@ -1,10 +1,8 @@
+// src/App.tsx
 import React, { useState } from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import MenuPage from './pages/MenuPage/MenuPage';
-import SetNamePage from './pages/SetNamePage/SetNamePage';
-import Room from './pages/RoomPage/Room';
-import Login from './components/Admin/Login';
-import AdminPanel from './components/Admin/AdminPanel';
+import { BrowserRouter } from 'react-router-dom';
+import AppRoutes from './routes/routes';
+import { GameProvider } from './contexts/GameContext';
 
 const App: React.FC = () => {
   const [token, setToken] = useState<string>('');
@@ -17,25 +15,9 @@ const App: React.FC = () => {
 
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<MenuPage />} />
-        <Route path="/set-name" element={<SetNamePage />} />
-        <Route path="/Room" element={<Room />} />
-        <Route 
-          path="/Login" 
-          element={<Login onLogin={handleLogin} />} 
-        />
-        <Route
-          path="/AdminPanel"
-          element={
-            token && role === 'admin' ? (
-              <AdminPanel token={token} />
-            ) : (
-              <Navigate to="/Login" replace />
-            )
-          }
-        />
-      </Routes>
+      <GameProvider>
+        <AppRoutes token={token} role={role} onLogin={handleLogin} />
+      </GameProvider>
     </BrowserRouter>
   );
 };

@@ -1,17 +1,38 @@
-import React from 'react';
+// src/pages/MenuPage/MenuPage.tsx
+import React, { useState, useEffect } from 'react';
 import Button from '../../components/Button/Button';
 import styles from './MenuPage.module.css';
+import { fetchImage } from '../../api/imagesApi'; // Importujte fetchImage
 
 const MenuPage: React.FC = () => {
-    return (
-        <div className={styles.menuPage}>
-            <h1 className={styles.title}>Dungeon'borne</h1>
-            <div className={styles.buttonContainer}>
-                <Button route='/login' label='Admin Login' />
-                <Button route='/Room' label='Start Game'/>
-            </div>
-        </div>
-    );
+  const [backgroundImageUrl, setBackgroundImageUrl] = useState<string>('');
+
+  useEffect(() => {
+    const loadImage = async () => {
+      try {
+        const imageId = 1;
+        const url = await fetchImage(imageId);
+        setBackgroundImageUrl(url);
+      } catch (error) {
+        console.error('Error loading background image:', error);
+      }
+    };
+
+    loadImage();
+  }, []);
+
+  return (
+    <div
+      className={styles.menuPage}
+      style={{ backgroundImage: backgroundImageUrl ? `url(${backgroundImageUrl})` : 'none', backgroundSize: 'cover', backgroundPosition: 'center' }}
+    >
+      <h1 className={styles.title}>Dungeonborne</h1>
+      <div className={styles.buttonContainer}>
+        <Button route="/Room" label="Start Game" />
+        <Button route="/login" label="Admin Login" />
+      </div>
+    </div>
+  );
 };
 
 export default MenuPage;

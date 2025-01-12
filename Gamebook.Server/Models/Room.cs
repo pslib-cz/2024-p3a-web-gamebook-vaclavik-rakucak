@@ -14,12 +14,10 @@ namespace Gamebook.Server.Models
         [ForeignKey("DungeonId")]
         public Dungeon Dungeon { get; set; }
 
-        public int HallId { get; set; }
-        [ForeignKey("HallId")]
-        public Hall Hall { get; set; }
         public int? ImageId { get; set; }
         [ForeignKey("ImageId")]
         public Image? Image { get; set; }
+
     }
 
 }

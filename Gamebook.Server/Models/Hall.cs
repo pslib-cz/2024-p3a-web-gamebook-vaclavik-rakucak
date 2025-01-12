@@ -12,6 +12,15 @@ namespace Gamebook.Server.Models
         [ForeignKey("ImageId")]
         public Image? Image { get; set; }
 
+        // Přidáme vazbu na Room
+        public int RoomId { get; set; }
+        [ForeignKey("RoomId")]
+        public Room Room { get; set; }
+
+        // Přidáme vazbu na Dungeon, abychom mohli filtrovat Hally podle Dungeonu
+        public int DungeonId { get; set; }
+        [ForeignKey("DungeonId")]
+        public Dungeon Dungeon { get; set; }
     }
 
 }

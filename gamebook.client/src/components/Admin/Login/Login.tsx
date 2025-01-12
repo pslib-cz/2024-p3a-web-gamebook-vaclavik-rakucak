@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useNavigate } from 'react-router-dom';
+import styles from './Login.module.css';
+
 
 interface LoginProps {
     onLogin: (token: string, role: string) => void;
@@ -36,21 +38,23 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className={styles.form}>
         {error && <p style={{ color: 'red' }}>{error}</p>}
         <input
             type="text"
             placeholder="Username"
+            className={styles.input}
             value={username}
             onChange={(e) => setUsername(e.target.value)}
         />
         <input
             type="password"
             placeholder="Password"
+            className={styles.input}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
         />
-        <button type="submit">Login</button>
+        <button type="submit" className={styles.button}>Login</button>
         </form>
     );
 };

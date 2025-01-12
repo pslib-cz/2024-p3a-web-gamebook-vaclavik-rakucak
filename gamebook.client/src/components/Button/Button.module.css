@@ -1,14 +1,14 @@
+@import '../../colors.css';
 .button {
-    padding: 10px 20px;
-    font-size: 18px;
+    font-size: 2rem;
+    font-family: "Linden Hill", serif;
+    color: var(--Biege);
+    background-color: var(--Brown);
+    border: 10px solid var(--Dark-Brown);
+    border-radius: 20px;
     cursor: pointer;
-    background-color: #541f1f;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
 }
 
 .button:hover {
-    background-color: #6a2727;
+    border: 10px solid var(--Biege);
 }

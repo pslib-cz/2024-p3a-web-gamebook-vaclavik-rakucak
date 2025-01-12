@@ -30,7 +30,7 @@ builder.Services.AddCors(options =>
     options.AddDefaultPolicy(policy =>
     {
         // Ujisti se, že používáš správnou URL pro tvoji React aplikaci (port 63851)
-        policy.WithOrigins("https://localhost:63852")  // URL React aplikace
+        policy.WithOrigins("https://localhost:63851")  // URL React aplikace
               .AllowAnyHeader()
               .AllowAnyMethod();
     });
@@ -55,6 +55,9 @@ builder.Services.AddAuthorization();
 builder.Services.AddHostedService<DatabaseMigrationService>(); // Registrace DatabaseMigrationService
 
 var app = builder.Build();
+
+// Pridani dat do databaze
+GamebookDbContext.SeedData(app.Services);
 
 // Povolení CORS middleware - musí být před 'UseAuthorization'
 app.UseCors();

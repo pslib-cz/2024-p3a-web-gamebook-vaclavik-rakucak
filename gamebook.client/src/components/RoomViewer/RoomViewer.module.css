@@ -1,0 +1,86 @@
+.container {
+  padding: 20px;
+  text-align: center;
+}
+
+.roomContent,
+.hallContent,
+.forkContent {
+  margin-bottom: 20px;
+}
+
+.roomContent h3,
+.hallContent h2,
+.forkContent h2 {
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.roomContent p,
+.hallContent p {
+  color: #666;
+  margin-bottom: 15px;
+}
+
+.roomContent img,
+.hallContent img {
+  max-width: 100%;
+  height: auto;
+  margin-bottom: 15px;
+}
+
+.forkContent button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  margin: 5px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.forkContent button:hover {
+  background-color: #0056b3;
+}
+
+.navigation {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.navigation button {
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+.navigation button:disabled {
+    opacity: 0.5;
+    cursor: default;
+}
+
+.navigation button:hover:not(:disabled) {
+  background-color: #3e8e41;
+}
+
+.hallBackground {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+}

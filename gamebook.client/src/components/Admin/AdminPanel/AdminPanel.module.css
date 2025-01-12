@@ -1,0 +1,74 @@
+.adminPanel {
+    font-family: sans-serif;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: auto;
+  }
+  
+  .adminPanel h1 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .adminPanel h2 {
+    margin-top: 30px;
+    margin-bottom: 10px;
+  }
+  
+  .adminPanel ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .adminPanel li {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+  }
+  
+  .adminPanel input[type="text"],
+  .adminPanel input[type="number"] {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    margin-right: 5px;
+    margin-bottom: 5px; /* Přidáno pro odstup mezi inputy */
+  }
+  
+  .adminPanel button {
+    background-color: #4CAF50; /* Zelená */
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  
+  .adminPanel button:disabled {
+    background-color: #cccccc; /* Šedá */
+    cursor: default;
+  }
+  
+  .adminPanel li button {
+    margin-left: 10px; /* Mezera mezi tlačítky v li */
+  }
+  
+  .adminPanel img {
+    margin-top: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .adminPanel input[type="file"] {
+    margin-bottom: 10px;
+  }
