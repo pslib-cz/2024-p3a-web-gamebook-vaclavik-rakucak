@@ -23,7 +23,7 @@ const RoomViewer: React.FC = () => {
 
   useEffect(() => {
     const currentItem = chain ? chain[currentChainIndex] : null;
-    if (currentItem && currentItem.type === 'hall' && currentItem.data.imageId) {
+    if (currentItem && currentItem.type === 'hall' || currentItem?.type === 'room' && currentItem.data.imageId) {
       setBackgroundImageUrl(`https://localhost:7190/api/images/${currentItem.data.imageId}`);
     } else {
       setBackgroundImageUrl('');
@@ -38,13 +38,6 @@ const RoomViewer: React.FC = () => {
       <div className={styles.roomContent}>
         <h3>{room.type}</h3>
         <p>{room.description}</p>
-        {room.imageId && (
-          <img
-            src={`https://localhost:7190/api/images/${room.imageId}`}
-            alt={room.type}
-            className={styles.roomImage}
-          />
-        )}
       </div>
     );
   };
@@ -88,17 +81,17 @@ const RoomViewer: React.FC = () => {
   };
 
   if (!chain || chain.length === 0) {
-    return <div className={styles.container}>No chain data available.</div>;
+    return <div className={styles.ViewContainercontainer}>No chain data available.</div>;
   }
 
   const currentItem = chain[currentChainIndex];
 
   if (!currentItem) {
-    return <div className={styles.container}>Aktuální pozice nenalezena</div>;
+    return <div className={styles.Viewcontainer}>Aktuální pozice nenalezena</div>;
   }
 
   return (
-    <div className={styles.container}>
+    <div className={styles.ViewContainer}>
       {backgroundImageUrl && (
         <div
           className={styles.hallBackground}

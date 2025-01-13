@@ -1,37 +1,62 @@
-.container {
+.ViewContainer {
   display: flex;
   justify-content: space-between;
   flex-direction: column;
-  height: 100vh;
-  padding: 20px;
   text-align: center;
+  flex-wrap: wrap;
+  height: 100vh;
 }
 
-.roomContent,
-.hallContent,
-.forkContent {
-  margin-bottom: 20px;
+
+/*Hall*/
+.hallContent{
+  font-size: 2rem;
+  font-family: "Linden Hill", serif;
+  color: var(--Biege);
+  background-color: var(--Brown);
+  border: 10px solid var(--Dark-Brown);
+  border-radius: 20px;
+  margin: 1rem;
+  padding: 1rem;
+  width: fit-content;
+  height: fit-content;
+  align-self: center;
+}
+.hallContent, h2{
+  font-size: 2rem;
+  margin: 0.5rem;
+  padding: 0;
+}
+/*Room*/
+
+.roomContent{
+  font-size: 2rem;
+  font-family: "Linden Hill", serif;
+  color: var(--Biege);
+  background-color: var(--Brown);
+  border: 10px solid var(--Dark-Brown);
+  border-radius: 20px;
+  margin: 1rem;
+  padding: 1rem;
+  width: fit-content;
+  height: fit-content;
+  align-self: center;
 }
 
-.roomContent h3,
-.hallContent h2,
-.forkContent h2 {
-  color: #333;
-  margin-bottom: 10px;
-}
 
-.roomContent p,
-.hallContent p {
-  color: #666;
-  margin-bottom: 15px;
-}
 
+
+
+
+
+/*Room a Hall*/
 .roomContent img,
 .hallContent img {
   max-width: 100%;
   height: auto;
   margin-bottom: 15px;
 }
+/*fork*/
 
 .forkContent button {
   background-color: #007bff;
@@ -47,6 +72,9 @@
 .forkContent button:hover {
   background-color: #0056b3;
 }
+
+
+
 
 .navigation {
   display: flex;

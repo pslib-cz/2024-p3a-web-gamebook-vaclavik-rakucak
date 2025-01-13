@@ -6,6 +6,9 @@
   border: 10px solid var(--Dark-Brown);
   border-radius: 20px;
   cursor: pointer;
+  margin: 0.5rem;
+  padding: 0.5rem;
+  width: 8em;
 }
 
 .button:disabled {
