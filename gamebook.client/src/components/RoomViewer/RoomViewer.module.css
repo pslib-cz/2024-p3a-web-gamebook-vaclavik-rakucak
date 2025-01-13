@@ -1,4 +1,8 @@
 .container {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  height: 100vh;
   padding: 20px;
   text-align: center;
 }
@@ -48,29 +52,6 @@
   display: flex;
   justify-content: space-between;
   margin-top: 20px;
-}
-
-.navigation button {
-  background-color: #4CAF50; /* Green */
-  border: none;
-  color: white;
-  padding: 15px 32px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 4px 2px;
-  cursor: pointer;
-  border-radius: 8px;
-}
-
-.navigation button:disabled {
-    opacity: 0.5;
-    cursor: default;
-}
-
-.navigation button:hover:not(:disabled) {
-  background-color: #3e8e41;
 }
 
 .hallBackground {

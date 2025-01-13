@@ -28,7 +28,7 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
         if (response.ok) {
             const data: { token: string; role: string } = await response.json();
             onLogin(data.token, data.role);
-            navigate('/AdminPanel'); // Redirect to AdminPanel on successful login
+            navigate('/AdminPanel');
         } else {
             setError('Špatné jméno nebo heslo');
         }

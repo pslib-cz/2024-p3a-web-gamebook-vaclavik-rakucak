@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Button from '../../components/Button/Button';
+import Button from '../../components/Buttons/routeButtons/routeButton.tsx';
 import styles from './MenuPage.module.css';
 import { fetchImage } from '../../api/imagesApi'; // Importujte fetchImage
 

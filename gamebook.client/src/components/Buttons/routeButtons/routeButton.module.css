@@ -1,4 +1,4 @@
-@import '../../colors.css';
+@import '/src/colors.css';
 .button {
     font-size: 2rem;
     font-family: "Linden Hill", serif;

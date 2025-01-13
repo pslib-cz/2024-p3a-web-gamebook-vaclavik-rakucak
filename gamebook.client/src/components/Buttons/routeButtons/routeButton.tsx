@@ -1,11 +1,12 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import styles from './Button.module.css';
+import styles from './routeButton.module.css';
 
 type ButtonProps = {
     route: string;
     label: string;
 }
+
 
 const Button: React.FC<ButtonProps> = ({route, label}) => {
     const navigate = useNavigate();

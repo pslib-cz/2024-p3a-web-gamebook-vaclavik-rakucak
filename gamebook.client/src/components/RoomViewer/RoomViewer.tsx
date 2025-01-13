@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useGameContext } from '../../contexts/GameContext';
 import {RoomDto, HallDto, ForkDto } from '../../types/RoomDto';
 import styles from './RoomViewer.module.css';
+import Button from '../Buttons/Button/Button.tsx';
 
 const RoomViewer: React.FC = () => {
   const { chain, currentChainIndex, setCurrentChainIndex } = useGameContext();
@@ -111,20 +112,8 @@ const RoomViewer: React.FC = () => {
       {currentItem.type === 'fork' && renderForkContent(currentItem)}
 
       <div className={styles.navigation}>
-        <button
-          onClick={handlePrevious}
-          disabled={currentChainIndex === 0}
-          className={styles.navButton}
-        >
-          Previous
-        </button>
-        <button
-          onClick={handleNext}
-          disabled={!chain || currentChainIndex === chain.length - 1}
-          className={styles.navButton}
-        >
-          Next
-        </button>
+        <Button onClick={handlePrevious} disabled={currentChainIndex === 0}>Previous</Button>
+        <Button onClick={handleNext} disabled={currentChainIndex === chain.length - 1}>Next</Button>
       </div>
     </div>
   );
