@@ -1,0 +1,59 @@
+.namePage {
+    width: 100vw;
+    height: 100vh;
+    background: url('../assets/image.png') no-repeat center center;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-family: 'Arial', sans-serif;
+    position: relative;
+}
+
+.title {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    font-size: 36px;
+    font-weight: bold;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    height: 100vh;
+  }
+  
+  .title {
+    margin-bottom: 20px;
+  }
+  
+  .mapButtons {
+      display: flex;
+      flex-direction: row; /* Arrange buttons in a row */
+      flex-wrap: wrap;   /* Allow buttons to wrap to the next line on smaller screens */
+      justify-content: center; /* Center buttons horizontally */
+      gap: 20px;          /* Add some spacing between buttons */
+      width: 80%; /* Set width for the button container */
+      max-width: 800px; /* Set maximum width for the button container */
+  }
+  
+  
+  .mapButton {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+  }
+  
+  .mapButton:hover {
+      background-color: #2980b9;
+  }

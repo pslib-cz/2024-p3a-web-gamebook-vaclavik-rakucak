@@ -4,10 +4,14 @@ import { useGameContext } from '../../contexts/GameContext';
 import useFetch from '../../hooks/useFetch';
 import { ChainItemDto } from '../../types/RoomDto';
 import styles from './RoomPage.module.css';
+import { useParams } from 'react-router-dom';
 
 const RoomPage: React.FC = () => {
   const { setChain, setCurrentChainIndex } = useGameContext();
-  const dungeonId = 2; // Změňte dle potřeby, později můžeme nahradit parametrem z URL
+  const { roomId } = useParams<{ roomId: string }>(); // Použijeme useParams pro získání roomId z URL
+  const dungeonId = roomId ? parseInt(roomId, 10) : 2; // Získání dungeonId a default hodnota
+
+
   const { data: chainData, loading, error } = useFetch<ChainItemDto[]>(`https://localhost:7190/DungeonChain/${dungeonId}`);
 
   useEffect(() => {
