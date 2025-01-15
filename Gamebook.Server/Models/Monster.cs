@@ -11,9 +11,6 @@ namespace Gamebook.Server.Models
         public string Name { get; set; }
         public int Hitpoints { get; set; }
         public int Damage { get; set; }
-        public int? RoomId { get; set; }
-        [ForeignKey("RoomId")]
-        public Room Room { get; set; }
         public int ImageId { get; set; }
         [ForeignKey("ImageId")]
         public Image Image { get; set; }

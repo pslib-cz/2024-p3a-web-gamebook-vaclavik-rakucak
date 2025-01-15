@@ -38,3 +38,13 @@ src/
 ├── App.tsx                  # Hlavní komponenta (upravená)
 ├── main.tsx                 # Vstupní bod aplikace
 └── vite-env.d.ts            # Typy pro Vite
+
+
+
+
+
+// Kontrola jestli data existuji
+if (context.Dungeons.Any())
+{
+    return;
+}

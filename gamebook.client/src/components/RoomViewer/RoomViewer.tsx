@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useGameContext } from '../../contexts/GameContext';
 import {RoomDto, HallDto, ForkDto } from '../../types/RoomDto';
 import styles from './RoomViewer.module.css';
-import Button from '../Buttons/Button/Button.tsx';
+import Button from '../Buttons/ButtonLarge/ButtonLarge.tsx';
 
 const RoomViewer: React.FC = () => {
   const { chain, currentChainIndex, setCurrentChainIndex } = useGameContext();

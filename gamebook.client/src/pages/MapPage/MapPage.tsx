@@ -3,13 +3,14 @@ import React from 'react';
 import styles from './MapPage.module.css';
 import { useNavigate } from 'react-router-dom';
 import { fetchImage } from '../../api/imagesApi';
+import Button from '../../components/Buttons/ButtonSmall/ButtonSmall.tsx';
 
 type MapButtonProps = {
   roomId: number;
   label: string;
 }
 
-const MapButton: React.FC<MapButtonProps> = ({ roomId, label }) => {
+const MapButton: React.FC<MapButtonProps> = ({ roomId, label}) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
@@ -17,10 +18,10 @@ const MapButton: React.FC<MapButtonProps> = ({ roomId, label }) => {
   };
 
   return (
-    <button className={styles.mapButton} onClick={handleClick}>
-      <img src="/public/dungeon-icon.webp" alt="dungeon icon" className={styles.mapButtonIcon}/>
-      {label}
-    </button>
+    <div className={styles.mapButton}>
+      <Button onClick={handleClick}>{label}</Button>
+      <img src="/public/dungeon-icon.webp" alt="dungeon icon" className={styles.mapButtonIcon} onClick={handleClick}/>
+    </div>
   );
 };
 
@@ -44,10 +45,10 @@ const MainMapPage: React.FC = () => {
     
     return (
         <div className={styles.container} style={{ backgroundImage: backgroundImageUrl ? `url(${backgroundImageUrl})` : 'none', backgroundSize: 'cover', backgroundPosition: 'center' }}>
-            <h1 className={styles.title}>Welcome to the Map Page</h1>
-            <div className={styles.mapButtons}>
-                <MapButton roomId={2} label="Dungeon 1"/>
-                <MapButton roomId={2} label="Dungeon 2" />
+            <h1 className={styles.title}>.</h1>
+            <div className={styles.mapButtonContainer}>
+                <MapButton roomId={2} label='Dungeon 1'/>
+                <MapButton roomId={2} label='Dungeon 2'/>
             </div>
         </div>
     );
