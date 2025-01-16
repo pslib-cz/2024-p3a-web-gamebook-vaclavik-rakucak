@@ -31,6 +31,13 @@ namespace Gamebook.Server.Data
             {
                 var context = scope.ServiceProvider.GetRequiredService<GamebookDbContext>();
 
+                var imageMap = new Image { Name = "Town Image", ContentType = "image/webp", Data = new byte[] { /* ... data obrázku ... */ } };
+                var imageTown = new Image { Name = "Town Image", ContentType = "image/webp", Data = new byte[] { /* ... data obrázku ... */ } };
+                var imageWood = new Image { Name = "Wood Image", ContentType = "image/webp", Data = new byte[] { /* ... data obrázku ... */ } };
+
+                context.Images.AddRange(imageMap, imageTown, imageWood);
+                context.SaveChanges();
+
             }
         }
     }

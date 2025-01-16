@@ -6,6 +6,9 @@ import RoomPage from '../pages/RoomPage/RoomPage';
 import Login from '../components/Admin/Login/Login';
 import AdminPanel from '../components/Admin/AdminPanel/AdminPanel';
 import MainMapPage from '../pages/MapPage/MapPage.tsx'
+import TownPage from '../pages/TownPage/TownPage';
+import TavernPage from '../pages/TavernPage/TavernPage';
+import ShopPage from '../pages/ShopPage/ShopPage';
 
 interface RoutesProps {
   token: string;
@@ -17,10 +20,13 @@ const AppRoutes: React.FC<RoutesProps> = ({ token, role, onLogin }) => {
   return (
     <Routes>
       <Route path="/" element={<MenuPage />} />
-      <Route path="/set-name" element={<SetNamePage />} />
-      <Route path="/map" element={<MainMapPage />} />
-      <Route path="/room/:roomId" element={<RoomPage />} />
-      <Route path="/login" element={<Login onLogin={onLogin} />} />
+      <Route path="/Set-name" element={<SetNamePage />} />
+      <Route path="/Map" element={<MainMapPage />} />
+      <Route path="/Dungeon/:roomId" element={<RoomPage />} />
+      <Route path="/Login" element={<Login onLogin={onLogin} />} />
+      <Route path='/Town' element={<TownPage />} />
+      <Route path='/Tavern' element={<TavernPage />} />
+      <Route path='/Blacksmith' element={<ShopPage />} />
       <Route
         path="/AdminPanel"
         element={

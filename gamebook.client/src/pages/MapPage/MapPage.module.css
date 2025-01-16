@@ -21,35 +21,74 @@
 }
 
 .container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-    height: 100vh;
-  }
-  
-  .title {
-    margin-bottom: 20px;
-  }
-  
-  .mapButtonConatiner {
-      display: flex;
-      flex-direction: row;
-      flex-wrap: wrap; 
-      justify-content: center;
-      gap: 20px;
-  }
-   
-  
-  .mapButton {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
+  height: 100vh;
+}
 
-  .mapButtonIcon{
-    cursor: pointer;
-  }
-  .mapButton:hover {
-  }
+.title {
+  margin-bottom: 20px;
+}
+
+.mapButtonContainer {
+  height: 100vh;
+}
+.mapButtonContainer div{
+  width: fit-content;
+  height: fit-content;
+}
+  
+.mapButton {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.mapButtonIcon{
+  cursor: pointer;
+}
+/*pozicovani*/
+.Dungeon1 {
+  position: absolute;
+  top: 48%;
+  left: 19%;
+  transform: translate(-50%, -50%);
+}
+.Dungeon2 {
+  position: absolute;
+  top: 18%;
+  left: 44%;
+  transform: translate(-50%, -50%);
+}
+.Dungeon3 {
+  position: absolute;
+  top: 24%;
+  left: 65%;
+  transform: translate(-50%, -50%);
+}
+.Dungeon4 {
+  position: absolute;
+  top: 45%;
+  left: 74%;
+  transform: translate(-50%, -50%);
+}
+.Dungeon5 {
+  position: absolute;
+  top: 78%;
+  left: 63%;
+  transform: translate(-50%, -50%);
+}
+.Town{
+  position: absolute;
+  top: 25%;
+  left: 53%;
+  transform: translate(-50%, -50%);
+}
+.Town2{
+  position: absolute;
+  top: 43%;
+  left: 49%;
+  transform: translate(-50%, -50%);
+  background-color: transparent;
+}
+
+

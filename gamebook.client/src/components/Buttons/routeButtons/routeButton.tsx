@@ -4,22 +4,30 @@ import styles from './routeButton.module.css';
 
 type ButtonProps = {
     route: string;
-    label: string;
+    label?: string;
+    nonvisible?: boolean;
 }
 
 
-const Button: React.FC<ButtonProps> = ({route, label}) => {
+const Button: React.FC<ButtonProps> = ({route, label, nonvisible}) => {
     const navigate = useNavigate();
 
     const handleClick = () => {
         navigate(route);
     };
 
-    return (
-        <button onClick={handleClick} className={styles.button}>
+    if (nonvisible) {
+        return (
+            <button onClick={handleClick} className={styles.buttonNonVisible}> {/*Pro pouziti na mape pro town*/}
+            </button>
+        );
+    }
+    else{
+        <button onClick={handleClick} className={styles.button}> 
             {label}
         </button>
-    );
+    }
+    
 };
 
 export default Button;

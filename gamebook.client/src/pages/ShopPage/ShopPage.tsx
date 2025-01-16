@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import Button from '../../components/Buttons/routeButtons/routeButton.tsx';
-import styles from './MenuPage.module.css';
 import { fetchImage } from '../../api/imagesApi';
+import styles from './ShopPage.module.css'
+import RouteButton from '../../components/Buttons/routeButtons/routeButton.tsx';
 
-const MenuPage: React.FC = () => {
+const ShopPage: React.FC = () => {
   const [backgroundImageUrl, setBackgroundImageUrl] = useState<string>('');
 
   useEffect(() => {
     const loadImage = async () => {
       try {
-        const imageId = 1;
+        const imageId = 26;
         const url = await fetchImage(imageId);
         setBackgroundImageUrl(url);
       } catch (error) {
@@ -21,17 +22,12 @@ const MenuPage: React.FC = () => {
   }, []);
 
   return (
-    <div
-      className={styles.menuPage}
-      style={{ backgroundImage: backgroundImageUrl ? `url(${backgroundImageUrl})` : 'none', backgroundSize: 'cover', backgroundPosition: 'center' }}
-    >
-      <h1 className={styles.title}>Dungeonborne</h1>
-      <div className={styles.buttonContainer}>
-        <Button route="/set-name" label="Start Game" />
-        <Button route="/login" label="Admin Login" />
-      </div>
+    <div className={styles.shopPage}
+        style={{ backgroundImage: backgroundImageUrl ? `url(${backgroundImageUrl})` : 'none', backgroundSize: 'cover', backgroundPosition: 'center' }}>
+        <h1>Blacksmith</h1>
+        <RouteButton route="/Town" label="Town"/>
     </div>
   );
 };
 
-export default MenuPage;
+export default ShopPage;
