@@ -24,7 +24,6 @@ const ShopPage: React.FC = () => {
   return (
     <div className={styles.shopPage}
         style={{ backgroundImage: backgroundImageUrl ? `url(${backgroundImageUrl})` : 'none', backgroundSize: 'cover', backgroundPosition: 'center' }}>
-        <h1>Blacksmith</h1>
         <RouteButton route="/Town" label="Town"/>
     </div>
   );

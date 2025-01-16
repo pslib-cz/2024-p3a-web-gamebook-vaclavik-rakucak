@@ -4,7 +4,7 @@ import styles from './MapPage.module.css';
 import { useNavigate } from 'react-router-dom';
 import { fetchImage } from '../../api/imagesApi';
 import Button from '../../components/Buttons/ButtonSmall/ButtonSmall.tsx';
-import RouteButton from '../../components/Buttons/routeButtons/routeButton.tsx';
+import RouteButton from '../../components/Buttons/routeButtonSmall/routeButton.tsx';
 
 type MapButtonProps = {
   roomId: number;
