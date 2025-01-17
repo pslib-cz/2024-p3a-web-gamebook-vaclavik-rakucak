@@ -20,7 +20,6 @@ const AppRoutes: React.FC<RoutesProps> = ({ token, role, onLogin }) => {
   return (
     <Routes>
       <Route path="/" element={<MenuPage />} />
-      <Route path="/Set-name" element={<SetNamePage />} />
       <Route path="/Map" element={<MainMapPage />} />
       <Route path="/Dungeon/:roomId" element={<RoomPage />} />
       <Route path="/Login" element={<Login onLogin={onLogin} />} />

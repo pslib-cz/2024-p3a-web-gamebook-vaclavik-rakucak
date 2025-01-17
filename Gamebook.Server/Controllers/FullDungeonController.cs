@@ -46,7 +46,7 @@ namespace Gamebook.Server.Controllers
 
             // Parametry pro chain
             int chainLength = 10;
-            bool allowFork = false;
+            bool allowFork = true;
 
             for (int i = 0; i < chainLength; i++)
             {

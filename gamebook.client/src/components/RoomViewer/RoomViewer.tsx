@@ -20,7 +20,7 @@ const RoomViewer: React.FC = () => {
     const [backgroundImageUrl, setBackgroundImageUrl] = useState<string>('');
     const [monster, setMonster] = useState<Monster | null>(null);
     const [isFighting, setIsFighting] = useState<boolean>(false);
-     const {data: fetchedMonster, error: monsterError, loading: monsterLoading } = useFetch<Monster>(monster ? `https://localhost:7190/api/monsters/${monster.id}` : null)
+    const {data: fetchedMonster, error: monsterError, loading: monsterLoading } = useFetch<Monster>(monster ? `https://localhost:7190/api/monsters/${monster.id}` : null)
 
     useEffect(() => {
         if(fetchedMonster)
@@ -37,14 +37,14 @@ const RoomViewer: React.FC = () => {
     }, [chain, currentChainIndex]);
 
 
-     const handleNext = () => {
+    const handleNext = () => {
         if (chain && currentChainIndex < chain.length - 1) {
             setCurrentChainIndex(currentChainIndex + 1);
              setIsFighting(false)
               setMonster(null)
          }
     };
-     const handlePrevious = () => {
+    const handlePrevious = () => {
        if (currentChainIndex > 0) {
            setCurrentChainIndex(currentChainIndex - 1);
            setIsFighting(false)
@@ -52,13 +52,13 @@ const RoomViewer: React.FC = () => {
        }
     };
 
-   const getRandomMonsterId = () => {
+    const getRandomMonsterId = () => {
        const min = 1; // Minimalní ID monstra
-       const max = 4; // Maximální ID monstra
+       const max = 1; // Maximální ID monstra
        return Math.floor(Math.random() * (max - min + 1)) + min;
     };
 
-   const handleFightStart = () => {
+    const handleFightStart = () => {
          const currentItem = chain ? chain[currentChainIndex] : null;
         if (currentItem && currentItem.type === 'room') {
             setIsFighting(true);
@@ -76,29 +76,38 @@ const RoomViewer: React.FC = () => {
         if (!room) {
             return <div>Chybějící data místnosti</div>;
         }
-       if (isFighting && monster) {
+        if(room.type === 'monster'){
+            if (isFighting && monster) {
+                return (
+                   <div className={styles.roomContent}>
+                     <h3>{room.type}</h3>
+                     <p>{room.description}</p>
+                        <h4>{monster.name}</h4>
+                        {monsterLoading && <p>Loading...</p>}
+                       {monsterError && <p>Error: {monsterError}</p>}
+                        <div>
+                            <Button onClick={() => console.log("Damage")} >Damage</Button>
+                            <Button onClick={() => console.log("Heal")} >Heal</Button>
+                        </div>
+                        <Button onClick={handleFightEnd}>Flee</Button>
+                  </div>
+                )
+             }
             return (
-               <div className={styles.roomContent}>
-                 <h3>{room.type}</h3>
-                 <p>{room.description}</p>
-                    <h4>{monster.name}</h4>
-                    {monsterLoading && <p>Loading...</p>}
-                   {monsterError && <p>Error: {monsterError}</p>}
-                    <div>
-                        <Button onClick={() => console.log("Damage")} >Damage</Button>
-                        <Button onClick={() => console.log("Heal")} >Heal</Button>
-                    </div>
-                    <Button onClick={handleFightEnd}>Flee</Button>
-              </div>
-            )
-         }
+                <div className={styles.roomContent}>
+                    <h3>{room.type}</h3>
+                    <p>{room.description}</p>
+                   <Button onClick={handleFightStart}>Explore Room</Button>
+                </div>
+            );
+        }
         return (
             <div className={styles.roomContent}>
                 <h3>{room.type}</h3>
                 <p>{room.description}</p>
-               <Button onClick={handleFightStart}>Explore Room</Button>
             </div>
         );
+
     };
 
     const renderHallContent = (hall: HallDto) => {

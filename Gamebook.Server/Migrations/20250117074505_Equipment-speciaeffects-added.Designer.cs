@@ -3,6 +3,7 @@ using System;
 using Gamebook.Server.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Gamebook.Server.Migrations
 {
     [DbContext(typeof(GamebookDbContext))]
-    partial class GamebookDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250117074505_Equipment-speciaeffects-added")]
+    partial class Equipmentspeciaeffectsadded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.11");
@@ -96,10 +99,6 @@ namespace Gamebook.Server.Migrations
 
                     b.Property<int?>("Price")
                         .HasColumnType("INTEGER");
-
-                    b.Property<string>("Rarity")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
 
                     b.Property<int?>("SpecialEffectId")
                         .HasColumnType("INTEGER");
@@ -332,7 +331,7 @@ namespace Gamebook.Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("SpecialEffects");
+                    b.ToTable("SpecialEffect");
                 });
 
             modelBuilder.Entity("Gamebook.Server.Models.Town", b =>

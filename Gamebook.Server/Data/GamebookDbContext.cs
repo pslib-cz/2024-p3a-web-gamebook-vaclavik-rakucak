@@ -17,6 +17,7 @@ namespace Gamebook.Server.Data
         public DbSet<Quest> Quests { get; set; }
         public DbSet<RoomItem> RoomItems { get; set; }
         public DbSet<Npc> Npcs { get; set; }
+        public DbSet<SpecialEffect> SpecialEffects { get; set; }
 
 
         public GamebookDbContext(DbContextOptions<GamebookDbContext> options) : base(options)
