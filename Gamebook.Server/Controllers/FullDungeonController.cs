@@ -3,109 +3,126 @@ using Gamebook.Server.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace Gamebook.Server.Controllers
-{
-    [ApiController]
-    [Route("[controller]")]
-    public class DungeonChainController : ControllerBase
-    {
-        private readonly GamebookDbContext _context;
+namespace Gamebook.Server.Controllers;
 
-        public DungeonChainController(GamebookDbContext context)
+[ApiController]
+[Route("[controller]")]
+public class DungeonChainController : ControllerBase
+{
+    private readonly GamebookDbContext _context;
+
+    public DungeonChainController(GamebookDbContext context)
+    {
+        _context = context;
+    }
+
+    [HttpGet("{dungeonId}")]
+    public async Task<IActionResult> GetDungeonChain(int dungeonId)
+    {
+        var random = new Random();
+        int chainLength = 10; // Počet prvků v chainu
+
+        // Získání všech Room a Hall pro daný Dungeon
+        var rooms = await _context.Rooms
+            .Include(r => r.Image)
+            .Where(r => r.DungeonId == dungeonId)
+            .ToListAsync();
+
+        var halls = await _context.Halls
+            .Include(h => h.Room)
+            .ThenInclude(r => r.Image)
+            .Include(h => h.Image)
+            .Where(h => h.DungeonId == dungeonId)
+            .ToListAsync();
+
+        if (rooms.Count == 0)
         {
-            _context = context;
+            return NotFound("No rooms found for this dungeon.");
         }
 
-        [HttpGet("{dungeonId}")]
-        public async Task<IActionResult> GetDungeonChain(int dungeonId)
+        // Vytvoření chainu
+        var chain = new List<object>();
+        var currentRoom = rooms[random.Next(rooms.Count)]; // Začneme náhodnou místností
+
+        for (int i = 0; i < chainLength; i++)
         {
-            // 1. Získání všech Hallů pro daný Dungeon (včetně těch bez Room)
-            var halls = await _context.Halls
-                .Include(h => h.Room)
-                .ThenInclude(r => r.Image) // Zahrneme i Room, aby se provedl LEFT JOIN
-                .Include(h => h.Image)
-                .Where(h => h.DungeonId == dungeonId)
-                .ToListAsync();
-
-            if (halls == null || halls.Count == 0)
+            // Možnost přidat Fork
+            if (i < chainLength - 2 && random.Next(100) < 0) //sance forku
             {
-                return NotFound("No halls found for this dungeon.");
+                var availableRooms = rooms.Where(r => r.Id != currentRoom.Id).ToList();
+                if (availableRooms.Count >= 2)
+                {
+                    var forkedRooms = availableRooms.OrderBy(x => random.Next()).Take(2).ToList();
+                    var isFirstRoomDeadEnd = random.Next(2) == 0;
+
+                    // Vytvoření Fork a ForkConnections
+                    var fork = new Fork
+                    {
+                        DungeonId = dungeonId,
+                        Connections = new List<ForkConnection>
+                        {
+                            new ForkConnection { ConnectedRoom = forkedRooms[0], IsDeadEnd = isFirstRoomDeadEnd },
+                            new ForkConnection { ConnectedRoom = forkedRooms[1], IsDeadEnd = !isFirstRoomDeadEnd }
+                        }
+                    };
+
+                    // ** Uložení Forku do databáze **
+                    _context.Forks.Add(fork);
+                    await _context.SaveChangesAsync();
+
+                    // Přidání Fork do chainu
+                    // Získání detailů o forku včetně propojení
+                    var forkDetail = new
+                    {
+                        Id = fork.Id, // ID forku
+                        Type = "fork",
+                        Data = fork.Connections.Select(fc => new
+                        {
+                            Room = new
+                            {
+                                Id = fc.ConnectedRoom.Id,
+                                Type = fc.ConnectedRoom.Type,
+                                Description = fc.ConnectedRoom.Description,
+                                DungeonId = fc.ConnectedRoom.DungeonId,
+                                ImageId = fc.ConnectedRoom.ImageId,
+                                IsDeadEnd = fc.IsDeadEnd // Příznak, zda je tato cesta slepá
+                            },
+                            IsDeadEnd = fc.IsDeadEnd
+                        }).ToList()
+                    };
+
+                    chain.Add(forkDetail);
+
+                    // Pokračujeme s místností, která není slepá
+                    currentRoom = isFirstRoomDeadEnd ? forkedRooms[1] : forkedRooms[0];
+                    i++; // Inkrementujeme, protože jsme přidali Fork
+                    continue;
+                }
             }
 
-            // 2. Náhodné sestavení chainu
-            var chain = new List<object>();
-            var random = new Random();
-            // Vybereme Hall, který má přiřazenou Room
-            var validHalls = halls.Where(h => h.Room != null).ToList();
-            if (validHalls.Count == 0)
-            {
-                return NotFound("No halls with rooms found for this dungeon.");
-            }
+            // Najdeme Hall, která vede do aktuální místnosti
+            var currentHall = halls.FirstOrDefault(h => h.RoomId == currentRoom.Id);
 
-            var currentHall = validHalls[random.Next(validHalls.Count)];
-
-            // Parametry pro chain
-            int chainLength = 10;
-            bool allowFork = true;
-
-            for (int i = 0; i < chainLength; i++)
+            // Pokud existuje Hall, přidáme ji do chainu
+            if (currentHall != null)
             {
                 chain.Add(new { type = "hall", data = currentHall });
-
-                // Možnost forku
-                if (allowFork && random.Next(2) == 0 && i < chainLength - 1)
-                {
-                    var availableRooms = halls.Where(h => h.RoomId != currentHall.RoomId && h.Room != null)
-                                               .Select(h => h.Room)
-                                               .Distinct()
-                                               .ToList();
-                    if (availableRooms.Count >= 2)
-                    {
-                        var forkedRooms = availableRooms.OrderBy(x => random.Next()).Take(2).ToList();
-                        chain.Add(new { type = "fork", data = forkedRooms });
-
-                        // Ošetření null v currentHall:
-                        var selectedRoom = forkedRooms[random.Next(forkedRooms.Count)];
-                        currentHall = halls.FirstOrDefault(h => h.RoomId == selectedRoom.Id);
-                        if (currentHall == null)
-                        {
-                            // Vybereme náhodný Hall, který má Room:
-                            var hallsWithRooms = halls.Where(h => h.Room != null).ToList();
-                            if (hallsWithRooms.Count > 0)
-                            {
-                                currentHall = hallsWithRooms[random.Next(hallsWithRooms.Count)];
-                            }
-                            else
-                            {
-                                break; // Nejsou žádné Hally s Room, ukončíme chain
-                            }
-                        }
-                        continue;
-                    }
-                }
-
-                // Přidání Room do chainu (pokud existuje)
-                if (currentHall.Room != null)
-                {
-                    chain.Add(new { type = "room", data = currentHall.Room });
-                }
-                else
-                {
-                    // Ošetření případu, kdy Hall nemá Room - zde přidáme zprávu o chybě
-                    chain.Add(new { type = "error", data = "Hall " + currentHall.Id + " has no assigned Room." });
-                }
-
-                // Najdeme další Hall, který má Room a není aktuální Hall
-                var nextHalls = halls.Where(h => h.Id != currentHall.Id && h.Room != null).ToList();
-                if (nextHalls.Count == 0)
-                {
-                    break;
-                }
-                currentHall = nextHalls[random.Next(nextHalls.Count)];
             }
 
-            // 3. Odeslání chainu klientovi
-            return Ok(chain);
+            // Přidáme Room do chainu
+            chain.Add(new { type = "room", data = currentRoom, isDeadEnd = false });
+
+            // Najdeme další místnosti (kromě aktuální a těch, které jsou slepé)
+            var nextRooms = rooms.Where(r => r.Id != currentRoom.Id).ToList();
+            if (nextRooms.Count == 0)
+            {
+                break; // Pokud už nejsou další místnosti, ukončíme cyklus
+            }
+
+            // Vybereme náhodnou další místnost
+            currentRoom = nextRooms[random.Next(nextRooms.Count)];
         }
+
+        return Ok(chain);
     }
 }

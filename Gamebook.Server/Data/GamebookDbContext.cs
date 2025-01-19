@@ -18,6 +18,8 @@ namespace Gamebook.Server.Data
         public DbSet<RoomItem> RoomItems { get; set; }
         public DbSet<Npc> Npcs { get; set; }
         public DbSet<SpecialEffect> SpecialEffects { get; set; }
+        public DbSet<Fork> Forks { get; set; }
+        public DbSet<ForkConnection> ForkConnections { get; set; }
 
 
         public GamebookDbContext(DbContextOptions<GamebookDbContext> options) : base(options)
@@ -25,7 +27,20 @@ namespace Gamebook.Server.Data
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Hall>()
+            .HasOne(h => h.Room)
+            .WithMany()
+            .HasForeignKey(h => h.RoomId);
 
+            modelBuilder.Entity<ForkConnection>()
+                .HasOne(fc => fc.Fork)
+                .WithMany(f => f.Connections)
+                .HasForeignKey(fc => fc.ForkId);
+
+            modelBuilder.Entity<ForkConnection>()
+                .HasOne(fc => fc.ConnectedRoom)
+                .WithMany()
+                .HasForeignKey(fc => fc.ConnectedRoomId);
         }
         public static void SeedData(IServiceProvider serviceProvider)
         {
@@ -34,6 +49,7 @@ namespace Gamebook.Server.Data
                 var context = scope.ServiceProvider.GetRequiredService<GamebookDbContext>();
 
                 
+
             }
         }
     }
