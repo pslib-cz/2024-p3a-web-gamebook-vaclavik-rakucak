@@ -48,8 +48,7 @@ namespace Gamebook.Server.Data
             {
                 var context = scope.ServiceProvider.GetRequiredService<GamebookDbContext>();
 
-                
-
+               
             }
         }
     }

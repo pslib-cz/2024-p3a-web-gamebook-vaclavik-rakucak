@@ -22,10 +22,10 @@ namespace Gamebook.Server.Controllers
             var randomEquipment = new List<Equipment>();
 
             //offerwall
-            randomEquipment.AddRange(await GetRandomEquipmentByType("weapon", 3));
-            randomEquipment.AddRange(await GetRandomEquipmentByType("shield", 3));
-            randomEquipment.AddRange(await GetRandomEquipmentByType("armor", 3));
-            randomEquipment.AddRange(await GetRandomEquipmentByType("miscellaneous", 3));
+            randomEquipment.AddRange(await GetRandomEquipmentByType("Weapon", 3));
+            randomEquipment.AddRange(await GetRandomEquipmentByType("Shield", 3));
+            randomEquipment.AddRange(await GetRandomEquipmentByType("Armor", 3));
+            randomEquipment.AddRange(await GetRandomEquipmentByType("Miscellaneous", 3));
 
             return Ok(randomEquipment);
         }
@@ -33,7 +33,7 @@ namespace Gamebook.Server.Controllers
         private async Task<List<Equipment>> GetRandomEquipmentByType(string type, int count)
         {
             var equipment = await _context.Equipments
-                .Where(e => e.Type == type && (e.Rarity == "common" || e.Rarity == "rare"))
+                .Where(e => e.Type == type /*&& (e.Rarity == "common" || e.Rarity == "rare")*/)
                 .Include(e => e.SpecialEffect)
                 .Include(e => e.Image)
                 .ToListAsync();
