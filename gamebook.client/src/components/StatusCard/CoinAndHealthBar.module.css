@@ -1,0 +1,21 @@
+.bar {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: #f0f0f0;
+    padding: 10px;
+    border-bottom: 2px solid #ccc;
+  }
+  
+  .coins, .health {
+    font-size: 18px;
+  }
+  
+  .value {
+    font-weight: bold;
+    color: #d4af37; /* Zlatá barva pro coiny */
+  }
+  
+  .health .value {
+      color: #ff0000; /* Červená barva pro životy */
+  }

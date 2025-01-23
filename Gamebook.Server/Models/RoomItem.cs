@@ -9,7 +9,7 @@ namespace Gamebook.Server.Models
         [Key]
         public int Id { get; set; }
         public string Name { get; set; }
-        public string Type { get; set; } //key, chest
+        public string Type { get; set; }
         public int? LockedBy { get; set; }
         public int RoomId { get; set; }
         [ForeignKey("RoomId")]

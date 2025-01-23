@@ -1,7 +1,5 @@
-// src/api/imagesApi.ts
-const BASE_URL = 'https://localhost:7190/api/images'; // Upravte podle skutečné adresy API
+const BASE_URL = 'https://localhost:7190/api/images';
 
-// Funkce pro načtení obrázku - nepotřebujeme token, pokud API nevyžaduje autentizaci pro GET
 export const fetchImage = async (imageId: number) => {
   const response = await fetch(`${BASE_URL}/${imageId}`);
 

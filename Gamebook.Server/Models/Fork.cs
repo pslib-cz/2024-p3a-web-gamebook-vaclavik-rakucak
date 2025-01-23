@@ -8,8 +8,8 @@ namespace Gamebook.Server.Models
     {
         public int Id { get; set; }
         public int DungeonId { get; set; }
-        public int? ImageId { get; set; } // Image pro fork (volitelné)
-        public Image? Image { get; set; } // Blob pro obrázek (volitelné)
+        public int? ImageId { get; set; }
+        public Image? Image { get; set; }
         public List<ForkConnection> Connections { get; set; } = new List<ForkConnection>();
     }
 

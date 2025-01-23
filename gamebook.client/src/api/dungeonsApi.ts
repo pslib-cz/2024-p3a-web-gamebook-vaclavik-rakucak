@@ -1,4 +1,3 @@
-// src/api/dungeonsApi.ts
 import useFetch from '../hooks/useFetch';
 
 const BASE_URL = '/api/dungeons'; // Uprav podle skutečné adresy API

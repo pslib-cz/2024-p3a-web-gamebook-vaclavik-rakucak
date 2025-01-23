@@ -12,14 +12,14 @@ type Monster = {
   imageId: number;
 };
 
-interface RoomContentProps {
+type RoomContentProps = {
   room: RoomDto;
   isFighting: boolean;
   monster: Monster | null;
   monsterLoading: boolean;
   monsterError: string | null;
   handleFightStart: () => void;
-  handleFightEnd: () => void;
+  handleFightEnd: (monsterId?: number) => void;
 }
 
 const RoomContent: React.FC<RoomContentProps> = ({
@@ -31,8 +31,9 @@ const RoomContent: React.FC<RoomContentProps> = ({
   handleFightStart,
   handleFightEnd,
 }) => {
-  const { playerHealth, setPlayerHealth } = useGameContext();
+  const { playerHealth, setPlayerHealth, defeatedMonsters, changeHealth } = useGameContext();
   const [monsterHealth, setMonsterHealth] = React.useState<number | null>(null);
+  const isMonsterDefeated = defeatedMonsters.includes(room.monsterId); // Kontrola zda je monstrum poraženo
 
   React.useEffect(() => {
     if (monster) {
@@ -45,26 +46,21 @@ const RoomContent: React.FC<RoomContentProps> = ({
   const handleAttack = () => {
     if (!monster || monsterHealth === null) return;
 
-    // Hráč útočí na monstrum
-    const playerDamage = Math.floor(Math.random() * 5) + 1; // Náhodný útok hráče (1-5)
+    const playerDamage = Math.floor(Math.random() * 5) + 1;
     const newMonsterHealth = Math.max(0, monsterHealth - playerDamage);
     setMonsterHealth(newMonsterHealth);
 
-    // Kontrola, zda monstrum neumřelo
     if (newMonsterHealth <= 0) {
-      handleFightEnd();
-      alert('Monstrum poraženo!'); // Místo alertu může být hezčí modální okno
+      handleFightEnd(monster.id);
+      alert('Monstrum poraženo!');
       return;
     }
 
-    // Monstrum útočí na hráče
     const damageTaken = Math.floor(Math.random() * monster.damage) + 1;
-    setPlayerHealth(Math.max(0, playerHealth - damageTaken));
-
-    // Kontrola, zda hráč neumřel
+    changeHealth(-damageTaken)
     if (playerHealth - damageTaken <= 0) {
       handleFightEnd();
-      alert('You died!'); // Místo alertu může být hezčí modální okno nebo navigace na obrazovku prohry
+      alert('You died!');
     }
   };
 
@@ -72,7 +68,7 @@ const RoomContent: React.FC<RoomContentProps> = ({
     <div className={styles.roomContent}>
       <h2>Místnost {room.id}</h2>
       <p>{room.description}</p>
-      {!isFighting && !room.isDeadEnd && (
+      {!isFighting && !room.isDeadEnd && room.type === 'monster' && !isMonsterDefeated && (
         <Button onClick={handleFightStart}>Zaútočit</Button>
       )}
 

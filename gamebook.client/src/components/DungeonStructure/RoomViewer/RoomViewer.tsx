@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useGameContext } from '../../../contexts/GameContext';
-import { RoomDto, HallDto, ForkDto, ChainItemDto } from '../../../types/RoomDto';
+import { RoomDto, HallDto, ForkDto } from '../../../types/RoomDto';
 import styles from './RoomViewer.module.css';
 import useFetch from '../../../hooks/useFetch';
 import RoomContent from '../RoomContent/RoomContent';
@@ -19,23 +19,29 @@ type Monster = {
 };
 
 const RoomViewer: React.FC = () => {
-  const { playerHealth, maxPlayerHealth } = useGameContext();
+  const { playerHealth, maxPlayerHealth, defeatedMonsters, setDefeatedMonsters } = useGameContext();
   const { chain, currentChainIndex, setCurrentChainIndex, dungeonId } = useGameContext();
   const [backgroundImageUrl, setBackgroundImageUrl] = useState<string>('');
   const [monster, setMonster] = useState<Monster | null>(null);
   const [isFighting, setIsFighting] = useState<boolean>(false);
+  const currentItem = chain ? chain[currentChainIndex] : null;
   const {
     data: fetchedMonster,
     error: monsterError,
     loading: monsterLoading,
   } = useFetch<Monster>(
-    monster ? `https://localhost:7190/api/monsters/${monster.id}` : null
+    currentItem && currentItem.type === 'room' && currentItem.data.type === 'monster' && monster ? `https://localhost:7190/api/monsters/${monster.id}` : null
   );
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (fetchedMonster) setMonster(fetchedMonster);
-  }, [fetchedMonster]);
+    const currentItem = chain ? chain[currentChainIndex] : null;
+    if (currentItem && currentItem.type === 'room' && currentItem.data.type === 'monster' && fetchedMonster) {
+      setMonster(fetchedMonster);
+    } else if (currentItem && currentItem.type === 'room' && currentItem.data.type !== 'monster') {
+      setMonster(null);
+    }
+  }, [fetchedMonster, currentChainIndex, chain]);
 
   useEffect(() => {
     const currentItem = chain ? chain[currentChainIndex] : null;
@@ -80,22 +86,27 @@ const RoomViewer: React.FC = () => {
 
   const handleFightStart = () => {
     const currentItem = chain ? chain[currentChainIndex] : null;
-    if (currentItem && currentItem.type === 'room') {
+    if (currentItem && currentItem.type === 'room' && currentItem.data.type === 'monster') {
       setIsFighting(true);
       setMonster({ id: getRandomMonsterId() } as Monster);
     }
   };
 
-  const handleFightEnd = () => {
+    const handleFightEnd = (monsterId?: number) => {
     setIsFighting(false);
     setMonster(null);
+    if (monsterId) {
+      setDefeatedMonsters((prev) => [...prev, monsterId]);
+    }
   };
 
   const handleGoBackToMap = () => {
     if (!dungeonId) return;
 
     const storageKey = `chain_${dungeonId}`;
+    const defeatedMonstersKey = `defeatedMonsters_${dungeonId}`;
     localStorage.removeItem(storageKey);
+    localStorage.removeItem(defeatedMonstersKey);
     navigate('/map');
   };
 
@@ -103,13 +114,10 @@ const RoomViewer: React.FC = () => {
     return <div className={styles.ViewContainer}>No chain data available.</div>;
   }
 
-  const currentItem = chain[currentChainIndex];
-
   if (!currentItem) {
     return <div className={styles.ViewContainer}>Aktuální pozice nenalezena</div>;
   }
 
-  // Type guards s kontrolou chain
   const isRoomDto = (data: any): data is { type: "room"; data: RoomDto } => {
     return data && data.type === 'room' && data.data;
   }

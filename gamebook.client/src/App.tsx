@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import AppRoutes from './routes/routes';
 import { GameProvider } from './contexts/GameContext';
+import CoinAndHealthBar from './components/StatusCard/CoinAndHealthBar';
 
 const App: React.FC = () => {
   const [token, setToken] = useState<string>('');
@@ -16,6 +17,7 @@ const App: React.FC = () => {
   return (
     <BrowserRouter>
       <GameProvider>
+      <CoinAndHealthBar /> {/* Přidej komponentu sem */}
         <AppRoutes token={token} role={role} onLogin={handleLogin} />
       </GameProvider>
     </BrowserRouter>

@@ -7,11 +7,11 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.DependencyInjection;
-using Gamebook.Server.Helpers; // Přidáno pro JwtKeyGenerator
+using Gamebook.Server.Helpers;
 using System;
 
 var builder = WebApplication.CreateBuilder(args);
-var configuration = builder.Configuration; // Přidej konfiguraci
+var configuration = builder.Configuration;
 
 // Přidání služeb do kontejneru.
 builder.Services.AddControllers();
@@ -21,8 +21,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // Připojení k databázi (SQLite)
-builder.Services.AddDbContext<GamebookDbContext>(options =>  // Zmena DbContextu
-    options.UseSqlite(configuration.GetConnectionString("DefaultConnection")));  // Použití connection stringu z konfigurace
+builder.Services.AddDbContext<GamebookDbContext>(options => 
+    options.UseSqlite(configuration.GetConnectionString("DefaultConnection")));
 
 // Povolení CORS pro požadavky z React aplikace
 builder.Services.AddCors(options =>
@@ -55,7 +55,6 @@ builder.Services.AddHostedService<DatabaseMigrationService>(); // Registrace Dat
 
 var app = builder.Build();
 
-// Pridani dat do databaze
 GamebookDbContext.SeedData(app.Services);
 
 // Povolení CORS middleware - musí být před 'UseAuthorization'
