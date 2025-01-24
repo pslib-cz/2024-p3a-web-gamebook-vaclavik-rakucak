@@ -19,10 +19,10 @@ const CoinAndHealthBar: React.FC = () => {
   return (
     <div className={styles.bar}>
       <div className={styles.coins}>
-        Coins: <span className={styles.value}>{coins}</span>
+        <span className={styles.value}>{coins}</span>
       </div>
       <div className={styles.health}>
-        Health: <span className={styles.value}>{playerHealth} / {maxPlayerHealth}</span>
+        <span className={styles.value}>{playerHealth} / {maxPlayerHealth}</span>
       </div>
     </div>
   );

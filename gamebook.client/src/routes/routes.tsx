@@ -1,7 +1,6 @@
 import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import MenuPage from '../pages/MenuPage/MenuPage';
-import SetNamePage from '../pages/SetNamePage/SetNamePage';
 import RoomPage from '../pages/RoomPage/RoomPage';
 import Login from '../components/Admin/Login/Login';
 import AdminPanel from '../components/Admin/AdminPanel/AdminPanel';

@@ -24,7 +24,7 @@ type Equipment = {
 
 const ShopPage: React.FC = () => {
   const [backgroundImageUrl, setBackgroundImageUrl] = useState<string>('');
-  const { data: equipments, loading, error, setData } = useFetch<Equipment[]>('https://localhost:7190/api/ShopOffer/random'); // Získáme setData z useFetch
+  const { data: equipments, loading, error, setData } = useFetch<Equipment[]>('https://localhost:7190/api/ShopOffer/random');
   const { changeCoins } = useGameContext();
 
   useEffect(() => {

@@ -7,6 +7,7 @@
   border-radius: 20px;
   cursor: pointer;
   width: 8em;
+  transition: all 0.3s ease-in-out;
 }
 
 .button:disabled {
@@ -16,4 +17,5 @@
 
 .button:hover:not(:disabled) {
   border: 10px solid var(--Biege);
+  transform: scale(1.1);
 }

@@ -19,7 +19,7 @@ public class DungeonChainController : ControllerBase
     [HttpGet("{dungeonId}")]
     public async Task<IActionResult> GetDungeonChain(int dungeonId)
     {
-        var random = new Random();
+        var random = Random.Shared;
         int chainLength = 10; // Počet prvků v chainu
 
         var rooms = await _context.Rooms
