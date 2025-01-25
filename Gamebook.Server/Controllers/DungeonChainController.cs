@@ -20,7 +20,7 @@ public class DungeonChainController : ControllerBase
     public async Task<IActionResult> GetDungeonChain(int dungeonId)
     {
         var random = Random.Shared;
-        int chainLength = 10; // Počet prvků v chainu
+        int chainLength = 10;
 
         var rooms = await _context.Rooms
             .Include(r => r.Image)
@@ -39,53 +39,35 @@ public class DungeonChainController : ControllerBase
             return NotFound("No rooms found for this dungeon.");
         }
 
-        // Vytvoření chainu
-        var chain = new List<object>();
+        var chain = new List<ChainElement>();
         var currentRoom = rooms[random.Next(rooms.Count)];
 
         for (int i = 0; i < chainLength; i++)
         {
-
-            if (i < chainLength - 2 && random.Next(100) < 0) //sance forku
+            if (i < chainLength - 2 && random.Next(100) < 0) //nejsou data v databazi zaze sance aan fork je 0
             {
                 var availableRooms = rooms.Where(r => r.Id != currentRoom.Id).ToList();
                 if (availableRooms.Count >= 2)
                 {
                     var forkedRooms = availableRooms.OrderBy(x => random.Next()).Take(2).ToList();
-                    var isFirstRoomDeadEnd = random.Next(2) == 0;
+                    bool isFirstRoomDeadEnd = true;
+                    bool isSecondRoomDeadEnd = false;
 
                     var fork = new Fork
                     {
                         DungeonId = dungeonId,
                         Connections = new List<ForkConnection>
-                {
-                    new ForkConnection { ConnectedRoom = forkedRooms[0], IsDeadEnd = isFirstRoomDeadEnd },
-                    new ForkConnection { ConnectedRoom = forkedRooms[1], IsDeadEnd = !isFirstRoomDeadEnd }
-                }
-                    };
-
-                    var forkDetail = new
-                    {
-                        Id = fork.Id, // ID forku
-                        Type = "fork",
-                        Data = fork.Connections.Select(fc => new
                         {
-                            Room = new
-                            {
-                                Id = fc.ConnectedRoom.Id,
-                                Type = fc.ConnectedRoom.Type,
-                                Description = fc.ConnectedRoom.Description,
-                                DungeonId = fc.ConnectedRoom.DungeonId,
-                                ImageId = fc.ConnectedRoom.ImageId,
-                                IsDeadEnd = fc.IsDeadEnd
-                            },
-                            IsDeadEnd = fc.IsDeadEnd
-                        }).ToList()
+                            new ForkConnection { ConnectedRoom = forkedRooms[0], IsDeadEnd = isFirstRoomDeadEnd },
+                            new ForkConnection { ConnectedRoom = forkedRooms[1], IsDeadEnd = isSecondRoomDeadEnd }
+                        }
                     };
+                    _context.Forks.Add(fork);
+                    await _context.SaveChangesAsync();
 
-                    chain.Add(forkDetail);
+                    chain.Add(new ForkElement(fork));
 
-                    currentRoom = isFirstRoomDeadEnd ? forkedRooms[1] : forkedRooms[0];
+                    currentRoom = forkedRooms[1];
                     i++;
                     continue;
                 }
@@ -94,9 +76,11 @@ public class DungeonChainController : ControllerBase
             var currentHall = halls.FirstOrDefault(h => h.RoomId == currentRoom.Id);
             if (currentHall != null)
             {
-                chain.Add(new { type = "hall", data = currentHall });
+                chain.Add(new HallElement(currentHall));
             }
-            chain.Add(new { type = "room", data = currentRoom, isDeadEnd = false });
+
+            chain.Add(new RoomElement(currentRoom));
+
             var nextRooms = rooms.Where(r => r.Id != currentRoom.Id).ToList();
             if (nextRooms.Count == 0)
             {
@@ -105,6 +89,33 @@ public class DungeonChainController : ControllerBase
             currentRoom = nextRooms[random.Next(nextRooms.Count)];
         }
 
-        return Ok(chain);
+        var chainVm = chain.Select<ChainElement, IChainElementVm>(element =>
+        {
+            switch (element)
+            {
+                case RoomElement re:
+                    return new RoomElementVm(re.Data);
+                case HallElement he:
+                    return new HallElementVm(he.Data);
+                case ForkElement fe:
+                    var forkVm = new ForkVm
+                    {
+                        Id = fe.Data.Id,
+                        DungeonId = fe.Data.DungeonId,
+                        Connections = fe.Data.Connections.Select(c => new ForkConnectionVm
+                        {
+                            Id = c.Id,
+                            ForkId = fe.Data.Id, // Můžete sem dát ID Forku, pokud ho potřebujete
+                            ConnectedRoom = c.ConnectedRoom,
+                            IsDeadEnd = c.IsDeadEnd
+                        }).ToList()
+                    };
+                    return new ForkElementVm(forkVm);
+                default:
+                    return null;
+            }
+        }).Where(x => x != null).ToList();
+
+        return Ok(chainVm);
     }
 }

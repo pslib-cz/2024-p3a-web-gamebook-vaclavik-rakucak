@@ -5,7 +5,7 @@
 namespace Gamebook.Server.Migrations
 {
     /// <inheritdoc />
-    public partial class New : Migration
+    public partial class initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -19,7 +19,8 @@ namespace Gamebook.Server.Migrations
                     Username = table.Column<string>(type: "TEXT", nullable: false),
                     Password = table.Column<string>(type: "TEXT", nullable: false),
                     Email = table.Column<string>(type: "TEXT", nullable: false),
-                    Role = table.Column<string>(type: "TEXT", nullable: false)
+                    Role = table.Column<string>(type: "TEXT", nullable: false),
+                    Salt = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -33,12 +34,41 @@ namespace Gamebook.Server.Migrations
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Name = table.Column<string>(type: "TEXT", nullable: false),
-                    Data = table.Column<string>(type: "TEXT", nullable: false),
+                    Data = table.Column<byte[]>(type: "BLOB", nullable: false),
                     ContentType = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Images", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Npcs",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Name = table.Column<string>(type: "TEXT", nullable: false),
+                    Description = table.Column<string>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Npcs", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SpecialEffects",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Name = table.Column<string>(type: "TEXT", nullable: false),
+                    Description = table.Column<string>(type: "TEXT", nullable: false),
+                    Value = table.Column<int>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SpecialEffects", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -49,9 +79,9 @@ namespace Gamebook.Server.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     Name = table.Column<string>(type: "TEXT", nullable: false),
                     Description = table.Column<string>(type: "TEXT", nullable: false),
-                    RewardMoney = table.Column<int>(type: "INTEGER", nullable: false),
-                    DmgCondition = table.Column<string>(type: "TEXT", nullable: false),
-                    ImageId = table.Column<int>(type: "INTEGER", nullable: false)
+                    RewardMoney = table.Column<int>(type: "INTEGER", nullable: true),
+                    DmgCondition = table.Column<int>(type: "INTEGER", nullable: true),
+                    ImageId = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -60,46 +90,44 @@ namespace Gamebook.Server.Migrations
                         name: "FK_Dungeons_Images_ImageId",
                         column: x => x.ImageId,
                         principalTable: "Images",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "Equipments",
+                name: "Forks",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    DungeonId = table.Column<int>(type: "INTEGER", nullable: false),
+                    ImageId = table.Column<int>(type: "INTEGER", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Forks", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Forks_Images_ImageId",
+                        column: x => x.ImageId,
+                        principalTable: "Images",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Monsters",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Name = table.Column<string>(type: "TEXT", nullable: false),
-                    Type = table.Column<string>(type: "TEXT", nullable: false),
-                    LockedBy = table.Column<int>(type: "INTEGER", nullable: true),
-                    Price = table.Column<int>(type: "INTEGER", nullable: true),
+                    Hitpoints = table.Column<int>(type: "INTEGER", nullable: false),
+                    Damage = table.Column<int>(type: "INTEGER", nullable: false),
                     ImageId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Equipments", x => x.Id);
+                    table.PrimaryKey("PK_Monsters", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Equipments_Images_ImageId",
-                        column: x => x.ImageId,
-                        principalTable: "Images",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Halls",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    ImageId = table.Column<int>(type: "INTEGER", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Halls", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Halls_Images_ImageId",
+                        name: "FK_Monsters_Images_ImageId",
                         column: x => x.ImageId,
                         principalTable: "Images",
                         principalColumn: "Id",
@@ -133,6 +161,63 @@ namespace Gamebook.Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Equipments",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Name = table.Column<string>(type: "TEXT", nullable: false),
+                    Type = table.Column<string>(type: "TEXT", nullable: false),
+                    Price = table.Column<int>(type: "INTEGER", nullable: true),
+                    Rarity = table.Column<string>(type: "TEXT", nullable: false),
+                    Dmg = table.Column<int>(type: "INTEGER", nullable: false),
+                    SpecialEffectId = table.Column<int>(type: "INTEGER", nullable: true),
+                    ImageId = table.Column<int>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Equipments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Equipments_Images_ImageId",
+                        column: x => x.ImageId,
+                        principalTable: "Images",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Equipments_SpecialEffects_SpecialEffectId",
+                        column: x => x.SpecialEffectId,
+                        principalTable: "SpecialEffects",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Rooms",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Type = table.Column<string>(type: "TEXT", nullable: false),
+                    Description = table.Column<string>(type: "TEXT", nullable: false),
+                    DungeonId = table.Column<int>(type: "INTEGER", nullable: false),
+                    ImageId = table.Column<int>(type: "INTEGER", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Rooms", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Rooms_Dungeons_DungeonId",
+                        column: x => x.DungeonId,
+                        principalTable: "Dungeons",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Rooms_Images_ImageId",
+                        column: x => x.ImageId,
+                        principalTable: "Images",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Quests",
                 columns: table => new
                 {
@@ -141,6 +226,8 @@ namespace Gamebook.Server.Migrations
                     Name = table.Column<string>(type: "TEXT", nullable: false),
                     Description = table.Column<string>(type: "TEXT", nullable: false),
                     Condition = table.Column<string>(type: "TEXT", nullable: false),
+                    ConditionValue = table.Column<int>(type: "INTEGER", nullable: false),
+                    NpcId = table.Column<int>(type: "INTEGER", nullable: true),
                     RewardItemId = table.Column<int>(type: "INTEGER", nullable: true),
                     ImageId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
@@ -158,69 +245,68 @@ namespace Gamebook.Server.Migrations
                         principalTable: "Images",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Quests_Npcs_NpcId",
+                        column: x => x.NpcId,
+                        principalTable: "Npcs",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "Rooms",
+                name: "ForkConnections",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false),
+                    ForkId = table.Column<int>(type: "INTEGER", nullable: false),
+                    IsDeadEnd = table.Column<bool>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ForkConnections", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ForkConnections_Forks_ForkId",
+                        column: x => x.ForkId,
+                        principalTable: "Forks",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ForkConnections_Rooms_Id",
+                        column: x => x.Id,
+                        principalTable: "Rooms",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Halls",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Type = table.Column<string>(type: "TEXT", nullable: false),
-                    Description = table.Column<string>(type: "TEXT", nullable: false),
-                    DungeonId = table.Column<int>(type: "INTEGER", nullable: false),
-                    HallId = table.Column<int>(type: "INTEGER", nullable: false),
-                    ImageId = table.Column<int>(type: "INTEGER", nullable: false)
+                    ImageId = table.Column<int>(type: "INTEGER", nullable: true),
+                    RoomId = table.Column<int>(type: "INTEGER", nullable: false),
+                    DungeonId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Rooms", x => x.Id);
+                    table.PrimaryKey("PK_Halls", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Rooms_Dungeons_DungeonId",
+                        name: "FK_Halls_Dungeons_DungeonId",
                         column: x => x.DungeonId,
                         principalTable: "Dungeons",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Rooms_Halls_HallId",
-                        column: x => x.HallId,
-                        principalTable: "Halls",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Rooms_Images_ImageId",
+                        name: "FK_Halls_Images_ImageId",
                         column: x => x.ImageId,
                         principalTable: "Images",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Monsters",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", nullable: false),
-                    Hitpoints = table.Column<int>(type: "INTEGER", nullable: false),
-                    Damage = table.Column<int>(type: "INTEGER", nullable: false),
-                    RoomId = table.Column<int>(type: "INTEGER", nullable: true),
-                    ImageId = table.Column<int>(type: "INTEGER", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Monsters", x => x.Id);
+                        principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Monsters_Images_ImageId",
-                        column: x => x.ImageId,
-                        principalTable: "Images",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Monsters_Rooms_RoomId",
+                        name: "FK_Halls_Rooms_RoomId",
                         column: x => x.RoomId,
                         principalTable: "Rooms",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -263,9 +349,34 @@ namespace Gamebook.Server.Migrations
                 column: "ImageId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Equipments_SpecialEffectId",
+                table: "Equipments",
+                column: "SpecialEffectId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ForkConnections_ForkId",
+                table: "ForkConnections",
+                column: "ForkId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Forks_ImageId",
+                table: "Forks",
+                column: "ImageId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Halls_DungeonId",
+                table: "Halls",
+                column: "DungeonId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Halls_ImageId",
                 table: "Halls",
                 column: "ImageId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Halls_RoomId",
+                table: "Halls",
+                column: "RoomId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Monsters_ImageId",
@@ -273,14 +384,14 @@ namespace Gamebook.Server.Migrations
                 column: "ImageId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Monsters_RoomId",
-                table: "Monsters",
-                column: "RoomId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Quests_ImageId",
                 table: "Quests",
                 column: "ImageId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Quests_NpcId",
+                table: "Quests",
+                column: "NpcId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Quests_RewardItemId",
@@ -301,12 +412,6 @@ namespace Gamebook.Server.Migrations
                 name: "IX_Rooms_DungeonId",
                 table: "Rooms",
                 column: "DungeonId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Rooms_HallId",
-                table: "Rooms",
-                column: "HallId",
-                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Rooms_ImageId",
@@ -331,6 +436,12 @@ namespace Gamebook.Server.Migrations
                 name: "Admins");
 
             migrationBuilder.DropTable(
+                name: "ForkConnections");
+
+            migrationBuilder.DropTable(
+                name: "Halls");
+
+            migrationBuilder.DropTable(
                 name: "Monsters");
 
             migrationBuilder.DropTable(
@@ -343,16 +454,22 @@ namespace Gamebook.Server.Migrations
                 name: "Towns");
 
             migrationBuilder.DropTable(
+                name: "Forks");
+
+            migrationBuilder.DropTable(
                 name: "Equipments");
+
+            migrationBuilder.DropTable(
+                name: "Npcs");
 
             migrationBuilder.DropTable(
                 name: "Rooms");
 
             migrationBuilder.DropTable(
-                name: "Dungeons");
+                name: "SpecialEffects");
 
             migrationBuilder.DropTable(
-                name: "Halls");
+                name: "Dungeons");
 
             migrationBuilder.DropTable(
                 name: "Images");

@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './RoomViewer.module.css';
+import styles from '../ChainViewer/ChainViewer.module.css';
 import Button from '../../Buttons/ButtonLarge/ButtonLarge';
 
 interface NavigationButtonsProps {

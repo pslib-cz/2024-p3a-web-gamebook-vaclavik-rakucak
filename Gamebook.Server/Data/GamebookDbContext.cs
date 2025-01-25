@@ -28,19 +28,21 @@ namespace Gamebook.Server.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Hall>()
-            .HasOne(h => h.Room)
-            .WithMany()
-            .HasForeignKey(h => h.RoomId);
+                .HasOne(h => h.Room)
+                .WithMany()
+                .HasForeignKey(h => h.RoomId);
 
+            // Odkomentovaná konfigurace pro Fork a ForkConnection:
             modelBuilder.Entity<ForkConnection>()
                 .HasOne(fc => fc.Fork)
                 .WithMany(f => f.Connections)
                 .HasForeignKey(fc => fc.ForkId);
 
+            // Upravená konfigurace pro ForkConnection a Room:
             modelBuilder.Entity<ForkConnection>()
                 .HasOne(fc => fc.ConnectedRoom)
-                .WithMany()
-                .HasForeignKey(fc => fc.ConnectedRoomId);
+                .WithOne()
+                .HasForeignKey<ForkConnection>(fc => fc.Id);
         }
         public static void SeedData(IServiceProvider serviceProvider)
         {

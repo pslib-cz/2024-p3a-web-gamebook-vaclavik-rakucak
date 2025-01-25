@@ -1,10 +1,10 @@
 import React from 'react';
-import { ForkDto } from '../../../types/RoomDto';
-import styles from './RoomViewer.module.css';
+import { Fork } from '../../../types/RoomDto'; // Importujeme typ Fork
+import styles from '../ChainViewer/ChainViewer.module.css';
 import { useGameContext } from '../../../contexts/GameContext';
 
 interface ForkContentProps {
-  fork: ForkDto;
+  fork: Fork; // Typ pro props je nyní Fork
 }
 
 const ForkContent: React.FC<ForkContentProps> = ({ fork }) => {
@@ -34,11 +34,12 @@ const ForkContent: React.FC<ForkContentProps> = ({ fork }) => {
       <h2>Rozcestí</h2>
       <p>Vyberte místnost:</p>
       <ul>
-        {fork.data.map((forkData) => (
-          <li key={forkData.room.id}>
-            <button onClick={() => handleRoomSelect(forkData.room.id)}>
-              Místnost {forkData.room.id}{' '}
-              {forkData.isDeadEnd ? '(Slepá ulička)' : ''}
+        {/* Změna: Nyní iterujeme přes fork.connections */}
+        {fork.connections.map((connection) => (
+          <li key={connection.connectedRoom.id}>
+            <button onClick={() => handleRoomSelect(connection.connectedRoom.id)}>
+              Místnost {connection.connectedRoom.id}{' '}
+              {connection.isDeadEnd ? '(Slepá ulička)' : ''}
             </button>
           </li>
         ))}

@@ -15,7 +15,7 @@ namespace Gamebook.Server.Models
         public string Name { get; set; }
         public string Description { get; set; }
         public int? RewardMoney { get; set; }
-        public string? DmgCondition { get; set; }
+        public int? DmgCondition { get; set; }
         public int? ImageId { get; set; }
         [ForeignKey("ImageId")]
         public Image? Image { get; set; }

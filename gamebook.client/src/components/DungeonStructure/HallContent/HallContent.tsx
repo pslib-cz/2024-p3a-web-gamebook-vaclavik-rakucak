@@ -1,9 +1,9 @@
 import React from 'react';
-import { HallDto } from '../../../types/RoomDto';
-import styles from './RoomViewer.module.css';
+import { Hall } from '../../../types/RoomDto';
+import styles from '../ChainViewer/ChainViewer.module.css';
 
 interface HallContentProps {
-  hall: HallDto;
+  hall: Hall;
 }
 
 const HallContent: React.FC<HallContentProps> = ({ hall }) => {

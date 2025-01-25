@@ -11,8 +11,6 @@ namespace Gamebook.Server.Models
         public int? ImageId { get; set; }
         [ForeignKey("ImageId")]
         public Image? Image { get; set; }
-
-        // Přidáme vazbu na Room
         public int RoomId { get; set; }
         [ForeignKey("RoomId")]
         public Room Room { get; set; }

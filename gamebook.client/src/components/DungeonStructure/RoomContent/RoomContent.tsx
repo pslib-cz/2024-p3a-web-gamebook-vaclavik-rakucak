@@ -1,23 +1,13 @@
 import React from 'react';
-import { RoomDto } from '../../../types/RoomDto';
-import styles from './RoomViewer.module.css';
+import { Room, Monster } from '../../../types/RoomDto';
+import styles from '../ChainViewer/ChainViewer.module.css';
 import Button from '../../Buttons/ButtonLarge/ButtonLarge';
 import { useGameContext } from '../../../contexts/GameContext';
 
-type Monster = {
-  id: number;
-  name: string;
-  hitpoints: number;
-  damage: number;
-  imageId: number;
-};
-
 type RoomContentProps = {
-  room: RoomDto;
+  room: Room;
   isFighting: boolean;
   monster: Monster | null;
-  monsterLoading: boolean;
-  monsterError: string | null;
   handleFightStart: () => void;
   handleFightEnd: (monsterId?: number) => void;
 }
@@ -26,14 +16,12 @@ const RoomContent: React.FC<RoomContentProps> = ({
   room,
   isFighting,
   monster,
-  monsterLoading,
-  monsterError,
   handleFightStart,
   handleFightEnd,
 }) => {
   const { playerHealth, setPlayerHealth, defeatedMonsters, changeHealth } = useGameContext();
   const [monsterHealth, setMonsterHealth] = React.useState<number | null>(null);
-  const isMonsterDefeated = defeatedMonsters.includes(room.monsterId); // Kontrola zda je monstrum poraženo
+  const isMonsterDefeated = defeatedMonsters.includes(room.id);
 
   React.useEffect(() => {
     if (monster) {
@@ -75,11 +63,7 @@ const RoomContent: React.FC<RoomContentProps> = ({
       {isFighting && (
         <div className={styles.fightContent}>
           <h3>Boj!</h3>
-          {monsterLoading && <p>Nahrávám monstrum...</p>}
-          {monsterError && (
-            <p>Chyba při nahrávání monstra: {monsterError}</p>
-          )}
-          {monster && !monsterLoading && !monsterError && (
+          {monster && (
             <>
               <p>Bojujete s {monster.name}!</p>
               <p>Monstrum HP: {monsterHealth !== null ? monsterHealth : 'N/A'}</p>

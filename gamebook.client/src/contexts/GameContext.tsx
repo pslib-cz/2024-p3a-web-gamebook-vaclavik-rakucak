@@ -1,10 +1,10 @@
 import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
-import { ChainItemDto } from '../types/RoomDto';
+import { ChainElement } from '../types/RoomDto';
 import { saveDataToLocalStorage, getDataFromLocalStorage } from '../utils/LocalStorage'; // Importujte funkce pro práci s localStorage
 
 interface GameContextProps {
-  chain: ChainItemDto[] | null;
-  setChain: (chain: ChainItemDto[] | null) => void;
+  chain: ChainElement[] | null;
+  setChain: (chain: ChainElement[] | null) => void;
   currentChainIndex: number;
   setCurrentChainIndex: (index: number) => void;
   dungeonId: string | undefined;
@@ -35,7 +35,7 @@ interface GameProviderProps {
 }
 
 export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
-  const [chain, setChain] = useState<ChainItemDto[] | null>(null);
+  const [chain, setChain] = useState<ChainElement[] | null>(null);
   const [currentChainIndex, setCurrentChainIndex] = useState<number>(0);
   const [dungeonId, setDungeonId] = useState<string | undefined>(undefined);
   const [playerHealth, setPlayerHealth] = useState<number>(100);

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import MenuPage from '../pages/MenuPage/MenuPage';
-import RoomPage from '../pages/RoomPage/RoomPage';
+import DungeonPage from '../pages/DungeonPage/DungeonPage.tsx';
 import Login from '../components/Admin/Login/Login';
 import AdminPanel from '../components/Admin/AdminPanel/AdminPanel';
 import MainMapPage from '../pages/MapPage/MapPage.tsx'
@@ -20,7 +20,7 @@ const AppRoutes: React.FC<RoutesProps> = ({ token, role, onLogin }) => {
     <Routes>
       <Route path="/" element={<MenuPage />} />
       <Route path="/Map" element={<MainMapPage />} />
-      <Route path="/Dungeon/:dungeonId/:type/:index" element={<RoomPage />} />
+      <Route path="/Dungeon/:dungeonId/:type/:index" element={<DungeonPage />} />
       <Route path="/Login" element={<Login onLogin={onLogin} />} />
       <Route path='/Town' element={<TownPage />} />
       <Route path='/Tavern' element={<TavernPage />} />

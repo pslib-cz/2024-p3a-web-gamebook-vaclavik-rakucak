@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Gamebook.Server.Migrations
 {
     [DbContext(typeof(GamebookDbContext))]
-    [Migration("20250119102335_Fork-added")]
-    partial class Forkadded
+    [Migration("20250125183001_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -61,8 +61,8 @@ namespace Gamebook.Server.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("DmgCondition")
-                        .HasColumnType("TEXT");
+                    b.Property<int?>("DmgCondition")
+                        .HasColumnType("INTEGER");
 
                     b.Property<int?>("ImageId")
                         .HasColumnType("INTEGER");
@@ -142,10 +142,6 @@ namespace Gamebook.Server.Migrations
             modelBuilder.Entity("Gamebook.Server.Models.ForkConnection", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("ConnectedRoomId")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("ForkId")
@@ -155,8 +151,6 @@ namespace Gamebook.Server.Migrations
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ConnectedRoomId");
 
                     b.HasIndex("ForkId");
 
@@ -443,15 +437,15 @@ namespace Gamebook.Server.Migrations
 
             modelBuilder.Entity("Gamebook.Server.Models.ForkConnection", b =>
                 {
-                    b.HasOne("Gamebook.Server.Models.Room", "ConnectedRoom")
-                        .WithMany()
-                        .HasForeignKey("ConnectedRoomId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Gamebook.Server.Models.Fork", "Fork")
                         .WithMany("Connections")
                         .HasForeignKey("ForkId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Gamebook.Server.Models.Room", "ConnectedRoom")
+                        .WithOne()
+                        .HasForeignKey("Gamebook.Server.Models.ForkConnection", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

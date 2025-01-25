@@ -1,26 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { useGameContext } from '../../../contexts/GameContext';
-import { RoomDto, HallDto, ForkDto } from '../../../types/RoomDto';
-import styles from './RoomViewer.module.css';
+import { Room, Hall, Fork, Monster } from '../../../types/RoomDto';
+import styles from './ChainViewer.module.css';
 import useFetch from '../../../hooks/useFetch';
 import RoomContent from '../RoomContent/RoomContent';
 import HallContent from '../HallContent/HallContent';
 import ForkContent from '../ForkContent/ForkContent';
 import NavigationButtons from '../NavigationButtons/NavigationButtons';
 import { useNavigate } from 'react-router-dom';
-import Button from '../../Buttons/ButtonLarge/ButtonLarge.tsx';
+import Button from '../../Buttons/ButtonLarge/ButtonLarge';
 
-type Monster = {
-  id: number;
-  name: string;
-  hitpoints: number;
-  damage: number;
-  imageId: number;
-};
-
-const RoomViewer: React.FC = () => {
-  const { playerHealth, maxPlayerHealth, defeatedMonsters, setDefeatedMonsters } = useGameContext();
-  const { chain, currentChainIndex, setCurrentChainIndex, dungeonId } = useGameContext();
+const ChainViewer: React.FC = () => {
+  const { playerHealth, maxPlayerHealth, defeatedMonsters, setDefeatedMonsters, currentChainIndex, setCurrentChainIndex, chain, dungeonId } = useGameContext(); // Získejte potřebné hodnoty z GameContextu
   const [backgroundImageUrl, setBackgroundImageUrl] = useState<string>('');
   const [monster, setMonster] = useState<Monster | null>(null);
   const [isFighting, setIsFighting] = useState<boolean>(false);
@@ -92,21 +83,12 @@ const RoomViewer: React.FC = () => {
     }
   };
 
-    const handleFightEnd = (monsterId?: number) => {
+  const handleFightEnd = (monsterId?: number) => {
     setIsFighting(false);
     setMonster(null);
-    if (monsterId) {
-      setDefeatedMonsters((prev) => [...prev, monsterId]);
-    }
   };
 
   const handleGoBackToMap = () => {
-    if (!dungeonId) return;
-
-    const storageKey = `chain_${dungeonId}`;
-    const defeatedMonstersKey = `defeatedMonsters_${dungeonId}`;
-    localStorage.removeItem(storageKey);
-    localStorage.removeItem(defeatedMonstersKey);
     navigate('/map');
   };
 
@@ -118,52 +100,50 @@ const RoomViewer: React.FC = () => {
     return <div className={styles.ViewContainer}>Aktuální pozice nenalezena</div>;
   }
 
-  const isRoomDto = (data: any): data is { type: "room"; data: RoomDto } => {
-    return data && data.type === 'room' && data.data;
-  }
-  const isHallDto = (data: any): data is { type: "hall"; data: HallDto } =>{
-    return data && data.type === 'hall' && data.data;
-  }
-  const isForkDto = (data: any): data is { type: "fork"; data: ForkDto } => {
-    return data && data.type === 'fork' && data.data;
-  }
-
-  const isLastRoom = currentChainIndex === chain.length -1;
+  const isLastRoom = currentChainIndex === chain.length - 1;
 
   return (
     <div className={styles.ViewContainer}>
-      {backgroundImageUrl && (
+      {currentItem && (currentItem.type === 'hall' || currentItem.type === 'room') && backgroundImageUrl && (
         <div
           className={styles.hallBackground}
           style={{ backgroundImage: `url(${backgroundImageUrl})` }}
         />
       )}
 
-      {isRoomDto(currentItem) && (
-        <RoomContent
-          room={currentItem.data}
-          isFighting={isFighting}
-          monster={monster}
-          monsterLoading={monsterLoading}
-          monsterError={monsterError}
-          handleFightStart={handleFightStart}
-          handleFightEnd={handleFightEnd}
-        />
+      {/* Rozlišení typu currentItem a předání správných dat komponentám */}
+      {currentItem && currentItem.type === 'room' && (
+      <RoomContent
+        room={currentItem.data}
+        isFighting={isFighting}
+        monster={monster}
+        handleFightStart={handleFightStart}
+        handleFightEnd={handleFightEnd}
+      />
       )}
-      {isHallDto(currentItem) && <HallContent hall={currentItem.data} />}
-      {isForkDto(currentItem) && <ForkContent fork={currentItem.data} />}
+      {currentItem && currentItem.type === 'hall' && (
+        <HallContent hall={currentItem.data} />
+      )}
+      {currentItem && currentItem.type === 'fork' && (
+        <ForkContent fork={currentItem.data} />
+      )}
 
+      {/* Navigační tlačítka */}
       <NavigationButtons
         currentChainIndex={currentChainIndex}
         chainLength={chain.length}
-        isRoomDeadEnd={currentItem.type === 'room' && currentItem.data.isDeadEnd}
-        isFork={currentItem.type === 'fork'}
+        isRoomDeadEnd={currentItem?.type === 'room' ? currentItem.data.isDeadEnd : false}
+        isFork={currentItem?.type === 'fork'}
         onPrevious={handlePrevious}
         onNext={handleNext}
       />
+
+      {/* Zobrazení zdraví hráče */}
       <div className={styles.playerHealth}>
         Health: {playerHealth} / {maxPlayerHealth}
       </div>
+
+      {/* Tlačítko pro opuštění dungeonu (zobrazí se jen v poslední místnosti) */}
       {isLastRoom && (
         <div className={styles.goBackButton}>
           <Button onClick={handleGoBackToMap}>Exit Dungeon</Button>
@@ -173,4 +153,4 @@ const RoomViewer: React.FC = () => {
   );
 };
 
-export default RoomViewer;
+export default ChainViewer;

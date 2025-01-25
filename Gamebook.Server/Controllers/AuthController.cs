@@ -40,7 +40,7 @@ public class AuthController : ControllerBase
     }
     [AllowAnonymous]
     [HttpPost("register")]
-    public async Task<IActionResult> Register([FromBody] RegisterDto register)
+    public async Task<IActionResult> Register([FromBody] RegisterIM register)
     {
         string salt = SaltGenerator.GenerateSalt();
         string hashedPassword = PasswordHasher.HashPassword(register.Password, salt);
@@ -58,7 +58,7 @@ public class AuthController : ControllerBase
         return Ok();
     }
     [HttpPost("login")]
-    public async Task<IActionResult> Login([FromBody] LoginDto login)
+    public async Task<IActionResult> Login([FromBody] LoginIM login)
     {
         var admin = await _context.Admins.SingleOrDefaultAsync(u => u.Username == login.Username);
         if (admin == null)
@@ -71,6 +71,6 @@ public class AuthController : ControllerBase
         }
 
         var token = GenerateJwtToken(admin);
-        return Ok(new AuthResponseDto { Token = token, Role = admin.Role });
+        return Ok(new AuthResponseVM { Token = token, Role = admin.Role });
     }
 }
