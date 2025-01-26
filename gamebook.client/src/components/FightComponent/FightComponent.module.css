@@ -1,0 +1,51 @@
+.fightContainer{
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    justify-content: space-between;
+    height: 100vh;
+    width: 100vw;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+.monsterInfo{
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--Brown);
+    border: 10px solid var(--Dark-Brown);
+    border-radius: 20px;
+    font-size: 2rem;
+}
+.monsterInfo h3{
+    margin: 0;
+    padding: 1rem;
+}
+.monsterImageContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.monsterImage{
+    width: 700px;
+    height: 700px;
+    margin-bottom: 15px;
+}
+.healthBarContainer{
+    width: 20rem;
+    padding: 1rem;
+    background-color: var(--Brown);
+    border: 10px solid var(--Dark-Brown);
+    border-radius: 20px;
+
+}
+
+.buttonContainer{
+    position: absolute;
+    margin-top: 1rem;
+    bottom: 10%;
+}

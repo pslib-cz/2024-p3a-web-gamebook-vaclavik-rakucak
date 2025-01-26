@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Gamebook.Server.Data;
 using Gamebook.Server.Models;
+using System.Runtime.Intrinsics.X86;
 
 namespace Gamebook.Server.Controllers
 {

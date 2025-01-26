@@ -1,7 +1,7 @@
 .ViewContainer {
   display: flex;
-  justify-content: space-between;
   flex-direction: column;
+  justify-content: space-between;
   text-align: center;
   flex-wrap: wrap;
   height: 100vh;
@@ -87,4 +87,11 @@
   width: 100vw;
   height: 100vh;
   z-index: -1;
+}
+
+.goBackButton{
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  padding: 3rem;
 }

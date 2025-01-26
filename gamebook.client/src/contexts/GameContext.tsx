@@ -39,7 +39,7 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
   const [currentChainIndex, setCurrentChainIndex] = useState<number>(0);
   const [dungeonId, setDungeonId] = useState<string | undefined>(undefined);
   const [playerHealth, setPlayerHealth] = useState<number>(100);
-  const [coins, setCoins] = useState<number>(100);
+  const [coins, setCoins] = useState<number>(0);
   const maxPlayerHealth = 100;
   const [defeatedMonsters, setDefeatedMonsters] = useState<number[]>(() => {
     const storedDefeatedMonsters = dungeonId ? getDataFromLocalStorage<number[]>(`defeatedMonsters_${dungeonId}`) : [];

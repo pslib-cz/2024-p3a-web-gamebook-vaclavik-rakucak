@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '../ChainViewer/ChainViewer.module.css';
+import styles from './NavigationButtons.module.css';
 import Button from '../../Buttons/ButtonLarge/ButtonLarge';
 
 interface NavigationButtonsProps {
@@ -23,18 +23,18 @@ const NavigationButtons: React.FC<NavigationButtonsProps> = ({
   const isLastItem = currentChainIndex === chainLength - 1;
 
   return (
-    <div className={styles.navigationButtons}>
+    <div className={styles.nvBtnContainer}>
       <Button
         onClick={onPrevious}
         disabled={isFirstItem}
       >
-        Previous
+        Go back
       </Button>
       <Button
         onClick={onNext}
         disabled={isLastItem || isRoomDeadEnd || isFork}
       >
-        Next
+        Go further
       </Button>
     </div>
   );
