@@ -125,8 +125,11 @@ const FightComponent: React.FC<FightComponentProps> = ({ onFightEnd }) => {
         )}
 
         <div className={styles.monsterImageContainer}>
-          <div className={styles.healthBarContainer}>
-            <EnemyHealthBar current={monsterHealth} max={maxMonsterHealth} />
+          <div className={styles.healthBarWrapper}>
+            <img src='/public/heart.png' alt='Heart' className={styles.heartImage} />
+            <div className={styles.healthBarContainer}>
+              <EnemyHealthBar current={monsterHealth} max={maxMonsterHealth} />
+            </div>
           </div>
 
           {monsterImage && (

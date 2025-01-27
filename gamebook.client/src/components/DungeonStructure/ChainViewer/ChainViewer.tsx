@@ -8,6 +8,7 @@ import NavigationButtons from '../NavigationButtons/NavigationButtons';
 import { useNavigate } from 'react-router-dom';
 import Button from '../../Buttons/ButtonLarge/ButtonLarge';
 import FightComponent from '../../FightComponent/FightComponent';
+import PauseMenu from '../../PauseMenu/PauseMenu';
 
 const ChainViewer: React.FC = () => {
   const {
@@ -23,6 +24,7 @@ const ChainViewer: React.FC = () => {
   const [isFighting, setIsFighting] = useState<boolean>(false);
   const currentItem = chain ? chain[currentChainIndex] : null;
   const navigate = useNavigate();
+  const [isPauseMenuOpen, setIsPauseMenuOpen] = useState<boolean>(false);
 
   useEffect(() => {
     const currentItem = chain ? chain[currentChainIndex] : null;
@@ -71,6 +73,10 @@ const ChainViewer: React.FC = () => {
     setIsFighting(true);
   };
 
+  const togglePauseMenu = () => {
+    setIsPauseMenuOpen(!isPauseMenuOpen);
+  };
+
   if (!chain || chain.length === 0) {
     return <div className={styles.ViewContainer}>No chain data available.</div>;
   }
@@ -83,6 +89,16 @@ const ChainViewer: React.FC = () => {
 
   return (
     <div className={styles.ViewContainer}>
+      <div className={styles.pauseButton}>
+        <Button onClick={togglePauseMenu} >
+          <div className={styles.hamburger}>
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
+        </Button>
+      </div>
+      {isPauseMenuOpen && <PauseMenu onClose={togglePauseMenu} isInDungeon={true} />}
       {currentItem &&
         (currentItem.type === 'hall' || currentItem.type === 'room') &&
         backgroundImageUrl && (
@@ -119,6 +135,7 @@ const ChainViewer: React.FC = () => {
         isFork={currentItem?.type === 'fork'}
         onPrevious={handlePrevious}
         onNext={handleNext}
+        isFighting={isFighting} // Přidán nový prop isFighting
       />
       {/* Tlačítko pro opuštění dungeonu (zobrazí se jen v poslední místnosti) */}
       {isLastRoom && (

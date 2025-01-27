@@ -30,6 +30,22 @@
     align-items: center;
 }
 
+.healthBarWrapper{
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    align-items: center;
+}
+.heartImage{
+    width: 50px;
+    height: 50px;
+    margin-right: -2rem;
+    padding: 1rem;
+    background-color: var(--Brown);
+    border: 10px solid var(--Dark-Brown);
+    border-radius: 100%;
+}
+
 .monsterImage{
     width: 700px;
     height: 700px;
@@ -41,6 +57,7 @@
     background-color: var(--Brown);
     border: 10px solid var(--Dark-Brown);
     border-radius: 20px;
+    z-index: -1;
 
 }
 

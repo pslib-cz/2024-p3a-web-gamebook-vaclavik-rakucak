@@ -6,7 +6,7 @@ import { ChainElement } from '../../types/RoomDto';
 
 const DungeonPage: React.FC = () => {
   const { dungeonId, type, index } = useParams<{ dungeonId?: string; type?: string; index?: string }>();
-  const { chain, setChain, currentChainIndex, setCurrentChainIndex, setDungeonId, playerHealth, setPlayerHealth, setCoins, defeatedMonsters, setDefeatedMonsters } = useGameContext();
+  const { chain, setChain, currentChainIndex, setCurrentChainIndex, setDungeonId, playerHealth, setPlayerHealth, setCoins, setDefeatedMonsters } = useGameContext();
   const navigate = useNavigate();
 
   useEffect(() => {

@@ -9,6 +9,7 @@ interface NavigationButtonsProps {
   isFork: boolean;
   onPrevious: () => void;
   onNext: () => void;
+  isFighting: boolean; // Nový prop
 }
 
 const NavigationButtons: React.FC<NavigationButtonsProps> = ({
@@ -18,6 +19,7 @@ const NavigationButtons: React.FC<NavigationButtonsProps> = ({
   isFork,
   onPrevious,
   onNext,
+  isFighting, // Přístup k novému propu
 }) => {
   const isFirstItem = currentChainIndex === 0;
   const isLastItem = currentChainIndex === chainLength - 1;
@@ -26,13 +28,13 @@ const NavigationButtons: React.FC<NavigationButtonsProps> = ({
     <div className={styles.nvBtnContainer}>
       <Button
         onClick={onPrevious}
-        disabled={isFirstItem}
+        disabled={isFirstItem || isFighting}
       >
         Go back
       </Button>
       <Button
         onClick={onNext}
-        disabled={isLastItem || isRoomDeadEnd || isFork}
+        disabled={isLastItem || isRoomDeadEnd || isFork || isFighting}
       >
         Go further
       </Button>
