@@ -90,5 +90,10 @@
   transform: translate(-50%, -50%);
   background-color: transparent;
 }
-
+.Burgir{  
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 90;
+}
 

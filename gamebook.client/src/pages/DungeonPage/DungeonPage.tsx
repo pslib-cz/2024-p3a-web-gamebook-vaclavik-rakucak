@@ -6,7 +6,7 @@ import { ChainElement } from '../../types/RoomDto';
 
 const DungeonPage: React.FC = () => {
   const { dungeonId, type, index } = useParams<{ dungeonId?: string; type?: string; index?: string }>();
-  const { chain, setChain, currentChainIndex, setCurrentChainIndex, setDungeonId, playerHealth, setPlayerHealth, setCoins, setDefeatedMonsters } = useGameContext();
+  const { chain, setChain, currentChainIndex, setCurrentChainIndex, setDungeonId, setPlayerHealth, setCoins, setDefeatedMonsters } = useGameContext();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -17,7 +17,6 @@ const DungeonPage: React.FC = () => {
         }
         setDungeonId(dungeonId);
 
-        // Načtení chainu z API, pokud není v GameContextu
         if (!chain || chain.length === 0) {
           const response = await fetch(`https://localhost:7190/DungeonChain/${dungeonId}`);
 

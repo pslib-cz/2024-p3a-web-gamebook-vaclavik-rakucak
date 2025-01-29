@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import Button from '../../Buttons/ButtonLarge/ButtonLarge';
 import FightComponent from '../../FightComponent/FightComponent';
 import PauseMenu from '../../PauseMenu/PauseMenu';
+import Burgir from '../../Burgir/Burgir';
 
 const ChainViewer: React.FC = () => {
   const {
@@ -17,7 +18,6 @@ const ChainViewer: React.FC = () => {
     currentChainIndex,
     setCurrentChainIndex,
     chain,
-    dungeonId,
     changeCoins
   } = useGameContext();
   const [backgroundImageUrl, setBackgroundImageUrl] = useState<string>('');
@@ -25,6 +25,9 @@ const ChainViewer: React.FC = () => {
   const currentItem = chain ? chain[currentChainIndex] : null;
   const navigate = useNavigate();
   const [isPauseMenuOpen, setIsPauseMenuOpen] = useState<boolean>(false);
+  const clearSessionStorage = () => {
+    sessionStorage.removeItem('shopEquipment');
+  };
 
   useEffect(() => {
     const currentItem = chain ? chain[currentChainIndex] : null;
@@ -67,6 +70,7 @@ const ChainViewer: React.FC = () => {
   const handleGoBackToMap = () => {
     navigate('/map');
     changeCoins(10);
+    clearSessionStorage();   
   };
 
   const handleStartFight = () => {
@@ -89,16 +93,10 @@ const ChainViewer: React.FC = () => {
 
   return (
     <div className={styles.ViewContainer}>
-      <div className={styles.pauseButton}>
-        <Button onClick={togglePauseMenu} >
-          <div className={styles.hamburger}>
-            <div></div>
-            <div></div>
-            <div></div>
-          </div>
-        </Button>
-      </div>
-      {isPauseMenuOpen && <PauseMenu onClose={togglePauseMenu} isInDungeon={true} />}
+        <div className={styles.Burgir}>
+          <Burgir onClick={togglePauseMenu} isOpen={isPauseMenuOpen}/>
+        </div>
+      {isPauseMenuOpen && <PauseMenu onClose={togglePauseMenu} currentPage='dungeon' />}
       {currentItem &&
         (currentItem.type === 'hall' || currentItem.type === 'room') &&
         backgroundImageUrl && (

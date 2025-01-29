@@ -6,14 +6,15 @@ import Button from '../Buttons/ButtonLarge/ButtonLarge';
 
 interface PauseMenuProps {
   onClose: () => void;
-  isInDungeon: boolean;
+  currentPage: string;
 }
 
-const PauseMenu: React.FC<PauseMenuProps> = ({ onClose, isInDungeon }) => {
+const PauseMenu: React.FC<PauseMenuProps> = ({ onClose, currentPage }) => {
   const { changeCoins, setChain, setCurrentChainIndex } = useGameContext();
   const navigate = useNavigate();
   const [showTutorial, setShowTutorial] = useState<boolean>(false);
   const [showConfirmExit, setShowConfirmExit] = useState<boolean>(false);
+  const [isPauseMenuOpen, setIsPauseMenuOpen] = useState<boolean>(false);
 
   const handleQuestClick = () => {
     // TODO: Implementovat zobrazení aktivního questu
@@ -32,38 +33,29 @@ const PauseMenu: React.FC<PauseMenuProps> = ({ onClose, isInDungeon }) => {
   };
 
   const handleExitDungeonClick = () => {
-      setShowConfirmExit(true);
+    setShowConfirmExit(true);
   };
 
   const handleConfirmExit = () => {
-      setChain(null);
-      setCurrentChainIndex(0);
-      changeCoins(0);
-      navigate('/map');
-      onClose();
-  }
+    setChain(null);
+    setCurrentChainIndex(0);
+    changeCoins(0);
+    navigate('/map');
+    onClose();
+  };
 
   const handleCancelExit = () => {
     setShowConfirmExit(false);
-  }
+  };
 
   return (
     <div className={styles.pauseMenu}>
-      <div className={styles.menuHeader}>
-        <Button onClick={onClose}>
-          <div className={styles.hamburger}>
-            <div></div>
-            <div></div>
-            <div></div>
-          </div>
-        </Button>
-        <h2>Pause Menu</h2>
-      </div>
       <Button onClick={handleQuestClick}>Active Quest</Button>
       <Button onClick={handleInventoryClick}>Inventory</Button>
       <Button onClick={handleTutorialClick}>Tutorial</Button>
 
-      {isInDungeon && (
+      {/* Zobraz tlačítko "Exit Dungeon" jen na stránce dungeonu */}
+      {currentPage === 'dungeon' && (
         <Button onClick={handleExitDungeonClick}>Exit Dungeon</Button>
       )}
 
@@ -79,12 +71,12 @@ const PauseMenu: React.FC<PauseMenuProps> = ({ onClose, isInDungeon }) => {
 
       {showConfirmExit && (
         <div className={styles.confirmModal}>
-            <h3>Opravdu chcete opustit dungeon?</h3>
-            <p>Ztratíte všechen postup v dungeonu a nedostanete žádnou odměnu.</p>
-            <div className={styles.modalButtons}>
-                <Button onClick={handleConfirmExit}>Ano</Button>
-                <Button onClick={handleCancelExit}>Ne</Button>
-            </div>
+          <h3>Opravdu chcete opustit dungeon?</h3>
+          <p>Ztratíte všechen postup v dungeonu a nedostanete žádnou odměnu.</p>
+          <div className={styles.modalButtons}>
+            <Button onClick={handleConfirmExit}>Ano</Button>
+            <Button onClick={handleCancelExit}>Ne</Button>
+          </div>
         </div>
       )}
     </div>

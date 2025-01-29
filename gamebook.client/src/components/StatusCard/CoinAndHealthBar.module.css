@@ -1,10 +1,11 @@
 .bar {
     position: absolute;
-    top: 40%;
+    top: 50%;
     left: 0;
     background-color: var(--Light-Brown);
     border: 10px solid var(--Dark-Brown);
     border-radius: 0 20px 20px 0;
+    transform: translate(0, -50%);
   }
   
   .coins, .health {

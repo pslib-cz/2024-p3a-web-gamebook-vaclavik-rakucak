@@ -6,6 +6,8 @@ import { fetchImage } from '../../api/imagesApi';
 import Button from '../../components/Buttons/ButtonSmall/ButtonSmall';
 import RouteButton from '../../components/Buttons/routeButtonSmall/routeButton';
 import { useGameContext } from '../../contexts/GameContext';
+import PauseMenu from '../../components/PauseMenu/PauseMenu';
+import Burgir from '../../components/Burgir/Burgir';
 
 type MapButtonProps = {
   dungeonId: number;
@@ -38,6 +40,10 @@ const MapButton: React.FC<MapButtonProps> = ({ dungeonId, label }) => {
 
 const MainMapPage: React.FC = () => {
   const [backgroundImageUrl, setBackgroundImageUrl] = useState<string>('');
+  const [isPauseMenuOpen, setIsPauseMenuOpen] = useState<boolean>(false);
+  const togglePauseMenu = () => {
+    setIsPauseMenuOpen((prev) => !prev);
+  };
 
   useEffect(() => {
     const loadImage = async () => {
@@ -64,7 +70,10 @@ const MainMapPage: React.FC = () => {
         backgroundPosition: 'center',
       }}
     >
-      <h1 className={styles.title}>.</h1>
+      <div className={styles.Burgir}>
+        <Burgir onClick={togglePauseMenu} isOpen={isPauseMenuOpen}/>
+      </div>
+      {isPauseMenuOpen && <PauseMenu onClose={togglePauseMenu} currentPage='Map' />}
       <div className={styles.mapButtonContainer}>
         <div className={styles.Dungeon1}>
           <MapButton dungeonId={2} label="Dungeon 1" />

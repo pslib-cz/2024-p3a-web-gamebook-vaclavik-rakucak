@@ -1,113 +1,93 @@
 import React, { useState, useEffect } from 'react';
-import Button from '../../components/Buttons/routeButtons/routeButton.tsx';
-import { fetchImage } from '../../api/imagesApi';
-import styles from './ShopPage.module.css';
 import RouteButton from '../../components/Buttons/routeButtons/routeButton.tsx';
-import useFetch from '../../hooks/useFetch.ts';
-import { useGameContext } from '../../contexts/GameContext';
-
-type Equipment = {
-  id: number;
-  name: string;
-  type: string;
-  price: number;
-  rarity: string;
-  dmg: number;
-  specialEffect: {
-    name: string;
-    description: string;
-    value: number;
-  } | null;
-  imageId: number;
-  imageUrl?: string;
-}
+import axios from 'axios';
 
 const ShopPage: React.FC = () => {
-  const [backgroundImageUrl, setBackgroundImageUrl] = useState<string>('');
-  const { data: equipments, loading, error, setData } = useFetch<Equipment[]>('https://localhost:7190/api/ShopOffer/random');
-  const { changeCoins } = useGameContext();
+  const [equipment, setEquipment] = useState<any[]>([]);
+  const [images, setImages] = useState<{ [key: number]: string }>({});
+  const [backgroundImage, setBackgroundImage] = useState<string | null>(null);
 
   useEffect(() => {
-    const loadEquipmentImages = async (equipments: Equipment[]) => {
-      const updatedEquipments = await Promise.all(
-        equipments.map(async (equipment) => {
-          try {
-            const imageUrl = await fetchImage(equipment.imageId);
-            return { ...equipment, imageUrl };
-          } catch (error) {
-            console.error('Error loading image for equipment:', equipment.name, error);
-            return equipment;
+    const fetchEquipment = async () => {
+      const storedEquipment = sessionStorage.getItem('shopEquipment');
+      if (storedEquipment) {
+        const parsedEquipment = JSON.parse(storedEquipment);
+        if (Array.isArray(parsedEquipment)) {
+          setEquipment(parsedEquipment);
+        } else {
+          console.error('Stored equipment is not an array:', parsedEquipment);
+        }
+      } else {
+        try {
+          const response = await axios.get('https://localhost:7190/api/ShopOffer/random');
+          if (response.headers['content-type']?.includes('application/json')) {
+            if (Array.isArray(response.data)) {
+              setEquipment(response.data);
+              sessionStorage.setItem('shopEquipment', JSON.stringify(response.data));
+            } else {
+              console.error('Unexpected response data:', response.data);
+            }
+          } else {
+            console.error('Unexpected response format:', response);
           }
-        })
-      );
-      if (setData) {
-        setData(updatedEquipments);
+        } catch (error) {
+          console.error('Error fetching equipment:', error);
+        }
       }
     };
 
-    if (equipments) {
-      loadEquipmentImages(equipments);
-    }
-  }, [equipments, setData]);
+    const fetchImages = async () => {
+      const storedEquipment = sessionStorage.getItem('shopEquipment');
+      if (storedEquipment) {
+        const equipment = JSON.parse(storedEquipment);
+        if (Array.isArray(equipment)) {
+          const imagePromises = equipment.map((item: any) =>
+            axios.get(`https://localhost:7190/api/Images/${item.imageId}`, { responseType: 'blob' })
+          );
+          const imageResponses = await Promise.all(imagePromises);
+          const imageMap: { [key: number]: string } = {};
+          imageResponses.forEach((response, index) => {
+            const url = URL.createObjectURL(response.data);
+            imageMap[equipment[index].imageId] = url;
+          });
+          setImages(imageMap);
+        } else {
+          console.error('Stored equipment is not an array:', equipment);
+        }
+      }
+    };
 
-  // Načtení background image
-  useEffect(() => {
-    const loadImage = async () => {
+    const fetchBackgroundImage = async () => {
       try {
-        const imageId = 26;
-        const url = await fetchImage(imageId);
-        setBackgroundImageUrl(url);
+        const response = await axios.get('https://localhost:7190/api/Images/26', { responseType: 'blob' });
+        const url = URL.createObjectURL(response.data);
+        setBackgroundImage(url);
       } catch (error) {
-        console.error('Error loading background image:', error);
+        console.error('Error fetching background image:', error);
       }
     };
 
-    loadImage();
+    fetchEquipment().then(fetchImages);
+    fetchBackgroundImage();
   }, []);
 
-  const handleBuyItem = async (itemId: number, itemPrice: number) => {
-    const confirmPurchase = window.confirm(`Are you sure you want to buy this item for ${itemPrice} coins?`);
-    if (confirmPurchase) {
-      changeCoins(-itemPrice);
-      console.log('Buying item:', itemId);
-    }
-  };
-
   return (
-    <div
-      className={styles.shopPage}
-      style={{
-        backgroundImage: backgroundImageUrl ? `url(${backgroundImageUrl})` : 'none',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-      }}
-    >
-      <RouteButton route="/Town" label="Back to Town" />
-
-      <div className={styles.offerwall}>
-        <h2>Offerwall</h2>
-        {loading && <p>Loading items...</p>}
-        {error && <p>Error loading items: {error}</p>}
-        {!loading && !error && equipments && (
-          <div className={styles.items}>
-            {equipments.map((item) => (
-              <div key={item.id} className={styles.item}>
-                {item.imageUrl && <img src={item.imageUrl} alt={item.name} />}
-                <h3>{item.name}</h3>
-                <p>Type: {item.type}</p>
-                <p>Rarity: {item.rarity}</p>
-                <p>DMG: {item.dmg}</p>
-                {item.specialEffect && (
-                  <p>
-                    Special Effect: {item.specialEffect.name} ({item.specialEffect.description})
-                  </p>
-                )}
-                <p>Price: {item.price}</p>
-                <button onClick={() => handleBuyItem(item.id, item.price ? item.price : 0)}>Buy</button>
-              </div>
-            ))}
+    <div style={{ backgroundImage: `url(${backgroundImage})` }}>
+      <RouteButton route="/Town" label="Zpět do města" />
+      <div className="shop-items">
+        {Array.isArray(equipment) && equipment.map((item) => (
+          <div key={item.id} className="shop-item">
+            <img src={images[item.imageId]} alt={item.name} />
+            <h3>{item.name}</h3>
+            <p>Type: {item.type}</p>
+            <p>Price: {item.price}</p>
+            <p>Rarity: {item.rarity}</p>
+            <p>Damage: {item.dmg}</p>
+            {item.specialEffect && (
+              <p>Special Effect: {item.specialEffect.name}</p>
+            )}
           </div>
-        )}
+        ))}
       </div>
     </div>
   );

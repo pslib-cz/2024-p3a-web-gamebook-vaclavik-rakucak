@@ -1,0 +1,10 @@
+.equipmentSlot {
+    display: flex;
+  }
+  
+  .slot {
+    width: 5rem;
+    height: 5rem;
+    background-color: var(--Item-Backround);
+    border: 5px solid var(--Item-Backround-light);
+  }
