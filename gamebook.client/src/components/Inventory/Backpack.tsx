@@ -1,24 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import styles from './Backpack.module.css';
+import { useGameContext } from '../../contexts/GameContext';
 
 const Backpack: React.FC = () => {
-  const [items, setItems] = useState<any[]>([]);
   const [images, setImages] = useState<{ [key: number]: string }>({});
+  const { items, setItems } = useGameContext();
 
   useEffect(() => {
-    const fetchItems = async () => {
-      const storedItems = sessionStorage.getItem('backpackItems');
-      if (storedItems) {
-        const parsedItems = JSON.parse(storedItems);
-        if (Array.isArray(parsedItems)) {
-          setItems(parsedItems);
-        } else {
-          console.error('Stored items are not an array:', parsedItems);
-        }
-      }
-    };
-
     const fetchImages = async () => {
       const storedItems = sessionStorage.getItem('backpackItems');
       if (storedItems) {
@@ -40,8 +29,8 @@ const Backpack: React.FC = () => {
       }
     };
 
-    fetchItems().then(fetchImages);
-  }, []);
+    fetchImages();
+  }, [items]);
 
   const addItem = (newItem: any) => {
     setItems((prevItems) => {

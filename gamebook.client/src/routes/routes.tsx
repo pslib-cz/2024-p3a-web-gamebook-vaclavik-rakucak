@@ -9,7 +9,6 @@ import TownPage from '../pages/TownPage/TownPage';
 import TavernPage from '../pages/TavernPage/TavernPage';
 import ShopPage from '../pages/ShopPage/ShopPage';
 import InventoryButton from '../components/Inventory/InventoryButton';
-import '../components/Inventory/Inventory.css';
 
 interface RoutesProps {
   token: string;

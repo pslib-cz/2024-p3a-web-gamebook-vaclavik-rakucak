@@ -2,13 +2,18 @@
     position: absolute;
     top: 10%;
     right: 0;
-    background: none;
-    border: none;
+    background-color: var(--Brown);
+    border: solid 10px var(--Dark-Brown);
+    border-radius: 10px;
     cursor: pointer;
     padding: 0.5rem;
+    margin: 1rem;
   }
   
   .inventoryButton img {
-    width: 50px;
-    height: 50px;
+    width: 3rem;
+    height: 3rem;
+    background-color: none;
+    padding: 0;
+    margin: 0;
   }

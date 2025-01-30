@@ -1,10 +1,41 @@
 .equipmentSlot {
-    display: flex;
-  }
-  
-  .slot {
-    width: 5rem;
-    height: 5rem;
-    background-color: var(--Item-Backround);
-    border: 5px solid var(--Item-Backround-light);
-  }
+  display: flex;
+  flex-direction: column;
+}
+
+.slot {
+  display: flex;
+  position: relative;
+}
+
+.imageContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 4rem;
+  height: 4rem;
+  background-color: var(--Item-Backround-light);
+  border: solid 10px var(--Item-Backround);
+}
+
+.info {
+  position: absolute;
+  top: 0;
+  left: 100%;
+  background-color: var(--Brown);
+  border: solid 10px var(--Dark-Brown);
+  padding: 10px;
+  border-radius: 10px;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.info p {
+  margin: 0;
+}
+
+.info button {
+  margin-top: 5px;
+}

@@ -6,8 +6,13 @@ import styles from './Inventory.module.css';
 const Inventory: React.FC = () => {
   return (
     <div className={styles.inventory}>
-      <div className={styles.equipmentContainer}>
-        <EquipmentSlot />
+      <div className={styles.equipmentAndImageContainer}>
+        <div className={styles.imageContainer}>
+
+        </div>
+        <div className={styles.equipmentContainer}>
+          <EquipmentSlot />
+        </div>
       </div>
       <div className={styles.backpackContainer}>
         <Backpack />

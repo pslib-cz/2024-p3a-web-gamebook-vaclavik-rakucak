@@ -1,7 +1,5 @@
 .pauseMenu {
     position: fixed;
-    top: 0;
-    left: 0;
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
@@ -9,7 +7,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 4rem;
+    justify-content: center;
   }
   
   .menuHeader {
@@ -65,4 +63,15 @@
       gap: 10px;
       justify-content: center;
       margin-top: 10px;
+  }
+
+  .inventoryModal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 20px;
+    border-radius: 10px;
+    z-index: 1000;
   }

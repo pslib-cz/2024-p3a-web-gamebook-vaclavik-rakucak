@@ -1,30 +1,29 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useGameContext } from '../../contexts/GameContext';
-import styles from './PauseMenu.module.css';
 import Button from '../Buttons/ButtonLarge/ButtonLarge';
+import Inventory from '../Inventory/Inventory';
+import styles from './PauseMenu.module.css';
 
 interface PauseMenuProps {
-  onClose: () => void;
   currentPage: string;
+  onClose: () => void;
+  setChain: (chain: any) => void;
+  setCurrentChainIndex: (index: number) => void;
+  changeCoins: (amount: number) => void;
 }
 
-const PauseMenu: React.FC<PauseMenuProps> = ({ onClose, currentPage }) => {
-  const { changeCoins, setChain, setCurrentChainIndex } = useGameContext();
+const PauseMenu: React.FC<PauseMenuProps> = ({ currentPage, onClose, setChain, setCurrentChainIndex, changeCoins }) => {
+  const [showTutorial, setShowTutorial] = useState(false);
+  const [showConfirmExit, setShowConfirmExit] = useState(false);
+  const [showInventory, setShowInventory] = useState(false);
   const navigate = useNavigate();
-  const [showTutorial, setShowTutorial] = useState<boolean>(false);
-  const [showConfirmExit, setShowConfirmExit] = useState<boolean>(false);
-  const [isPauseMenuOpen, setIsPauseMenuOpen] = useState<boolean>(false);
 
   const handleQuestClick = () => {
-    // TODO: Implementovat zobrazení aktivního questu
-    console.log('Quest clicked');
-    onClose();
+    // Implementace pro zobrazení aktivního questu
   };
 
   const handleInventoryClick = () => {
-    // TODO: Implementovat zobrazení inventáře (zatím jen tlačítko)
-    console.log('Inventory clicked');
+    setShowInventory(true);
     onClose();
   };
 
@@ -46,6 +45,10 @@ const PauseMenu: React.FC<PauseMenuProps> = ({ onClose, currentPage }) => {
 
   const handleCancelExit = () => {
     setShowConfirmExit(false);
+  };
+
+  const handleCloseInventory = () => {
+    setShowInventory(false);
   };
 
   return (
@@ -77,6 +80,13 @@ const PauseMenu: React.FC<PauseMenuProps> = ({ onClose, currentPage }) => {
             <Button onClick={handleConfirmExit}>Ano</Button>
             <Button onClick={handleCancelExit}>Ne</Button>
           </div>
+        </div>
+      )}
+
+      {showInventory && (
+        <div className={styles.inventoryModal}>
+          <Inventory />
+          <Button onClick={handleCloseInventory}>Close Inventory</Button>
         </div>
       )}
     </div>

@@ -1,6 +1,6 @@
 import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
 import { ChainElement } from '../types/RoomDto';
-import { saveDataToLocalStorage, getDataFromLocalStorage } from '../utils/LocalStorage'; // Importujte funkce pro práci s localStorage
+import { saveDataToLocalStorage, getDataFromLocalStorage } from '../utils/LocalStorage';
 
 interface GameContextProps {
   chain: ChainElement[] | null;
@@ -16,8 +16,16 @@ interface GameContextProps {
   setCoins: (coins: number) => void;
   changeCoins: (amount: number) => void;
   changeHealth: (amount: number) => void;
-  defeatedMonsters: number[]; // Přidáno pro ukládání poražených monster
-  setDefeatedMonsters: (monsters: number[]) => void; // Přidáno pro nastavení poražených monster
+  defeatedMonsters: number[];
+  setDefeatedMonsters: (monsters: number[]) => void;
+  weapon: any;
+  setWeapon: (weapon: any) => void;
+  armor: any;
+  setArmor: (armor: any) => void;
+  shield: any;
+  setShield: (shield: any) => void;
+  items: any[];
+  setItems: (items: any[]) => void;
 }
 
 const GameContext = createContext<GameContextProps | undefined>(undefined);
@@ -41,6 +49,13 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
   const [playerHealth, setPlayerHealth] = useState<number>(100);
   const [coins, setCoins] = useState<number>(0);
   const maxPlayerHealth = 100;
+  const [weapon, setWeapon] = useState<any>(null);
+  const [armor, setArmor] = useState<any>(null);
+  const [shield, setShield] = useState<any>(null);
+  const [items, setItems] = useState<any[]>(() => {
+    const storedItems = sessionStorage.getItem('backpackItems');
+    return storedItems ? JSON.parse(storedItems) : [];
+  });
   const [defeatedMonsters, setDefeatedMonsters] = useState<number[]>(() => {
     const storedDefeatedMonsters = dungeonId ? getDataFromLocalStorage<number[]>(`defeatedMonsters_${dungeonId}`) : [];
     return storedDefeatedMonsters || [];
@@ -76,6 +91,14 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
     changeHealth,
     defeatedMonsters,
     setDefeatedMonsters,
+    weapon,
+    setWeapon,
+    armor,
+    setArmor,
+    shield,
+    setShield,
+    items,
+    setItems,
   };
 
   return <GameContext.Provider value={value}>{children}</GameContext.Provider>;

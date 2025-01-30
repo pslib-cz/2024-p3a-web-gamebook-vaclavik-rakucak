@@ -22,7 +22,7 @@
 
 .hamburger.open .line1 {
   transform-origin: center;
-  transform: translate(0,15px) rotate(45deg) ;
+  transform: translate(0,16px) rotate(45deg) ;
 }
 
 .hamburger.open .line2 {
@@ -31,5 +31,5 @@
 
 .hamburger.open .line3 {
   transform-origin: center;
-  transform: translate(0,-15px) rotate(135deg) ;
+  transform: translate(0,-16px) rotate(-45deg) ;
 }

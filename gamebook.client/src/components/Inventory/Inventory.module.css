@@ -25,3 +25,11 @@
     justify-content: center;
     gap: 10px;
   }
+  .imageContainer{
+    width: 10rem;
+    height: 20rem;
+  }
+  .equipmentAndImageContainer{
+    display: flex;
+    flex-direction: row;
+  }
