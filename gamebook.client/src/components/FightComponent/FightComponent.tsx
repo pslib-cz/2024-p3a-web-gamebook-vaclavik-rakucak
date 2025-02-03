@@ -19,6 +19,7 @@ const FightComponent: React.FC<FightComponentProps> = ({ onFightEnd }) => {
   const [monsterImage, setMonsterImage] = useState<string | null>(null);
 
   const baseApiUrl = import.meta.env.VITE_API_URL;
+  
   useEffect(() => {
     const fetchMonsterData = async () => {
       setIsLoading(true);
@@ -70,10 +71,14 @@ const FightComponent: React.FC<FightComponentProps> = ({ onFightEnd }) => {
     if (!isPlayerTurn && monsterHealth > 0) {
       const timeoutId = setTimeout(() => {
         if (monster) {
-          let damage = monster.damage - armor.dmg;
+          const armorDmg = armor?.dmg ?? 0;
+          const shieldDmg = shield?.dmg ?? 0;
+          const monsterDamage = monster?.damage ?? 0;
+  
+          let damage = monsterDamage - armorDmg;
           
           // Přidáme logiku pro procento šance na znegování poškození
-          const negateChance = shield.dmg;
+          const negateChance = shieldDmg;
           const randomValue = Math.random() * 100; // Náhodná hodnota mezi 0 a 100
         
           if (randomValue < negateChance) {
@@ -96,9 +101,9 @@ const FightComponent: React.FC<FightComponentProps> = ({ onFightEnd }) => {
   
   const handlePlayerAttack = () => {
     if (isPlayerTurn && monster) {
-      const damage = weapon.dmg;
+      const weaponDmg = weapon?.dmg ?? 0;
       setMonsterHealth(prevHealth => {
-        const newHealth = Math.max(0, prevHealth - damage);
+        const newHealth = Math.max(0, prevHealth - weaponDmg);
         if (newHealth === 0) {
           changeCoins(10);
           setTimeout(() => onFightEnd(monster.id), 0); 
@@ -107,7 +112,7 @@ const FightComponent: React.FC<FightComponentProps> = ({ onFightEnd }) => {
         return newHealth;
       });
       setIsPlayerTurn(false);
-      console.log(`Player attacks! Monster takes ${damage} damage.`);
+      console.log(`Player attacks! Monster takes ${weaponDmg} damage.`);
     }
   };
 

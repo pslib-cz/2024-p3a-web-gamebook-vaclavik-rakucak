@@ -23,8 +23,8 @@ const TownPage: React.FC = () => {
   return (
     <div className={styles.townPage}
         style={{ backgroundImage: backgroundImageUrl ? `url(${backgroundImageUrl})` : 'none', backgroundSize: 'cover', backgroundPosition: 'center' }}>
-        <RouteButton route="/Tavern" label="Tavern" />
-        <RouteButton route="/Blacksmith" label="Blacksmith"/>
+        <RouteButton route="/Town/Tavern" label="Tavern" />
+        <RouteButton route="/Town/Blacksmith" label="Blacksmith"/>
         <RouteButton route="/Map" label="Map"/>
     </div>
   );

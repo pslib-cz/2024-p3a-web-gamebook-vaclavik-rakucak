@@ -26,8 +26,8 @@ const AppRoutes: React.FC<RoutesProps> = ({ token, role, onLogin }) => {
         <Route path="/Dungeon/:dungeonId/:type/:index" element={<DungeonPage />} />
         <Route path="/Login" element={<Login onLogin={onLogin} />} />
         <Route path='/Town' element={<TownPage />} />
-        <Route path='/Tavern' element={<TavernPage />} />
-        <Route path='/Blacksmith' element={<ShopPage />} />
+        <Route path='/Town/Tavern' element={<TavernPage />} />
+        <Route path='/Town/Blacksmith' element={<ShopPage />} />
         <Route
           path="/AdminPanel"
           element={

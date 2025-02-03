@@ -11,6 +11,8 @@ export interface Room {
     imageId?: number;
     image?: ImageDto | null;
     isDeadEnd?: boolean;
+    monster?: Monster;
+
 }
 
 export interface Hall {

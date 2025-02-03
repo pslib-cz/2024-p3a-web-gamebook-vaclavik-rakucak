@@ -11,6 +11,8 @@ const Backpack: React.FC = () => {
   const [hoveredItem, setHoveredItem] = useState<Item | null>(null);
   const [isMobile, setIsMobile] = useState<boolean>(false);
 
+  const baseApiUrl = import.meta.env.VITE_API_URL;
+
   useEffect(() => {
     const fetchImages = async () => {
       const storedItems = sessionStorage.getItem('backpackItems');
@@ -18,7 +20,7 @@ const Backpack: React.FC = () => {
         const items: Item[] = JSON.parse(storedItems);
         if (Array.isArray(items)) {
           const imagePromises = items.map((item: Item) =>
-            axios.get(`https://localhost:7190/api/Images/${item.imageId}`, { responseType: 'blob' })
+            axios.get(`${baseApiUrl}/Images/${item.imageId}`, { responseType: 'blob' })
           );
           const imageResponses = await Promise.all(imagePromises);
           const imageMap: { [key: number]: string } = {};

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Gamebook.Server.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class DungeonChainController : ControllerBase
 {
     private readonly GamebookDbContext _context;

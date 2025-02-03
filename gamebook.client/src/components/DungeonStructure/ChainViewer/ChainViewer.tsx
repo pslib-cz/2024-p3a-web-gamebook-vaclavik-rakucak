@@ -30,6 +30,8 @@ const ChainViewer: React.FC = () => {
     sessionStorage.removeItem('shopEquipment');
   };
 
+  const baseApiUrl = import.meta.env.VITE_API_URL;
+
   useEffect(() => {
     const currentItem = chain ? chain[currentChainIndex] : null;
     if (
@@ -37,7 +39,7 @@ const ChainViewer: React.FC = () => {
       (currentItem.type === 'hall' || currentItem.type === 'room') &&
       currentItem.data.imageId
     ) {
-      setBackgroundImageUrl(`https://localhost:7190/api/images/${currentItem.data.imageId}`);
+      setBackgroundImageUrl(`${baseApiUrl}/images/${currentItem.data.imageId}`);
     } else {
       setBackgroundImageUrl('');
     }

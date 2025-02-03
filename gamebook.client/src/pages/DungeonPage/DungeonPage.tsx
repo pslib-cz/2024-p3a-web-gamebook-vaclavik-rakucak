@@ -9,6 +9,8 @@ const DungeonPage: React.FC = () => {
   const { chain, setChain, currentChainIndex, setCurrentChainIndex, setDungeonId, setPlayerHealth, setCoins, setDefeatedMonsters } = useGameContext();
   const navigate = useNavigate();
 
+  const baseApiUrl = import.meta.env.VITE_API_URL;
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -18,7 +20,7 @@ const DungeonPage: React.FC = () => {
         setDungeonId(dungeonId);
 
         if (!chain || chain.length === 0) {
-          const response = await fetch(`https://localhost:7190/DungeonChain/${dungeonId}`);
+          const response = await fetch(`${baseApiUrl}/DungeonChain/${dungeonId}`);
 
           if (!response.ok) {
             throw new Error(`Failed to fetch dungeon data: ${response.statusText}`);
