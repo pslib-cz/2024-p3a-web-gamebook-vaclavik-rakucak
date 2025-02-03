@@ -21,11 +21,11 @@ type Quest = {
 }
 
 type NpcQuestCardProps = {
-    baseApiUrl: string;
     questId: number;
 }
 
-const NpcQuestCard: React.FC<NpcQuestCardProps> = ({ baseApiUrl, questId }) => {
+const NpcQuestCard: React.FC<NpcQuestCardProps> = ({ questId }) => {
+    const baseApiUrl = import.meta.env.VITE_API_URL;
     const questUrl = `${baseApiUrl}/quests/${questId}`;
 
     const { data: questData, loading: questLoading, error: questError } = useFetch<Quest>(questUrl);

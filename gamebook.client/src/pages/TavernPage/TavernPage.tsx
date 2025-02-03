@@ -36,7 +36,7 @@ const TavernPage: React.FC = () => {
         <div className={styles.tavernPage}
             style={{ backgroundImage: backgroundImageUrl ? `url(${backgroundImageUrl})` : 'none', backgroundSize: 'cover', backgroundPosition: 'center' }}>
             <div className={styles.back}><RouteButton route="/Town" label="Back" /></div>
-            <Quest baseApiUrl='https://localhost:7190/api' questId={questId} />
+            <Quest questId={questId} />
             <div style={{ display: "flex", justifyContent: "center", position: "absolute", bottom: "10px", width: "100%" }}>
               <Button onClick={handlePreviousQuest}>Previous quest</Button>
               <Button onClick={handleNextQuest}>Next quest</Button>

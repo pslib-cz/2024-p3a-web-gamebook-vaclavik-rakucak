@@ -7,7 +7,7 @@ interface HealthBarProps {
 }
 
 const EnemyHealthBar: React.FC<HealthBarProps> = ({ current, max }) => {
-  const percentage = max > 0 ? Math.round((current / max) * 100) : 0; // Přidána kontrola pro max > 0
+  const percentage = max > 0 ? Math.round((current / max) * 100) : 0;
 
   return (
     <div className={styles.healthBar}>

@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import Button from '../../components/Buttons/routeButtons/routeButton.tsx';
 import { fetchImage } from '../../api/imagesApi';
 import styles from './TownPage.module.css';
 import RouteButton from '../../components/Buttons/routeButtons/routeButton.tsx';
-import { Route } from 'react-router-dom';
 
 const TownPage: React.FC = () => {
   const [backgroundImageUrl, setBackgroundImageUrl] = useState<string>('');

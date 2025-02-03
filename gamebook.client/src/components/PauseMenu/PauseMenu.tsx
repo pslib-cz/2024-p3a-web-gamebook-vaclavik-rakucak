@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from '../Buttons/ButtonLarge/ButtonLarge';
-import Inventory from '../Inventory/Inventory';
 import styles from './PauseMenu.module.css';
+import { ChainElement } from '../../types/RoomDto';
 
 interface PauseMenuProps {
-  currentPage: string;
   onClose: () => void;
-  setChain: (chain: any) => void;
-  setCurrentChainIndex: (index: number) => void;
-  changeCoins: (amount: number) => void;
+  currentPage: string;
+  setChain?: (chain: ChainElement[] | null) => void;
+  setCurrentChainIndex?: (index: number) => void;
+  changeCoins?: (amount: number) => void;
 }
 
 const PauseMenu: React.FC<PauseMenuProps> = ({ currentPage, onClose, setChain, setCurrentChainIndex, changeCoins }) => {
@@ -36,11 +36,15 @@ const PauseMenu: React.FC<PauseMenuProps> = ({ currentPage, onClose, setChain, s
   };
 
   const handleConfirmExit = () => {
-    setChain(null);
-    setCurrentChainIndex(0);
-    changeCoins(0);
-    navigate('/map');
-    onClose();
+    if (setChain && setCurrentChainIndex && changeCoins) {
+      setChain(null);
+      setCurrentChainIndex(0);
+      changeCoins(0);
+      navigate('/map');
+      onClose();
+    } else {
+      console.error('Required functions are not provided');
+    }
   };
 
   const handleCancelExit = () => {
@@ -56,37 +60,25 @@ const PauseMenu: React.FC<PauseMenuProps> = ({ currentPage, onClose, setChain, s
       <Button onClick={handleQuestClick}>Active Quest</Button>
       <Button onClick={handleInventoryClick}>Inventory</Button>
       <Button onClick={handleTutorialClick}>Tutorial</Button>
-
-      {/* Zobraz tlačítko "Exit Dungeon" jen na stránce dungeonu */}
       {currentPage === 'dungeon' && (
         <Button onClick={handleExitDungeonClick}>Exit Dungeon</Button>
       )}
-
+      {showConfirmExit && (
+        <div className={styles.confirmExit}>
+          <p>Are you sure you want to exit the dungeon?</p>
+          <Button onClick={handleConfirmExit}>Yes</Button>
+          <Button onClick={handleCancelExit}>No</Button>
+        </div>
+      )}
+      {showInventory && (
+        <div className={styles.inventory}>
+          <Button onClick={handleCloseInventory}>Close Inventory</Button>
+        </div>
+      )}
       {showTutorial && (
         <div className={styles.tutorial}>
-          <h3>Tutorial</h3>
-          <p>
-            Tady bude stručný návod na hraní hry.
-          </p>
-          <Button onClick={handleTutorialClick}>Close</Button>
-        </div>
-      )}
-
-      {showConfirmExit && (
-        <div className={styles.confirmModal}>
-          <h3>Opravdu chcete opustit dungeon?</h3>
-          <p>Ztratíte všechen postup v dungeonu a nedostanete žádnou odměnu.</p>
-          <div className={styles.modalButtons}>
-            <Button onClick={handleConfirmExit}>Ano</Button>
-            <Button onClick={handleCancelExit}>Ne</Button>
-          </div>
-        </div>
-      )}
-
-      {showInventory && (
-        <div className={styles.inventoryModal}>
-          <Inventory />
-          <Button onClick={handleCloseInventory}>Close Inventory</Button>
+          <p>Tutorial content goes here...</p>
+          <Button onClick={handleTutorialClick}>Close Tutorial</Button>
         </div>
       )}
     </div>

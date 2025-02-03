@@ -4,11 +4,12 @@ import { useLocation } from 'react-router-dom';
 import styles from './EquipmentSlot.module.css';
 import { useGameContext } from '../../contexts/GameContext';
 import Button from '../Buttons/ButtonSmall/ButtonSmall';
+import { Item } from '../../types/RoomDto';
 
 const EquipmentSlot: React.FC = () => {
   const { weapon, setWeapon, shield, setShield, armor, setArmor, changeCoins } = useGameContext();
   const [images, setImages] = useState<{ [key: number]: string }>({});
-  const [hoveredItem, setHoveredItem] = useState<any>(null);
+  const [hoveredItem, setHoveredItem] = useState<Item | null>(null);
   const [isMobile, setIsMobile] = useState<boolean>(false);
   const location = useLocation();
 
@@ -16,8 +17,9 @@ const EquipmentSlot: React.FC = () => {
     const fetchImages = async () => {
       const storedItems = sessionStorage.getItem('equippedItems');
       if (storedItems) {
-        const items = JSON.parse(storedItems);
-        const imagePromises = items.map((item: any) =>
+        const equippedItems = JSON.parse(storedItems);
+        const items: Item[] = [equippedItems.weapon, equippedItems.shield, equippedItems.armor].filter(Boolean);
+        const imagePromises = items.map((item: Item) =>
           axios.get(`https://localhost:7190/api/Images/${item.imageId}`, { responseType: 'blob' })
         );
         const imageResponses = await Promise.all(imagePromises);
@@ -39,7 +41,7 @@ const EquipmentSlot: React.FC = () => {
     sessionStorage.setItem('equippedItems', JSON.stringify(equippedItems));
   }, [weapon, shield, armor]);
 
-  const handleUseItem = (item: any) => {
+  const handleUseItem = (item: Item) => {
     if (item.type === 'Miscellaneous') {
       // Remove item from inventory
     } else {
@@ -49,24 +51,24 @@ const EquipmentSlot: React.FC = () => {
     }
   };
 
-  const handleSellItem = (item: any) => {
+  const handleSellItem = (item: Item) => {
     changeCoins(item.price);
     // Remove item from inventory
   };
 
-  const handleHover = (item: any) => {
+  const handleHover = (item: Item | null) => {
     if (!isMobile) {
       setHoveredItem(item);
     }
   };
 
-  const handleClick = (item: any) => {
+  const handleClick = (item: Item | null) => {
     if (isMobile) {
-      setHoveredItem(item);
+      setHoveredItem(prevItem => (prevItem === item ? null : item));
     }
   };
 
-  const isInTown = location.pathname.includes('/Town');
+  const isInTown = location.pathname.includes('/Blacksmith');
 
   return (
     <div className={styles.equipmentSlot}>

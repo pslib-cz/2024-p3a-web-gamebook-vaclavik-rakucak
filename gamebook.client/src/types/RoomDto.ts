@@ -49,3 +49,13 @@ export type Monster = {
     damage: number;
     imageId: number;
 };
+export interface Item {
+    id: number;
+    name: string;
+    dmg: number;
+    rarity: string;
+    type: 'Weapon' | 'Shield' | 'Armor' | 'Miscellaneous';
+    imageId: number;
+    quantity?: number;
+    price: number;
+}

@@ -45,7 +45,7 @@
   .tutorial button {
   }
   
-  .confirmModal {
+  .confirmExit {
       background-color: var(--Brown);
       border: 10px solid var(--Dark-Brown);
       border-radius: 20px;
@@ -56,6 +56,7 @@
       left: 50%;
       transform: translate(-50%, -50%);
       z-index: 101;
+      font-size: 2rem;
   }
   
   .modalButtons {

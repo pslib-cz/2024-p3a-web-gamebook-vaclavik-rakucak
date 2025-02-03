@@ -2,7 +2,6 @@ import React from 'react';
 import { Room } from '../../../types/RoomDto';
 import styles from './RoomContent.module.css';
 import Button from '../../Buttons/ButtonLarge/ButtonLarge';
-import { useGameContext } from '../../../contexts/GameContext';
 
 type RoomContentProps = {
   room: Room;

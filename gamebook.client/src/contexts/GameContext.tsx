@@ -1,5 +1,5 @@
 import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
-import { ChainElement } from '../types/RoomDto';
+import { ChainElement, Item } from '../types/RoomDto';
 import { saveDataToLocalStorage, getDataFromLocalStorage } from '../utils/LocalStorage';
 
 interface GameContextProps {
@@ -24,8 +24,8 @@ interface GameContextProps {
   setArmor: (armor: any) => void;
   shield: any;
   setShield: (shield: any) => void;
-  items: any[];
-  setItems: (items: any[]) => void;
+  items: Item[];
+  setItems: (items: Item[]) => void;
 }
 
 const GameContext = createContext<GameContextProps | undefined>(undefined);
@@ -47,7 +47,7 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
   const [currentChainIndex, setCurrentChainIndex] = useState<number>(0);
   const [dungeonId, setDungeonId] = useState<string | undefined>(undefined);
   const [playerHealth, setPlayerHealth] = useState<number>(100);
-  const [coins, setCoins] = useState<number>(0);
+  const [coins, setCoins] = useState<number>(1000);
   const maxPlayerHealth = 100;
   const [weapon, setWeapon] = useState<any>(null);
   const [armor, setArmor] = useState<any>(null);
@@ -74,6 +74,10 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
       saveDataToLocalStorage(`defeatedMonsters_${dungeonId}`, defeatedMonsters);
     }
   }, [defeatedMonsters, dungeonId]);
+
+  useEffect(() => {
+    sessionStorage.setItem('backpackItems', JSON.stringify(items));
+  }, [items]);
 
   const value: GameContextProps = {
     chain,

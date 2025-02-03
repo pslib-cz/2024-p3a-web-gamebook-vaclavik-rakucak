@@ -10,21 +10,21 @@ interface FightComponentProps {
 }
 
 const FightComponent: React.FC<FightComponentProps> = ({ onFightEnd }) => {
-  const { changeCoins } = useGameContext();
+  const { changeCoins, changeHealth, weapon, armor, shield } = useGameContext();
   const [monsterHealth, setMonsterHealth] = useState<number>(0);
   const [maxMonsterHealth, setMaxMonsterHealth] = useState<number>(0);
   const [isPlayerTurn, setIsPlayerTurn] = useState<boolean>(true);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [monster, setMonster] = useState<Monster | null>(null);
-  const [monsterImage, setMonsterImage] = useState<string | null>(null); // State pro uložení URL obrázku
+  const [monsterImage, setMonsterImage] = useState<string | null>(null);
 
-  // Fetch dat o monstru
+  const baseApiUrl = import.meta.env.VITE_API_URL;
   useEffect(() => {
     const fetchMonsterData = async () => {
       setIsLoading(true);
       try {
         const randomMonsterId = getRandomMonsterId();
-        const response = await fetch(`https://localhost:7190/api/monsters/${randomMonsterId}`);
+        const response = await fetch(`${baseApiUrl}/monsters/${randomMonsterId}`);
         if (!response.ok) {
           throw new Error('Failed to fetch monster data');
         }
@@ -43,11 +43,10 @@ const FightComponent: React.FC<FightComponentProps> = ({ onFightEnd }) => {
     fetchMonsterData();
   }, []);
 
-  // Fetch obrázku monstra
   useEffect(() => {
     const fetchMonsterImage = async (imageId: number) => {
       try {
-        const response = await fetch(`https://localhost:7190/api/images/${imageId}`);
+        const response = await fetch(`${baseApiUrl}/images/${imageId}`);
         if (!response.ok) {
           throw new Error('Failed to fetch image data');
         }
@@ -56,38 +55,53 @@ const FightComponent: React.FC<FightComponentProps> = ({ onFightEnd }) => {
         setMonsterImage(imageUrl);
       } catch (error) {
         console.error(error);
-        setMonsterImage(null); // V případě chyby nenastavuj obrázek
+        setMonsterImage(null);
       }
     };
 
     if (monster && monster.imageId) {
       fetchMonsterImage(monster.imageId);
     } else {
-      setMonsterImage(null); // Pokud není imageId, nenastavuj obrázek
+      setMonsterImage(null);
     }
-  }, [monster]); // Spusť useEffect, když se změní monster
+  }, [monster]);
 
-  // Útok monstra (po prodlevě a pokud je na tahu monstrum)
   useEffect(() => {
     if (!isPlayerTurn && monsterHealth > 0) {
       const timeoutId = setTimeout(() => {
-        const damage = Math.floor(Math.random() * 6) + 5;
-        setIsPlayerTurn(true);
-        console.log(`Monster attacks! Player takes ${damage} damage.`);
+        if (monster) {
+          let damage = monster.damage - armor.dmg;
+          
+          // Přidáme logiku pro procento šance na znegování poškození
+          const negateChance = shield.dmg;
+          const randomValue = Math.random() * 100; // Náhodná hodnota mezi 0 a 100
+        
+          if (randomValue < negateChance) {
+            damage = 0; // Znegování poškození
+            console.log(`Shield negates the damage!`);
+            alert('Damage was negated by the shield!');
+          } else {
+            damage = Math.max(0, damage);
+          }
+        
+          changeHealth(-damage);
+          setIsPlayerTurn(true);
+          console.log(`Monster attacks! Player takes ${damage} damage.`);
+        }
       }, 1000);
-
+  
       return () => clearTimeout(timeoutId);
     }
-  }, [isPlayerTurn, monsterHealth]);
-
+  }, [isPlayerTurn, monster, monsterHealth]);
+  
   const handlePlayerAttack = () => {
     if (isPlayerTurn && monster) {
-      const damage = Math.floor(Math.random() * 5) + 1;
+      const damage = weapon.dmg;
       setMonsterHealth(prevHealth => {
         const newHealth = Math.max(0, prevHealth - damage);
         if (newHealth === 0) {
           changeCoins(10);
-          onFightEnd(monster.id);
+          setTimeout(() => onFightEnd(monster.id), 0); 
           console.log("Monster defeated!");
         }
         return newHealth;
@@ -98,12 +112,10 @@ const FightComponent: React.FC<FightComponentProps> = ({ onFightEnd }) => {
   };
 
   const getRandomMonsterId = () => {
-    const min = 1;
-    const max = 5;
-    return 1; // Vrací prvního monstra pro testování, pak uprav dle potřeby
+    return 1; // Vrací prvního monstra pro testování
   };
 
-  // Uvolnění URL objektu, když už ho nepotřebujeme
+  // Uvolnění URL objektu
   useEffect(() => {
     return () => {
       if (monsterImage) {

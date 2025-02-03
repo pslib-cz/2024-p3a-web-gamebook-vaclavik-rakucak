@@ -18,7 +18,8 @@ const ChainViewer: React.FC = () => {
     currentChainIndex,
     setCurrentChainIndex,
     chain,
-    changeCoins
+    changeCoins,
+    setChain
   } = useGameContext();
   const [backgroundImageUrl, setBackgroundImageUrl] = useState<string>('');
   const [isFighting, setIsFighting] = useState<boolean>(false);
@@ -96,7 +97,15 @@ const ChainViewer: React.FC = () => {
         <div className={styles.Burgir}>
           <Burgir onClick={togglePauseMenu} isOpen={isPauseMenuOpen}/>
         </div>
-      {isPauseMenuOpen && <PauseMenu onClose={togglePauseMenu} currentPage='dungeon' />}
+      {isPauseMenuOpen && (
+        <PauseMenu
+          onClose={togglePauseMenu}
+          currentPage='dungeon'
+          setChain={setChain}
+          setCurrentChainIndex={setCurrentChainIndex}
+          changeCoins={changeCoins}
+        />
+      )}
       {currentItem &&
         (currentItem.type === 'hall' || currentItem.type === 'room') &&
         backgroundImageUrl && (
@@ -125,7 +134,6 @@ const ChainViewer: React.FC = () => {
         <ForkContent fork={currentItem.data} />
       )}
 
-      {/* Navigační tlačítka */}
       <NavigationButtons
         currentChainIndex={currentChainIndex}
         chainLength={chain.length}
@@ -133,9 +141,8 @@ const ChainViewer: React.FC = () => {
         isFork={currentItem?.type === 'fork'}
         onPrevious={handlePrevious}
         onNext={handleNext}
-        isFighting={isFighting} // Přidán nový prop isFighting
+        isFighting={isFighting}
       />
-      {/* Tlačítko pro opuštění dungeonu (zobrazí se jen v poslední místnosti) */}
       {isLastRoom && (
         <div className={styles.goBackButton}>
           <Button onClick={handleGoBackToMap}>Exit Dungeon</Button>

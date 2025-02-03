@@ -2,18 +2,22 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import styles from './Backpack.module.css';
 import { useGameContext } from '../../contexts/GameContext';
+import Button from '../Buttons/ButtonSmall/ButtonSmall';
+import { Item } from '../../types/RoomDto';
 
 const Backpack: React.FC = () => {
   const [images, setImages] = useState<{ [key: number]: string }>({});
-  const { items, setItems } = useGameContext();
+  const { items, setItems, setWeapon, setShield, setArmor, changeCoins } = useGameContext();
+  const [hoveredItem, setHoveredItem] = useState<Item | null>(null);
+  const [isMobile, setIsMobile] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchImages = async () => {
       const storedItems = sessionStorage.getItem('backpackItems');
       if (storedItems) {
-        const items = JSON.parse(storedItems);
+        const items: Item[] = JSON.parse(storedItems);
         if (Array.isArray(items)) {
-          const imagePromises = items.map((item: any) =>
+          const imagePromises = items.map((item: Item) =>
             axios.get(`https://localhost:7190/api/Images/${item.imageId}`, { responseType: 'blob' })
           );
           const imageResponses = await Promise.all(imagePromises);
@@ -30,44 +34,61 @@ const Backpack: React.FC = () => {
     };
 
     fetchImages();
+    setIsMobile(window.innerWidth <= 768);
   }, [items]);
 
-  const addItem = (newItem: any) => {
-    setItems((prevItems) => {
-      const existingItem = prevItems.find(item => item.id === newItem.id);
-      if (existingItem && newItem.type === 'Miscellaneous') {
-        const updatedItems = prevItems.map(item =>
-          item.id === newItem.id ? { ...item, quantity: item.quantity + newItem.quantity } : item
-        );
-        sessionStorage.setItem('backpackItems', JSON.stringify(updatedItems));
-        return updatedItems;
-      }
-      const updatedItems = [...prevItems, newItem];
-      sessionStorage.setItem('backpackItems', JSON.stringify(updatedItems));
-      return updatedItems;
-    });
+  const handleEquipItem = (item: Item) => {
+    if (item.type === 'Weapon') setWeapon(item);
+    if (item.type === 'Shield') setShield(item);
+    if (item.type === 'Armor') setArmor(item);
+    removeItem(item.id);
   };
 
   const removeItem = (itemId: number) => {
-    setItems((prevItems) => {
-      const updatedItems = prevItems.filter(item => item.id !== itemId);
-      sessionStorage.setItem('backpackItems', JSON.stringify(updatedItems));
-      return updatedItems;
-    });
+    const updatedItems = items.filter(item => item.id !== itemId);
+    setItems(updatedItems);
+    sessionStorage.setItem('backpackItems', JSON.stringify(updatedItems));
   };
+
+  const handleHover = (item: Item | null) => {
+    if (!isMobile) {
+      setHoveredItem(item);
+    }
+  };
+
+  const handleClick = (item: Item | null) => {
+    if (isMobile) {
+      setHoveredItem(prevItem => (prevItem === item ? null : item));
+    }
+  };
+
+  const handleSellItem = (item: any) => {
+    changeCoins(item.price);
+    // Remove item from inventory
+  };
+
+  const isInTown = location.pathname.includes('/Blacksmith');
 
   return (
     <div className={styles.backpack}>
       {items.length === 0 ? (
         <p>Inventář je prázdný</p>
       ) : (
-        items.map((item) => (
-          <div key={item.id} className={styles.backpackItem}>
-            <img src={images[item.imageId]} alt={item.name} />
-            <p>{item.name}</p>
-            <p>Damage: {item.dmg}</p>
-            <p>Rarity: {item.rarity}</p>
+        items.map((item: Item) => (
+          <div key={item.id} className={styles.backpackItem} onMouseEnter={() => handleHover(item)} onClick={() => handleClick(item)}>
+            <div className={styles.imgContainer}>
+              <img src={images[item.imageId]} alt={item.name} className={styles.img} />
+            </div>
             {item.type === 'Miscellaneous' && <p>Quantity: {item.quantity}</p>}
+            {hoveredItem === item && (
+              <div className={styles.info}>
+                <p>{item.name}</p>
+                <p>Damage: {item.dmg}</p>
+                <p>Rarity: {item.rarity}</p>
+                <Button onClick={() => handleEquipItem(item)}>Equip</Button>
+                {isInTown && <Button onClick={() => handleSellItem(item)}>Sell</Button>}
+              </div>
+            )}
           </div>
         ))
       )}

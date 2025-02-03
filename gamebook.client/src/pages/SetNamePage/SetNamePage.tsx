@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from '../SetNamePage/SetNamePage.module.css';
 
+//asi se nepouzije
+
 const NamePage: React.FC = () => {
     const [name, setName] = useState('');
     const [warning, setWarning] = useState('');
     const navigate = useNavigate();
 
-    // Handle input change
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const input = e.target.value;
         if (input.length > 26) {
@@ -18,7 +19,6 @@ const NamePage: React.FC = () => {
         setName(input);
     };
 
-    // Navigate to /map when Enter key is pressed
     useEffect(() => {
         const handleKeyPress = (e: KeyboardEvent) => {
             if (e.key === 'Enter') {
@@ -30,7 +30,6 @@ const NamePage: React.FC = () => {
         return () => document.removeEventListener('keydown', handleKeyPress);
     }, []);
 
-    // Navigate to /map
     const navigateToMap = () => {
         if (name.trim() === '') {
             setWarning('Please enter a name before proceeding.');
@@ -58,7 +57,6 @@ const NamePage: React.FC = () => {
             </div>
             {warning && <p className={styles.warning}>{warning}</p>}
 
-            {/* "Enter" Button */}
             <button onClick={navigateToMap} className={styles.enterButton}>
                 Enter
             </button>

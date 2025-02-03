@@ -4,7 +4,7 @@ interface UseFetchResult<T> {
     data: T | null;
     loading: boolean;
     error: string | null;
-    setData: React.Dispatch<React.SetStateAction<T | null>>; // Přidáno setData do interface
+    setData: React.Dispatch<React.SetStateAction<T | null>>;
 }
 
 const useFetch = <T>(url: string | null, options?: RequestInit): UseFetchResult<T> => {
@@ -42,7 +42,7 @@ const useFetch = <T>(url: string | null, options?: RequestInit): UseFetchResult<
         fetchData();
     }, [url, options]);
 
-    return { data, loading, error, setData }; // Přidáno setData do returnu
+    return { data, loading, error, setData };
 };
 
 export default useFetch;
