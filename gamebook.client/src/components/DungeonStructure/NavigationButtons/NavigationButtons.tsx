@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './NavigationButtons.module.css';
 import Button from '../../Buttons/ButtonLarge/ButtonLarge';
 
-interface NavigationButtonsProps {
+type NavigationButtonsProps = {
   currentChainIndex: number;
   chainLength: number;
   isRoomDeadEnd: boolean | undefined;
@@ -10,6 +10,7 @@ interface NavigationButtonsProps {
   onPrevious: () => void;
   onNext: () => void;
   isFighting: boolean;
+  isActive: boolean;
 }
 
 const NavigationButtons: React.FC<NavigationButtonsProps> = ({
@@ -20,6 +21,7 @@ const NavigationButtons: React.FC<NavigationButtonsProps> = ({
   onPrevious,
   onNext,
   isFighting,
+  isActive,
 }) => {
   const isFirstItem = currentChainIndex === 0;
   const isLastItem = currentChainIndex === chainLength - 1;
@@ -34,7 +36,7 @@ const NavigationButtons: React.FC<NavigationButtonsProps> = ({
       </Button>
       <Button
         onClick={onNext}
-        disabled={isLastItem || isRoomDeadEnd || isFork || isFighting}
+        disabled={isLastItem || isRoomDeadEnd || isFork || isFighting || isActive}
       >
         Go further
       </Button>

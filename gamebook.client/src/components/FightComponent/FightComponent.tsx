@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useGameContext } from '../../contexts/GameContext';
 import styles from './FightComponent.module.css';
 import EnemyHealthBar from '../EnemyHealthBar/EnemyHealthBar';
-import { Monster } from '../../types/RoomDto';
+import { Monster } from '../../types/ViewModels';
 import Button from '../Buttons/ButtonLarge/ButtonLarge';
 
 interface FightComponentProps {

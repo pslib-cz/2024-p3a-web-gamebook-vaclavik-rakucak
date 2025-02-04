@@ -70,7 +70,7 @@ const MainMapPage: React.FC = () => {
         backgroundPosition: 'center',
       }}
     >
-      <div className={styles.Burgir}>
+      <div style={{ position: 'absolute', top: '0', right: '0', zIndex: 100 }}>
         <Burgir onClick={togglePauseMenu} isOpen={isPauseMenuOpen}/>
       </div>
       {isPauseMenuOpen && <PauseMenu onClose={togglePauseMenu} currentPage='Map' />}
@@ -93,7 +93,7 @@ const MainMapPage: React.FC = () => {
         <div className={styles.Town}>
           <RouteButton route="/Town" label="Town" />
         </div>
-        <div className={styles.Town2} style={{ height: '30%', width: '30%' }}>
+        <div className={styles.Town2} style={{ height: '30%', width: '30%', cursor: 'pointer' }}>
           <RouteButton route="/Town" nonvisible />
         </div>
       </div>

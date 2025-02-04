@@ -12,12 +12,15 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 4rem;
-  height: 4rem;
+  width: 6.625rem;
+  height: 6.625rem;
   background-color: var(--Item-Backround-light);
   border: solid 10px var(--Item-Backround);
 }
-
+.image{
+  width: 5rem;
+  height: auto;
+}
 .info {
   position: absolute;
   top: 0;
@@ -38,4 +41,14 @@
 
 .info button {
   margin-top: 5px;
+}
+
+.sideInfo{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  font-size: 1.5rem;
+  gap: 1rem;
 }

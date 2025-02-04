@@ -3,7 +3,7 @@ import axios from 'axios';
 import styles from './Backpack.module.css';
 import { useGameContext } from '../../contexts/GameContext';
 import Button from '../Buttons/ButtonSmall/ButtonSmall';
-import { Item } from '../../types/RoomDto';
+import { Item } from '../../types/ViewModels';
 
 const Backpack: React.FC = () => {
   const [images, setImages] = useState<{ [key: number]: string }>({});

@@ -17,7 +17,7 @@ const App: React.FC = () => {
   return (
     <BrowserRouter>
       <GameProvider>
-        <CoinAndHealthBar /> {/* Přidej komponentu sem */}
+        <CoinAndHealthBar /> 
         < AppRoutes token={token} role={role} onLogin={handleLogin} />
         </GameProvider>
     </BrowserRouter>

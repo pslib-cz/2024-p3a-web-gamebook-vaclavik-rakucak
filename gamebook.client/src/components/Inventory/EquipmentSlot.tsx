@@ -4,7 +4,7 @@ import { useLocation } from 'react-router-dom';
 import styles from './EquipmentSlot.module.css';
 import { useGameContext } from '../../contexts/GameContext';
 import Button from '../Buttons/ButtonSmall/ButtonSmall';
-import { Item } from '../../types/RoomDto';
+import { Item } from '../../types/ViewModels';
 
 const EquipmentSlot: React.FC = () => {
   const { weapon, setWeapon, shield, setShield, armor, setArmor, changeCoins } = useGameContext();
@@ -80,13 +80,15 @@ const EquipmentSlot: React.FC = () => {
             <div className={styles.imageContainer}><img src={images[weapon.imageId]} alt={weapon.name} className={styles.image} /></div>
             {hoveredItem === weapon && (
               <div className={styles.info}>
-                <p>{weapon.name}</p>
-                <p>Damage: {weapon.dmg}</p>
-                <p>Rarity: {weapon.rarity}</p>
                 <Button onClick={() => handleUseItem(weapon)}>Use</Button>
                 {isInTown && <Button onClick={() => handleSellItem(weapon)}>Sell</Button>}
               </div>
             )}
+            <div className={styles.sideInfo}>
+              <p>{weapon.name}</p>
+              <p>Damage: {weapon.dmg}</p>
+              <p>Rarity: {weapon.rarity}</p>
+            </div>
           </>
         )}
       </div>
@@ -96,29 +98,33 @@ const EquipmentSlot: React.FC = () => {
             <div className={styles.imageContainer}><img src={images[shield.imageId]} alt={shield.name} className={styles.image} /></div>
             {hoveredItem === shield && (
               <div className={styles.info}>
-                <p>{shield.name}</p>
-                <p>Damage: {shield.dmg}</p>
-                <p>Rarity: {shield.rarity}</p>
                 <Button onClick={() => handleUseItem(shield)}>Use</Button>
                 {isInTown && <Button onClick={() => handleSellItem(shield)}>Sell</Button>}
               </div>
             )}
+            <div className={styles.sideInfo}>
+              <p>{shield.name}</p>
+              <p>Damage: {shield.dmg}</p>
+              <p>Rarity: {shield.rarity}</p>
+            </div>
           </>
         )}
       </div>
       <div className={styles.slot} onMouseEnter={() => handleHover(armor)} onClick={() => handleClick(armor)}>
         {armor && (
           <>
-            <div className={styles.imageContainer}><img src={images[armor.imageId]} alt={armor.name} /></div>
+            <div className={styles.imageContainer}><img src={images[armor.imageId]} alt={armor.name} className={styles.image} /></div>
             {hoveredItem === armor && (
               <div className={styles.info}>
-                <p>{armor.name}</p>
-                <p>Damage: {armor.dmg}</p>
-                <p>Rarity: {armor.rarity}</p>
                 <Button onClick={() => handleUseItem(armor)}>Use</Button>
                 {isInTown && <Button onClick={() => handleSellItem(armor)}>Sell</Button>}
               </div>
             )}
+            <div className={styles.sideInfo}>
+              <p>{armor.name}</p>
+              <p>Damage: {armor.dmg}</p>
+              <p>Rarity: {armor.rarity}</p>
+            </div>
           </>
         )}
       </div>

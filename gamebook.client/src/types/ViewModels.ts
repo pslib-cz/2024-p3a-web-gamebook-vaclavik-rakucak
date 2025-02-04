@@ -12,6 +12,7 @@ export interface Room {
     image?: ImageDto | null;
     isDeadEnd?: boolean;
     monster?: Monster;
+    active?: boolean;
 
 }
 

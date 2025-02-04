@@ -2,7 +2,11 @@ import React, { useState } from 'react';
 import Inventory from './Inventory';
 import styles from './InventoryButton.module.css';
 
-const InventoryButton: React.FC = () => {
+type InventoryButtonProps = {
+  isInMenu?: boolean;
+};
+
+const InventoryButton: React.FC<InventoryButtonProps> = ({ isInMenu }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleInventory = () => {
@@ -11,11 +15,11 @@ const InventoryButton: React.FC = () => {
 
   return (
     <div>
-        <div>
-            <button onClick={toggleInventory} className={styles.inventoryButton}>
-                <img src="/public/backpack-1.png" alt="Open Inventory" />
-            </button>
-        </div>
+      <div>
+        <button onClick={toggleInventory} className={isInMenu ? styles.inventoryButtonMenu : styles.inventoryButton}>
+          {isInMenu ? 'Open Inventory' : <img src="/public/backpack-1.png" alt="Open Inventory" />}
+        </button>
+      </div>
       {isOpen && <Inventory />}
     </div>
   );

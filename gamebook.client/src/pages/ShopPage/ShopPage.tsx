@@ -4,12 +4,18 @@ import axios from 'axios';
 import { useGameContext } from '../../contexts/GameContext';
 import Button from '../../components/Buttons/ButtonSmall/ButtonSmall';
 import styles from './ShopPage.module.css';
+import Burgir from '../../components/Burgir/Burgir';
+import PauseMenu from '../../components/PauseMenu/PauseMenu.tsx';
 
 const ShopPage: React.FC = () => {
   const [equipment, setEquipment] = useState<any[]>([]);
   const [images, setImages] = useState<{ [key: number]: string }>({});
   const [backgroundImage, setBackgroundImage] = useState<string | null>(null);
   const { coins, changeCoins, items, setItems } = useGameContext();
+  const [isPauseMenuOpen, setIsPauseMenuOpen] = useState<boolean>(false);
+  const togglePauseMenu = () => {
+    setIsPauseMenuOpen((prev) => !prev);
+  };
 
   const baseApiUrl = import.meta.env.VITE_API_URL;
 
@@ -90,6 +96,10 @@ const ShopPage: React.FC = () => {
 
   return (
     <div style={{ backgroundImage: `url(${backgroundImage})` }}>
+      <div style={{ position: 'absolute', top: '0', right: '0', zIndex: 100 }}>
+        <Burgir onClick={togglePauseMenu} isOpen={isPauseMenuOpen}/>
+      </div>
+      {isPauseMenuOpen && <PauseMenu onClose={togglePauseMenu} currentPage='Shop' />}
       <RouteButton route="/Town" label="Zpět do města" />
       <div className={styles.shopContainer}>
         {Array.isArray(equipment) && equipment.map((item) => (

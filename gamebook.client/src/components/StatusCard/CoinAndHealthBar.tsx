@@ -16,15 +16,15 @@ const CoinAndHealthBar: React.FC = () => {
       </div>
       <div className={styles.health}>
         <img className={styles.icon} src='/public/Sword.png' alt='weapon'/>
-        <span className={styles.value}>{weapon ? weapon.dmg : 0}</span>
+        <span className={styles.value}>{weapon ? weapon.dmg : 0}p</span>
       </div>
       <div className={styles.health}>
         <img className={styles.icon} src='/public/Shield.png' alt='shield'/>
-        <span className={styles.value}>{shield ? shield.dmg : 0}</span>
+        <span className={styles.value}>{shield ? shield.dmg : 0}%</span>
       </div>
       <div className={styles.health}>
         <img className={styles.icon} src='/public/Armor.png' alt='armor'/>
-        <span className={styles.value}>{armor ? armor.dmg : 0}</span>
+        <span className={styles.value}>{armor ? armor.dmg : 0}p</span>
       </div>
     </div>
   );

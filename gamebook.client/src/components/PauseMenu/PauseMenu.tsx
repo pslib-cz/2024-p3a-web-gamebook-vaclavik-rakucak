@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from '../Buttons/ButtonLarge/ButtonLarge';
 import styles from './PauseMenu.module.css';
-import { ChainElement } from '../../types/RoomDto';
+import { ChainElement } from '../../types/ViewModels';
+import InventoryButton from '../Inventory/InventoryButton';
 
 interface PauseMenuProps {
   onClose: () => void;
@@ -15,16 +16,10 @@ interface PauseMenuProps {
 const PauseMenu: React.FC<PauseMenuProps> = ({ currentPage, onClose, setChain, setCurrentChainIndex, changeCoins }) => {
   const [showTutorial, setShowTutorial] = useState(false);
   const [showConfirmExit, setShowConfirmExit] = useState(false);
-  const [showInventory, setShowInventory] = useState(false);
   const navigate = useNavigate();
 
   const handleQuestClick = () => {
     // Implementace pro zobrazení aktivního questu
-  };
-
-  const handleInventoryClick = () => {
-    setShowInventory(true);
-    onClose();
   };
 
   const handleTutorialClick = () => {
@@ -51,28 +46,27 @@ const PauseMenu: React.FC<PauseMenuProps> = ({ currentPage, onClose, setChain, s
     setShowConfirmExit(false);
   };
 
-  const handleCloseInventory = () => {
-    setShowInventory(false);
+  const handleGoToMap = () => {
+    navigate('/map');
+    onClose();
   };
 
   return (
     <div className={styles.pauseMenu}>
       <Button onClick={handleQuestClick}>Active Quest</Button>
-      <Button onClick={handleInventoryClick}>Inventory</Button>
+      <InventoryButton isInMenu />
       <Button onClick={handleTutorialClick}>Tutorial</Button>
       {currentPage === 'dungeon' && (
         <Button onClick={handleExitDungeonClick}>Exit Dungeon</Button>
+      )}
+      {currentPage !== 'dungeon' && currentPage !== 'Map' && (
+        <Button onClick={handleGoToMap}>Open Map</Button>
       )}
       {showConfirmExit && (
         <div className={styles.confirmExit}>
           <p>Are you sure you want to exit the dungeon?</p>
           <Button onClick={handleConfirmExit}>Yes</Button>
           <Button onClick={handleCancelExit}>No</Button>
-        </div>
-      )}
-      {showInventory && (
-        <div className={styles.inventory}>
-          <Button onClick={handleCloseInventory}>Close Inventory</Button>
         </div>
       )}
       {showTutorial && (
