@@ -1,25 +1,82 @@
 .shopPage {
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+  background-size: cover;
+  background-attachment: fixed;
 }
-  
-.offerwall {
+
+.content {
+  position: relative;
+  height: 100%;
+  overflow-y: auto;
+  padding: 10rem;
 }
-  
-.items {
+
+.backButton {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 100;
 }
 
 .shopContainer {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   flex-wrap: wrap;
   justify-content: space-evenly;
 }
-  
-.item {
+
+.itemContainer {
   display: flex;
   flex-direction: row;
+  align-items: center;
+  margin: 10px;
 }
-  
-.item img {
-  width: 100px;
-  height: 100px;
+
+h2{
+}
+
+.itemInfo {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+.itemStats {
+  display: flex;
+  flex-direction: row;
+  text-align: center;
+}
+
+.imageContainer {
+  width: 4rem;
+  height: 4rem;
+  border: 20px solid var(--Item-Backround);
+  border-radius: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.image{
+  width: 4rem;
+  height: 4rem;
+  background-color: var(--Item-Backround-light);
+  border-radius: 20px;
+}
+
+.Common {
+  border: 10px solid var(--Common);
+}
+
+.Rare {
+  border: 10px solid var(--Rare);
+}
+
+.Legendary {
+  border: 10px solid var(--Legendary);
+}
+
+.hidden {
+  display: none;
 }

@@ -13,6 +13,10 @@ const InventoryButton: React.FC<InventoryButtonProps> = ({ isInMenu }) => {
     setIsOpen(!isOpen);
   };
 
+  const closeInventory = () => {
+    setIsOpen(false);
+  };
+
   return (
     <div>
       <div>
@@ -20,7 +24,7 @@ const InventoryButton: React.FC<InventoryButtonProps> = ({ isInMenu }) => {
           {isInMenu ? 'Open Inventory' : <img src="/public/backpack-1.png" alt="Open Inventory" />}
         </button>
       </div>
-      {isOpen && <Inventory />}
+      {isOpen && <Inventory onClose={closeInventory} />}
     </div>
   );
 };

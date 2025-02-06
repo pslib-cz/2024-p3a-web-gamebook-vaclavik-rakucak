@@ -68,7 +68,7 @@ const ChainViewer: React.FC = () => {
         if (monsterId) {
             setDefeatedMonsters([...defeatedMonsters, monsterId]);
             if (currentItem && currentItem.type === 'room') {
-                currentItem.data.active = false; // Set active to false after fight
+                currentItem.data.type = 'empty';
             }
         }
     };
@@ -96,7 +96,7 @@ const ChainViewer: React.FC = () => {
     }
 
     const isLastRoom = currentChainIndex === chain.length - 1;
-    const isActive = currentItem.type === 'room' && currentItem.data.active;
+    const isActive = currentItem.type === 'room' && currentItem.data.type === 'monster' ? true : false;;
 
     return (
         <div className={styles.ViewContainer}>
@@ -148,7 +148,7 @@ const ChainViewer: React.FC = () => {
                 onPrevious={handlePrevious}
                 onNext={handleNext}
                 isFighting={isFighting}
-                isActive={isActive} // Pass isActive to NavigationButtons
+                isActive={isActive} 
             />
             {isLastRoom && (
                 <div className={styles.goBackButton}>

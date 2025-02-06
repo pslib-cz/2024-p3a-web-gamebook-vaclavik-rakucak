@@ -17,6 +17,7 @@
     flex-wrap: wrap;
     justify-content: center;
     gap: 10px;
+    
   }
   
   .backpackContainer {
@@ -32,4 +33,25 @@
   .equipmentAndImageContainer{
     display: flex;
     flex-direction: row;
+  }
+
+  .closeButton {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background-color: var(--Brown);
+    border: solid 10px var(--Dark-Brown);
+    font-family: "Linden Hill", serif;
+    color: var(--Biege);
+    border-radius: 20px;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+    transition: all 0.3s ease-in-out;
+    z-index: 102;
+  }
+  
+  .closeButton:hover {
+    border: solid 10px var(--Biege);
   }

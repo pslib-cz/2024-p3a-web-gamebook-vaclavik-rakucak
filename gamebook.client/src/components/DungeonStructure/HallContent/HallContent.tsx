@@ -1,5 +1,5 @@
 import React from 'react';
-import { Hall } from '../../../types/RoomDto';
+import { Hall } from '../../../types/ViewModels';
 import styles from '../ChainViewer/ChainViewer.module.css';
 
 interface HallContentProps {

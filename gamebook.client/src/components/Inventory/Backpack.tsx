@@ -7,7 +7,7 @@ import { Item } from '../../types/ViewModels';
 
 const Backpack: React.FC = () => {
   const [images, setImages] = useState<{ [key: number]: string }>({});
-  const { items, setItems, setWeapon, setShield, setArmor, changeCoins } = useGameContext();
+  const { items, setItems, weapon, shield, armor, setWeapon, setShield, setArmor, changeCoins, changeHealth } = useGameContext();
   const [hoveredItem, setHoveredItem] = useState<Item | null>(null);
   const [isMobile, setIsMobile] = useState<boolean>(false);
 
@@ -40,9 +40,28 @@ const Backpack: React.FC = () => {
   }, [items]);
 
   const handleEquipItem = (item: Item) => {
-    if (item.type === 'Weapon') setWeapon(item);
-    if (item.type === 'Shield') setShield(item);
-    if (item.type === 'Armor') setArmor(item);
+    let currentEquippedItem: Item | null = null;
+
+    if (item.type === 'Weapon') {
+      currentEquippedItem = weapon;
+      setWeapon(item);
+    }
+    if (item.type === 'Shield') {
+      currentEquippedItem = shield;
+      setShield(item);
+    }
+    if (item.type === 'Armor') {
+      currentEquippedItem = armor;
+      setArmor(item);
+    }
+
+    if (currentEquippedItem) {
+      const updatedItems = [...items, currentEquippedItem];
+      setItems(updatedItems);
+      sessionStorage.setItem('backpackItems', JSON.stringify(updatedItems));
+      console.log('Item added to backpack:', currentEquippedItem);
+    }
+
     removeItem(item.id);
   };
 
@@ -52,23 +71,21 @@ const Backpack: React.FC = () => {
     sessionStorage.setItem('backpackItems', JSON.stringify(updatedItems));
   };
 
-  const handleHover = (item: Item | null) => {
-    if (!isMobile) {
-      setHoveredItem(item);
-    }
-  };
-
   const handleClick = (item: Item | null) => {
-    if (isMobile) {
-      setHoveredItem(prevItem => (prevItem === item ? null : item));
+    setHoveredItem(prevItem => (prevItem === item ? null : item));
+  };
+
+  const handleSellItem = (item: Item) => {
+    changeCoins(item.price);
+    removeItem(item.id);
+  };
+  const handleUseItem = (item: Item) => {
+    changeHealth(item.dmg);
+    item.quantity = (item.quantity || 1) - 1;
+    if (item.quantity === 0) {
+      removeItem(item.id);
     }
   };
-
-  const handleSellItem = (item: any) => {
-    changeCoins(item.price);
-    // Remove item from inventory
-  };
-
   const isInTown = location.pathname.includes('/Blacksmith');
 
   return (
@@ -77,20 +94,23 @@ const Backpack: React.FC = () => {
         <p>Inventář je prázdný</p>
       ) : (
         items.map((item: Item) => (
-          <div key={item.id} className={styles.backpackItem} onMouseEnter={() => handleHover(item)} onClick={() => handleClick(item)}>
+          <div key={item.id} className={styles.backpackItem} onClick={() => handleClick(item)}>
             <div className={styles.imgContainer}>
               <img src={images[item.imageId]} alt={item.name} className={styles.img} />
             </div>
-            {item.type === 'Miscellaneous' && <p>Quantity: {item.quantity}</p>}
             {hoveredItem === item && (
               <div className={styles.info}>
                 <p>{item.name}</p>
                 <p>Damage: {item.dmg}</p>
                 <p>Rarity: {item.rarity}</p>
-                <Button onClick={() => handleEquipItem(item)}>Equip</Button>
+                
+                <Button onClick={() => item.type === 'Miscellaneous' ? handleUseItem(item) : handleEquipItem(item)}>
+                  {item.type === 'Miscellaneous' ? 'Use' : 'Equip'}
+                </Button>
                 {isInTown && <Button onClick={() => handleSellItem(item)}>Sell</Button>}
               </div>
             )}
+            {item.type === 'Miscellaneous' && <span className={styles.quantity}>{item.quantity}</span>}
           </div>
         ))
       )}

@@ -3,13 +3,15 @@ import EquipmentSlot from './EquipmentSlot';
 import Backpack from './Backpack';
 import styles from './Inventory.module.css';
 
-const Inventory: React.FC = () => {
+type InventoryProps = {
+  onClose: () => void;
+};
+
+const Inventory: React.FC<InventoryProps> = ({ onClose }) => {
   return (
     <div className={styles.inventory}>
+      <button className={styles.closeButton} onClick={onClose}>X</button>
       <div className={styles.equipmentAndImageContainer}>
-        <div className={styles.imageContainer}>
-
-        </div>
         <div className={styles.equipmentContainer}>
           <EquipmentSlot />
         </div>

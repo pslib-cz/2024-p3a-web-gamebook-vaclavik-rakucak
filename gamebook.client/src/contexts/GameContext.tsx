@@ -1,5 +1,5 @@
 import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
-import { ChainElement, Item } from '../types/RoomDto';
+import { ChainElement, Item } from '../types/ViewModels';
 import { saveDataToLocalStorage, getDataFromLocalStorage } from '../utils/LocalStorage';
 
 interface GameContextProps {

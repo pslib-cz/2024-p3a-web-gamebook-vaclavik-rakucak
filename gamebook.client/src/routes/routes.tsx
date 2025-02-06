@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import MenuPage from '../pages/MenuPage/MenuPage';
 import DungeonPage from '../pages/DungeonPage/DungeonPage.tsx';
 import Login from '../components/Admin/Login/Login';
@@ -9,6 +9,7 @@ import TownPage from '../pages/TownPage/TownPage';
 import TavernPage from '../pages/TavernPage/TavernPage';
 import ShopPage from '../pages/ShopPage/ShopPage';
 import InventoryButton from '../components/Inventory/InventoryButton';
+import CoinAndHealthBar from '../components/StatusCard/CoinAndHealthBar.tsx';
 
 interface RoutesProps {
   token: string;
@@ -17,8 +18,12 @@ interface RoutesProps {
 }
 
 const AppRoutes: React.FC<RoutesProps> = ({ token, role, onLogin }) => {
+  const location = useLocation();
+  const hideCoinAndHealthBar = location.pathname === '/Town/Tavern' || location.pathname === '/Town/Blacksmith';
+
   return (
     <>
+      {!hideCoinAndHealthBar && <CoinAndHealthBar />}
       <InventoryButton />
       <Routes>
         <Route path="/" element={<MenuPage />} />

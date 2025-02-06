@@ -7,7 +7,7 @@ import Button from '../Buttons/ButtonSmall/ButtonSmall';
 import { Item } from '../../types/ViewModels';
 
 const EquipmentSlot: React.FC = () => {
-  const { weapon, setWeapon, shield, setShield, armor, setArmor, changeCoins } = useGameContext();
+  const { weapon, setWeapon, shield, setShield, armor, setArmor, changeCoins, items, setItems, changeHealth } = useGameContext();
   const [images, setImages] = useState<{ [key: number]: string }>({});
   const [hoveredItem, setHoveredItem] = useState<Item | null>(null);
   const [isMobile, setIsMobile] = useState<boolean>(false);
@@ -43,44 +43,31 @@ const EquipmentSlot: React.FC = () => {
     sessionStorage.setItem('equippedItems', JSON.stringify(equippedItems));
   }, [weapon, shield, armor]);
 
-  const handleUseItem = (item: Item) => {
-    if (item.type === 'Miscellaneous') {
-      // Remove item from inventory
-    } else {
-      if (item.type === 'Weapon') setWeapon(item);
-      if (item.type === 'Shield') setShield(item);
-      if (item.type === 'Armor') setArmor(item);
-    }
+  const removeItem = (itemId: number) => {
+    const updatedItems = items.filter(item => item.id !== itemId);
+    setItems(updatedItems);
+    sessionStorage.setItem('backpackItems', JSON.stringify(updatedItems));
   };
 
   const handleSellItem = (item: Item) => {
     changeCoins(item.price);
-    // Remove item from inventory
-  };
-
-  const handleHover = (item: Item | null) => {
-    if (!isMobile) {
-      setHoveredItem(item);
-    }
+    removeItem(item.id);
   };
 
   const handleClick = (item: Item | null) => {
-    if (isMobile) {
-      setHoveredItem(prevItem => (prevItem === item ? null : item));
-    }
+    setHoveredItem(prevItem => (prevItem === item ? null : item));
   };
 
   const isInTown = location.pathname.includes('/Blacksmith');
 
   return (
     <div className={styles.equipmentSlot}>
-      <div className={styles.slot} onMouseEnter={() => handleHover(weapon)} onClick={() => handleClick(weapon)}>
+      <div className={styles.slot} onClick={() => handleClick(weapon)}>
         {weapon && (
           <>
             <div className={styles.imageContainer}><img src={images[weapon.imageId]} alt={weapon.name} className={styles.image} /></div>
             {hoveredItem === weapon && (
               <div className={styles.info}>
-                <Button onClick={() => handleUseItem(weapon)}>Use</Button>
                 {isInTown && <Button onClick={() => handleSellItem(weapon)}>Sell</Button>}
               </div>
             )}
@@ -92,37 +79,35 @@ const EquipmentSlot: React.FC = () => {
           </>
         )}
       </div>
-      <div className={styles.slot} onMouseEnter={() => handleHover(shield)} onClick={() => handleClick(shield)}>
+      <div className={styles.slot} onClick={() => handleClick(shield)}>
         {shield && (
           <>
             <div className={styles.imageContainer}><img src={images[shield.imageId]} alt={shield.name} className={styles.image} /></div>
             {hoveredItem === shield && (
               <div className={styles.info}>
-                <Button onClick={() => handleUseItem(shield)}>Use</Button>
                 {isInTown && <Button onClick={() => handleSellItem(shield)}>Sell</Button>}
               </div>
             )}
             <div className={styles.sideInfo}>
               <p>{shield.name}</p>
-              <p>Damage: {shield.dmg}</p>
+              <p>Defense: {shield.def}</p>
               <p>Rarity: {shield.rarity}</p>
             </div>
           </>
         )}
       </div>
-      <div className={styles.slot} onMouseEnter={() => handleHover(armor)} onClick={() => handleClick(armor)}>
+      <div className={styles.slot} onClick={() => handleClick(armor)}>
         {armor && (
           <>
             <div className={styles.imageContainer}><img src={images[armor.imageId]} alt={armor.name} className={styles.image} /></div>
             {hoveredItem === armor && (
               <div className={styles.info}>
-                <Button onClick={() => handleUseItem(armor)}>Use</Button>
                 {isInTown && <Button onClick={() => handleSellItem(armor)}>Sell</Button>}
               </div>
             )}
             <div className={styles.sideInfo}>
               <p>{armor.name}</p>
-              <p>Damage: {armor.dmg}</p>
+              <p>Defense: {armor.def}</p>
               <p>Rarity: {armor.rarity}</p>
             </div>
           </>

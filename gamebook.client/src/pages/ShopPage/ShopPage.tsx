@@ -86,36 +86,90 @@ const ShopPage: React.FC = () => {
   const handleBuyItem = (item: any) => {
     if (coins >= item.price) {
       changeCoins(-item.price);
-      const updatedItems = [...items, item];
+  
+      let updatedItems = [...items];
+      if (item.type === 'Miscellaneous') {
+        const existingItemIndex = updatedItems.findIndex(
+          (invItem) => invItem.id === item.id
+        );
+  
+        if (existingItemIndex !== -1) {
+          updatedItems[existingItemIndex].quantity =
+            (updatedItems[existingItemIndex].quantity || 1) + 1;
+        } else {
+          item.quantity = 1;
+          updatedItems.push(item);
+        }
+      } else {
+        updatedItems.push(item);
+      }
+  
       setItems(updatedItems);
       sessionStorage.setItem('backpackItems', JSON.stringify(updatedItems));
+      console.log('Item added to backpack:', item);
+      if (item.type !== 'Miscellaneous') {
+        const updatedEquipment = equipment.map((equipItem) =>
+          equipItem.id === item.id ? { ...equipItem, bought: true } : equipItem
+        );
+        setEquipment(updatedEquipment);
+        sessionStorage.setItem('shopEquipment', JSON.stringify(updatedEquipment));
+      }
     } else {
       alert('Nedostatek mincí');
     }
   };
 
+  const sectionTitles = ["Weapons", "Shields", "Armors", "Miscellaneous"];
+
+  const renderSection = (sectionItems: any[], sectionIndex: number) => {
+    return (
+      <div key={sectionIndex}>
+        <h2>{sectionTitles[sectionIndex % sectionTitles.length]}</h2>
+        <div className={styles.shopContainer}>
+          {sectionItems.map((item, index) => (
+            <div
+              key={item.id}
+              className={`${styles.itemContainer} ${item.bought ? styles.hidden : ''}`}
+            >
+              <div className={styles.imageContainer}>
+                <img
+                  src={images[item.imageId]}
+                  alt={item.name}
+                  className={`${styles.image} ${styles[item.rarity]}`}
+                />
+              </div>
+              <div className={styles.itemInfo}>
+                <h3>{item.name}</h3>
+                <div className={styles.itemStats}>
+                  <p>Price: {item.price}</p>
+                  {sectionIndex % 3 === 0 && <p>Damage: {item.dmg}</p>}
+                  {sectionIndex % 3 === 1 && <p>Defense: {item.dmg}</p>}
+                  {sectionIndex % 3 === 2 && <p>Speed: {item.dmg}</p>}
+                </div>
+              </div>
+              <Button onClick={() => handleBuyItem(item)}>Buy</Button>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  };
+
+  const sections = [];
+  for (let i = 0; i < equipment.length; i += 3) {
+    sections.push(equipment.slice(i, i + 3));
+  }
+
   return (
-    <div style={{ backgroundImage: `url(${backgroundImage})` }}>
+    <div className={styles.shopPage} style={{ backgroundImage: `url(${backgroundImage})` }}>
       <div style={{ position: 'absolute', top: '0', right: '0', zIndex: 100 }}>
         <Burgir onClick={togglePauseMenu} isOpen={isPauseMenuOpen}/>
       </div>
-      {isPauseMenuOpen && <PauseMenu onClose={togglePauseMenu} currentPage='Shop' />}
-      <RouteButton route="/Town" label="Zpět do města" />
-      <div className={styles.shopContainer}>
-        {Array.isArray(equipment) && equipment.map((item) => (
-          <div key={item.id} className="shop-item">
-            <img src={images[item.imageId]} alt={item.name} />
-            <h3>{item.name}</h3>
-            <p>Type: {item.type}</p>
-            <p>Price: {item.price}</p>
-            <p>Rarity: {item.rarity}</p>
-            <p>Damage: {item.dmg}</p>
-            {item.specialEffect && (
-              <p>Special Effect: {item.specialEffect.name}</p>
-            )}
-            <Button onClick={() => handleBuyItem(item)}>Buy</Button>
-          </div>
-        ))}
+      <div className={styles.backButton}>
+        <RouteButton route="/Town" label="Back" />
+      </div>
+      <div className={styles.content}>
+        {sections.map((sectionItems, index) => renderSection(sectionItems, index))}
       </div>
     </div>
   );

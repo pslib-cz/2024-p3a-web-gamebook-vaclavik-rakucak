@@ -61,4 +61,5 @@ export interface Item {
     imageId: number;
     quantity?: number;
     price: number;
+    bought?: boolean;
 }
