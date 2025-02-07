@@ -33,3 +33,6 @@
   transform-origin: center;
   transform: translate(0,-16px) rotate(-45deg) ;
 }
+.hamburger:hover{
+  border: 10px solid var(--Biege);
+}

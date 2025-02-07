@@ -123,7 +123,7 @@ const ShopPage: React.FC = () => {
 
   const renderSection = (sectionItems: any[], sectionIndex: number) => {
     return (
-      <div key={sectionIndex}>
+      <div key={sectionIndex} className={styles.sectionContainer}>
         <h2>{sectionTitles[sectionIndex % sectionTitles.length]}</h2>
         <div className={styles.shopContainer}>
           {sectionItems.map((item, index) => (
@@ -163,8 +163,9 @@ const ShopPage: React.FC = () => {
   return (
     <div className={styles.shopPage} style={{ backgroundImage: `url(${backgroundImage})` }}>
       <div style={{ position: 'absolute', top: '0', right: '0', zIndex: 100 }}>
-        <Burgir onClick={togglePauseMenu} isOpen={isPauseMenuOpen}/>
+        <Burgir onClick={togglePauseMenu} isOpen={isPauseMenuOpen} />
       </div>
+      {isPauseMenuOpen && <PauseMenu onClose={togglePauseMenu} currentPage='Shop' />}
       <div className={styles.backButton}>
         <RouteButton route="/Town" label="Back" />
       </div>

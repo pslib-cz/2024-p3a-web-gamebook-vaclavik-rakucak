@@ -10,7 +10,10 @@
   margin: 1rem;
   z-index: 102;
 }
-  
+
+.inventoryButton:hover{
+  border: solid 10px var(--Biege);
+}
 .inventoryButton img {
   width: 3rem;
   height: 3rem;

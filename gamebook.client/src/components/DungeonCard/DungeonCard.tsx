@@ -7,7 +7,7 @@ type DungeonCardProps = {
   dungeon: Dungeon | null;
   onClose: () => void;
   onEnter: (id: number) => void;
-  playerDamage: number; // Přidáme vlastnost pro poškození hráče
+  playerDamage: number;
 };
 
 const DungeonCard: React.FC<DungeonCardProps> = ({ dungeon, onClose, onEnter, playerDamage }) => {
@@ -20,14 +20,14 @@ const DungeonCard: React.FC<DungeonCardProps> = ({ dungeon, onClose, onEnter, pl
       <div className={styles.popup}>
         <h2>{dungeon.name}</h2>
         <p>{dungeon.description}</p>
-        <p>Odměna: {dungeon.rewardMoney} zlatých</p>
-        <p>Podmínka poškození: {dungeon.dmgCondition}</p>
+        <p>Reward: {dungeon.rewardMoney} gold</p>
+        <p>Required damage: {dungeon.dmgCondition}</p>
         {canEnter ? (
           <Button onClick={() => onEnter(dungeon.id)}>Enter</Button>
         ) : (
           <Button onClick={() => onEnter(dungeon.id)} disabled>Locked</Button>
         )}
-        <Button onClick={onClose}>Zavřít</Button>
+        <Button onClick={onClose}>Close</Button>
       </div>
     </div>
   );
