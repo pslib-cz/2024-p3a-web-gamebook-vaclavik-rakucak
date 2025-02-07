@@ -74,6 +74,7 @@ const ChainViewer: React.FC = () => {
     };
 
     const handleGoBackToMap = () => {
+        setChain(null);
         navigate('/map');
         changeCoins(10);
         clearSessionStorage();   

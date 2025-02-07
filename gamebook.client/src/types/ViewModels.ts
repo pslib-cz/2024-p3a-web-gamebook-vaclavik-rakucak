@@ -63,3 +63,11 @@ export interface Item {
     price: number;
     bought?: boolean;
 }
+
+export interface Dungeon {
+    id: number;
+    name: string;
+    description: string;
+    rewardMoney: number;
+    dmgCondition: number;
+  };

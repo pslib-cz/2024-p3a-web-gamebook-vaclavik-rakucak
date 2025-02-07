@@ -8,42 +8,57 @@ import RouteButton from '../../components/Buttons/routeButtonSmall/routeButton';
 import { useGameContext } from '../../contexts/GameContext';
 import PauseMenu from '../../components/PauseMenu/PauseMenu';
 import Burgir from '../../components/Burgir/Burgir';
+import { Dungeon } from '../../types/ViewModels';
+import DungeonCard from '../../components/DungeonCard/DungeonCard';
 
-type MapButtonProps = {
-  dungeonId: number;
-  label: string;
-};
-
-const MapButton: React.FC<MapButtonProps> = ({ dungeonId, label }) => {
+const MapButton: React.FC<Dungeon> = ({ id, name, description, rewardMoney, dmgCondition }) => {
   const navigate = useNavigate();
-  const { setDungeonId, setCurrentChainIndex } = useGameContext();
+  const { setDungeonId, setCurrentChainIndex, weapon } = useGameContext();
+  const [isDungeonCardOpen, setIsDungeonCardOpen] = useState(false);
 
   const handleClick = () => {
-    setDungeonId(dungeonId.toString());
-    setCurrentChainIndex(0);
-    localStorage.setItem('firstEntry', 'true');
-    navigate(`/Dungeon/${dungeonId}/room/0`);
+    setIsDungeonCardOpen(true);
   };
+
+  const handleEnterDungeon = (dungeonId: number) => {
+    if (weapon ? weapon.dmg : 0 >= dmgCondition) {
+        setDungeonId(dungeonId.toString());
+        setCurrentChainIndex(0);
+        localStorage.setItem('firstEntry', 'true');
+        navigate(`/Dungeon/${dungeonId}/room/0`);
+    }
+};
 
   return (
     <div className={styles.mapButton}>
-      <Button onClick={handleClick}>{label}</Button>
+      <Button onClick={handleClick}>{name}</Button>
       <img
         src="/public/dungeon-icon.webp"
         alt="dungeon icon"
         className={styles.mapButtonIcon}
         onClick={handleClick}
       />
+      {isDungeonCardOpen && (
+        <DungeonCard
+          dungeon={{ id, name, description, rewardMoney, dmgCondition }}
+          onClose={() => setIsDungeonCardOpen(false)}
+          onEnter={handleEnterDungeon}
+          playerDamage={weapon ? weapon.dmg : 0}
+        />
+      )}
     </div>
   );
 };
 
 const MainMapPage: React.FC = () => {
   const [backgroundImageUrl, setBackgroundImageUrl] = useState<string>('');
+  const [dungeons, setDungeons] = useState<Dungeon[]>([]);
   const [isPauseMenuOpen, setIsPauseMenuOpen] = useState<boolean>(false);
   const togglePauseMenu = () => {
     setIsPauseMenuOpen((prev) => !prev);
   };
+
+  const baseApiUrl = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
     const loadImage = async () => {
@@ -56,7 +71,21 @@ const MainMapPage: React.FC = () => {
       }
     };
 
+    const fetchDungeons = async () => {
+      try {
+        const response = await fetch(`${baseApiUrl}/Dungeons`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch dungeons');
+        }
+        const data: Dungeon[] = await response.json();
+        setDungeons(data);
+      } catch (error) {
+        console.error('Error fetching dungeons:', error);
+      }
+    };
+
     loadImage();
+    fetchDungeons();
   }, []);
 
   return (
@@ -71,25 +100,15 @@ const MainMapPage: React.FC = () => {
       }}
     >
       <div style={{ position: 'absolute', top: '0', right: '0', zIndex: 100 }}>
-        <Burgir onClick={togglePauseMenu} isOpen={isPauseMenuOpen}/>
+        <Burgir onClick={togglePauseMenu} isOpen={isPauseMenuOpen} />
       </div>
       {isPauseMenuOpen && <PauseMenu onClose={togglePauseMenu} currentPage='Map' />}
       <div className={styles.mapButtonContainer}>
-        <div className={styles.Dungeon1}>
-          <MapButton dungeonId={2} label="Dungeon 1" />
-        </div>
-        <div className={styles.Dungeon2}>
-          <MapButton dungeonId={2} label="Dungeon 2" />
-        </div>
-        <div className={styles.Dungeon3}>
-          <MapButton dungeonId={2} label="Dungeon 3" />
-        </div>
-        <div className={styles.Dungeon4}>
-          <MapButton dungeonId={2} label="Dungeon 4" />
-        </div>
-        <div className={styles.Dungeon5}>
-          <MapButton dungeonId={2} label="Dungeon 5" />
-        </div>
+        {dungeons.map((dungeon) => (
+          <div key={dungeon.id} className={styles[`Dungeon${dungeon.id}`]}>
+            <MapButton {...dungeon} />
+          </div>
+        ))}
         <div className={styles.Town}>
           <RouteButton route="/Town" label="Town" />
         </div>

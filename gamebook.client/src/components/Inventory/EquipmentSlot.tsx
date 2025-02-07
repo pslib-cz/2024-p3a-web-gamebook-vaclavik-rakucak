@@ -1,42 +1,39 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { useLocation } from 'react-router-dom';
-import styles from './EquipmentSlot.module.css';
 import { useGameContext } from '../../contexts/GameContext';
+import styles from './EquipmentSlot.module.css';
 import Button from '../Buttons/ButtonSmall/ButtonSmall';
 import { Item } from '../../types/ViewModels';
+import axios from 'axios';
 
 const EquipmentSlot: React.FC = () => {
-  const { weapon, setWeapon, shield, setShield, armor, setArmor, changeCoins, items, setItems, changeHealth } = useGameContext();
+  const { weapon, shield, armor, setWeapon, setShield, setArmor, changeCoins, items, setItems } = useGameContext();
   const [images, setImages] = useState<{ [key: number]: string }>({});
   const [hoveredItem, setHoveredItem] = useState<Item | null>(null);
   const [isMobile, setIsMobile] = useState<boolean>(false);
-  const location = useLocation();
 
   const baseApiUrl = import.meta.env.VITE_API_URL;
 
-  useEffect(() => {
-    const fetchImages = async () => {
-      const storedItems = sessionStorage.getItem('equippedItems');
-      if (storedItems) {
-        const equippedItems = JSON.parse(storedItems);
-        const items: Item[] = [equippedItems.weapon, equippedItems.shield, equippedItems.armor].filter(Boolean);
-        const imagePromises = items.map((item: Item) =>
-          axios.get(`${baseApiUrl}/Images/${item.imageId}`, { responseType: 'blob' })
-        );
-        const imageResponses = await Promise.all(imagePromises);
-        const imageMap: { [key: number]: string } = {};
-        imageResponses.forEach((response, index) => {
-          const url = URL.createObjectURL(response.data);
-          imageMap[items[index].imageId] = url;
-        });
-        setImages(imageMap);
-      }
-    };
+  const fetchImages = async (equippedItems: { weapon: Item | null, shield: Item | null, armor: Item | null }) => {
+    const imagePromises = Object.values(equippedItems)
+      .filter(item => item !== null)
+      .map((item: Item | null) =>
+        axios.get(`${baseApiUrl}/Images/${item!.imageId}`, { responseType: 'blob' })
+      );
+    const imageResponses = await Promise.all(imagePromises);
+    const imageMap: { [key: number]: string } = {};
+    imageResponses.forEach((response, index) => {
+      const url = URL.createObjectURL(response.data);
+      const item = Object.values(equippedItems).filter(item => item !== null)[index];
+      imageMap[item!.imageId] = url;
+    });
+    setImages(imageMap);
+  };
 
-    fetchImages();
+  useEffect(() => {
+    const equippedItems = { weapon, shield, armor };
+    fetchImages(equippedItems);
     setIsMobile(window.innerWidth <= 768);
-  }, []);
+  }, [weapon, shield, armor]);
 
   useEffect(() => {
     const equippedItems = { weapon, shield, armor };
@@ -49,9 +46,17 @@ const EquipmentSlot: React.FC = () => {
     sessionStorage.setItem('backpackItems', JSON.stringify(updatedItems));
   };
 
-  const handleSellItem = (item: Item) => {
-    changeCoins(item.price);
-    removeItem(item.id);
+  const handleUnEquipItem = (item: Item) => {
+    if (item.type === 'Weapon') {
+      setWeapon(null);
+    } else if (item.type === 'Shield') {
+      setShield(null);
+    } else if (item.type === 'Armor') {
+      setArmor(null);
+    }
+    const updatedItems = [...items, item];
+    setItems(updatedItems);
+    sessionStorage.setItem('backpackItems', JSON.stringify(updatedItems));
   };
 
   const handleClick = (item: Item | null) => {
@@ -68,13 +73,12 @@ const EquipmentSlot: React.FC = () => {
             <div className={styles.imageContainer}><img src={images[weapon.imageId]} alt={weapon.name} className={styles.image} /></div>
             {hoveredItem === weapon && (
               <div className={styles.info}>
-                {isInTown && <Button onClick={() => handleSellItem(weapon)}>Sell</Button>}
+                <Button onClick={() => handleUnEquipItem(weapon)}>Unequip</Button>
               </div>
             )}
             <div className={styles.sideInfo}>
               <p>{weapon.name}</p>
               <p>Damage: {weapon.dmg}</p>
-              <p>Rarity: {weapon.rarity}</p>
             </div>
           </>
         )}
@@ -85,13 +89,12 @@ const EquipmentSlot: React.FC = () => {
             <div className={styles.imageContainer}><img src={images[shield.imageId]} alt={shield.name} className={styles.image} /></div>
             {hoveredItem === shield && (
               <div className={styles.info}>
-                {isInTown && <Button onClick={() => handleSellItem(shield)}>Sell</Button>}
+                <Button onClick={() => handleUnEquipItem(shield)}>Unequip</Button>
               </div>
             )}
             <div className={styles.sideInfo}>
               <p>{shield.name}</p>
-              <p>Defense: {shield.def}</p>
-              <p>Rarity: {shield.rarity}</p>
+              <p>Defense: {shield.dmg} %</p>
             </div>
           </>
         )}
@@ -102,13 +105,12 @@ const EquipmentSlot: React.FC = () => {
             <div className={styles.imageContainer}><img src={images[armor.imageId]} alt={armor.name} className={styles.image} /></div>
             {hoveredItem === armor && (
               <div className={styles.info}>
-                {isInTown && <Button onClick={() => handleSellItem(armor)}>Sell</Button>}
+                <Button onClick={() => handleUnEquipItem(armor)}>Unequip</Button>
               </div>
             )}
             <div className={styles.sideInfo}>
               <p>{armor.name}</p>
-              <p>Defense: {armor.def}</p>
-              <p>Rarity: {armor.rarity}</p>
+              <p>Defense: {armor.dmg}</p>
             </div>
           </>
         )}
