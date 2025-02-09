@@ -6,6 +6,7 @@
 .slot {
   display: flex;
   position: relative;
+  padding-top: 2rem;
 }
 
 .imageContainer {
@@ -14,8 +15,6 @@
   align-items: center;
   width: 6.625rem;
   height: 6.625rem;
-  background-color: var(--Item-Backround-light);
-  border: solid 10px var(--Item-Backround);
 }
 .image{
   width: 5rem;
@@ -27,7 +26,6 @@
   left: 100%;
   background-color: var(--Brown);
   border: solid 10px var(--Dark-Brown);
-  padding: 10px;
   border-radius: 10px;
   z-index: 10;
   display: flex;

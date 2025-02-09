@@ -4,6 +4,7 @@ import styles from './Backpack.module.css';
 import { useGameContext } from '../../contexts/GameContext';
 import Button from '../Buttons/ButtonSmall/ButtonSmall';
 import { Item } from '../../types/ViewModels';
+import ImageWithBackground from '../ImageWithBackground/ImageWithBackground';
 
 const Backpack: React.FC = () => {
   const [images, setImages] = useState<{ [key: number]: string }>({});
@@ -96,7 +97,11 @@ const Backpack: React.FC = () => {
         items.map((item: Item) => (
           <div key={item.id} className={styles.backpackItem} onClick={() => handleClick(item)}>
             <div className={styles.imgContainer}>
-              <img src={images[item.imageId]} alt={item.name} className={styles.img} />
+              <ImageWithBackground
+                imageUrl={images[item.imageId]}
+                rarity={item.rarity}
+                altText={item.name}
+              />
             </div>
             {hoveredItem === item && (
               <div className={styles.info}>

@@ -4,6 +4,7 @@ import styles from './EquipmentSlot.module.css';
 import Button from '../Buttons/ButtonSmall/ButtonSmall';
 import { Item } from '../../types/ViewModels';
 import axios from 'axios';
+import ImageWithBackground from '../ImageWithBackground/ImageWithBackground';
 
 const EquipmentSlot: React.FC = () => {
   const { weapon, shield, armor, setWeapon, setShield, setArmor, changeCoins, items, setItems } = useGameContext();
@@ -67,10 +68,17 @@ const EquipmentSlot: React.FC = () => {
 
   return (
     <div className={styles.equipmentSlot}>
+      <h2>Equipment</h2>
       <div className={styles.slot} onClick={() => handleClick(weapon)}>
         {weapon && (
           <>
-            <div className={styles.imageContainer}><img src={images[weapon.imageId]} alt={weapon.name} className={styles.image} /></div>
+            <div className={styles.imageContainer}>
+              <ImageWithBackground
+                imageUrl={images[weapon.imageId]}
+                rarity={weapon.rarity}
+                altText={weapon.name}
+              />
+            </div>
             {hoveredItem === weapon && (
               <div className={styles.info}>
                 <Button onClick={() => handleUnEquipItem(weapon)}>Unequip</Button>
@@ -86,7 +94,13 @@ const EquipmentSlot: React.FC = () => {
       <div className={styles.slot} onClick={() => handleClick(shield)}>
         {shield && (
           <>
-            <div className={styles.imageContainer}><img src={images[shield.imageId]} alt={shield.name} className={styles.image} /></div>
+            <div className={styles.imageContainer}>
+              <ImageWithBackground
+                imageUrl={images[shield.imageId]}
+                rarity={shield.rarity}
+                altText={shield.name}
+              />
+            </div>
             {hoveredItem === shield && (
               <div className={styles.info}>
                 <Button onClick={() => handleUnEquipItem(shield)}>Unequip</Button>
@@ -102,7 +116,13 @@ const EquipmentSlot: React.FC = () => {
       <div className={styles.slot} onClick={() => handleClick(armor)}>
         {armor && (
           <>
-            <div className={styles.imageContainer}><img src={images[armor.imageId]} alt={armor.name} className={styles.image} /></div>
+            <div className={styles.imageContainer}>
+              <ImageWithBackground
+                imageUrl={images[armor.imageId]}
+                rarity={armor.rarity}
+                altText={armor.name}
+              />
+            </div>
             {hoveredItem === armor && (
               <div className={styles.info}>
                 <Button onClick={() => handleUnEquipItem(armor)}>Unequip</Button>

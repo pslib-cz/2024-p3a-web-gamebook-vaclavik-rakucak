@@ -1,0 +1,22 @@
+.deathCard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background-color: var(--Light-Brown);
+    border: 10px solid var(--Dark-Brown);
+    border-radius: 20px;
+    text-align: center;
+    width: fit-content;
+    align-self: center;
+    margin-top: 5rem;
+  }
+  
+  .deathCard h2 {
+    margin-bottom: 10px;
+  }
+  
+  .deathCard p {
+    margin-bottom: 20px;
+  }

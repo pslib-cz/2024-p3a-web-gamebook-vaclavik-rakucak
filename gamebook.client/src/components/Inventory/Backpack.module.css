@@ -59,7 +59,7 @@
   .quantity{
     position: absolute;
     top: 0;
-    right: 2.2rem;
+    right: 1.8rem;
     font-size: 1.5rem;
     color: var(--Dark-Brown);
   }

@@ -6,6 +6,7 @@ import Button from '../../components/Buttons/ButtonSmall/ButtonSmall';
 import styles from './ShopPage.module.css';
 import Burgir from '../../components/Burgir/Burgir';
 import PauseMenu from '../../components/PauseMenu/PauseMenu.tsx';
+import ImageWithBackground from '../../components/ImageWithBackground/ImageWithBackground';
 
 const ShopPage: React.FC = () => {
   const [equipment, setEquipment] = useState<any[]>([]);
@@ -124,20 +125,15 @@ const ShopPage: React.FC = () => {
   const renderSection = (sectionItems: any[], sectionIndex: number) => {
     return (
       <div key={sectionIndex} className={styles.sectionContainer}>
-        <h2>{sectionTitles[sectionIndex % sectionTitles.length]}</h2>
+        <h2 className={styles.containerHeading}>{sectionTitles[sectionIndex % sectionTitles.length]}</h2>
         <div className={styles.shopContainer}>
-          {sectionItems.map((item, index) => (
-            <div
-              key={item.id}
-              className={`${styles.itemContainer} ${item.bought ? styles.hidden : ''}`}
-            >
-              <div className={styles.imageContainer}>
-                <img
-                  src={images[item.imageId]}
-                  alt={item.name}
-                  className={`${styles.image} ${styles[item.rarity]}`}
-                />
-              </div>
+          {sectionItems.map((item) => (
+            <div key={item.id} className={`${styles.itemContainer} ${item.bought ? styles.hidden : ''}`}>
+              <ImageWithBackground
+                imageUrl={images[item.imageId]}
+                rarity={item.rarity}
+                altText={item.name}
+              />
               <div className={styles.itemInfo}>
                 <h3>{item.name}</h3>
                 <div className={styles.itemStats}>

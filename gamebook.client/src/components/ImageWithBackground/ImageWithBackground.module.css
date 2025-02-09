@@ -1,0 +1,30 @@
+.container{
+    border: .25rem solid var(--Item-Backround);
+    border-radius: 10px;
+}
+.imageContainer {
+    width: 4.5rem;
+    height: 4.5rem;
+}
+  
+.image {
+    height: 4rem;
+    background-color: var(--Item-Backround-light);
+    border: solid .25rem var(--Item-Backround);
+    border-radius: 2.5px;
+}
+  
+  .Common {
+    border: .25rem solid var(--Common);
+    border-radius: 5px;
+  }
+  
+  .Rare {
+    border: .25rem solid var(--Rare);
+    border-radius: 5px;
+  }
+  
+  .Legendary {
+    border: .25rem solid var(--Legendary);
+    border-radius: 5px;
+  }

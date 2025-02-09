@@ -10,6 +10,7 @@ import Button from '../../Buttons/ButtonLarge/ButtonLarge';
 import FightComponent from '../../FightComponent/FightComponent';
 import PauseMenu from '../../PauseMenu/PauseMenu';
 import Burgir from '../../Burgir/Burgir';
+import { Dungeon } from '../../../types/ViewModels';
 
 const ChainViewer: React.FC = () => {
     const {
@@ -23,6 +24,7 @@ const ChainViewer: React.FC = () => {
     } = useGameContext();
     const [backgroundImageUrl, setBackgroundImageUrl] = useState<string>('');
     const [isFighting, setIsFighting] = useState<boolean>(false);
+    const [dungeons, setDungeons] = useState<Dungeon[]>([]);
     const currentItem = chain ? chain[currentChainIndex] : null;
     const navigate = useNavigate();
     const [isPauseMenuOpen, setIsPauseMenuOpen] = useState<boolean>(false);
@@ -45,6 +47,23 @@ const ChainViewer: React.FC = () => {
         }
     }, [chain, currentChainIndex]);
 
+    useEffect(() => {
+        const fetchDungeons = async () => {
+            try {
+                const response = await fetch(`${baseApiUrl}/Dungeons`);
+                if (!response.ok) {
+                    throw new Error('Failed to fetch dungeons');
+                }
+                const data: Dungeon[] = await response.json();
+                setDungeons(data);
+            } catch (error) {
+                console.error('Error fetching dungeons:', error);
+            }
+        };
+
+        fetchDungeons();
+    }, []);
+
     const handleNext = () => {
         if (!chain) return;
 
@@ -63,8 +82,14 @@ const ChainViewer: React.FC = () => {
         }
     };
 
-    const handleFightEnd = (monsterId?: number) => {
+    const handleFightEnd = (monsterId?: number, playerDied?: boolean) => {
         setIsFighting(false);
+        if (playerDied) {
+            setChain(null);
+            navigate('/map');
+            clearSessionStorage();  
+            return;
+        }
         if (monsterId) {
             setDefeatedMonsters([...defeatedMonsters, monsterId]);
             if (currentItem && currentItem.type === 'room') {
@@ -74,9 +99,15 @@ const ChainViewer: React.FC = () => {
     };
 
     const handleGoBackToMap = () => {
+        if (chain && chain.length > 0) {
+            const dungeonId = chain[0].data.dungeonId;
+            const dungeon = dungeons.find(d => d.id === dungeonId);
+            if (dungeon) {
+                changeCoins(dungeon.rewardMoney);
+            }
+        }
         setChain(null);
         navigate('/map');
-        changeCoins(10);
         clearSessionStorage();   
     };
 

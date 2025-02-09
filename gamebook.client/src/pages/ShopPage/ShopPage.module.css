@@ -23,13 +23,13 @@
   z-index: 100;
 }
 
-h2 {
+.containerHeading {
   color: var(--Biege);
-  font-size: 2rem;
+  font-size: 1.8rem;
   background-color: var(--Brown);
   border-radius: 20px;
   border: 10px solid var(--Dark-Brown);
-  width: 100%;
+  padding: .5rem;
   text-align: center;
 }
 

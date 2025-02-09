@@ -17,6 +17,7 @@ const Inventory: React.FC<InventoryProps> = ({ onClose }) => {
         </div>
       </div>
       <div className={styles.backpackContainer}>
+        <h2>Backpack</h2>
         <Backpack />
       </div>
     </div>
