@@ -18,14 +18,15 @@ interface GameContextProps {
   changeHealth: (amount: number) => void;
   defeatedMonsters: number[];
   setDefeatedMonsters: (monsters: number[]) => void;
-  weapon: any;
-  setWeapon: (weapon: any) => void;
-  armor: any;
-  setArmor: (armor: any) => void;
-  shield: any;
-  setShield: (shield: any) => void;
+  weapon: Item | null;
+  setWeapon: (weapon: Item | null) => void;
+  armor: Item | null;
+  setArmor: (armor: Item | null) => void;
+  shield: Item | null;
+  setShield: (shield: Item | null) => void;
   items: Item[];
   setItems: (items: Item[]) => void;
+  handleUnEquipItem: (item: Item) => void;
 }
 
 const GameContext = createContext<GameContextProps | undefined>(undefined);
@@ -49,10 +50,10 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
   const [playerHealth, setPlayerHealth] = useState<number>(100);
   const [coins, setCoins] = useState<number>(1000);
   const maxPlayerHealth = 100;
-  const [weapon, setWeapon] = useState<any>(null);
-  const [armor, setArmor] = useState<any>(null);
-  const [shield, setShield] = useState<any>(null);
-  const [items, setItems] = useState<any[]>(() => {
+  const [weapon, setWeapon] = useState<Item | null>(null);
+  const [armor, setArmor] = useState<Item | null>(null);
+  const [shield, setShield] = useState<Item | null>(null);
+  const [items, setItems] = useState<Item[]>(() => {
     const storedItems = sessionStorage.getItem('backpackItems');
     return storedItems ? JSON.parse(storedItems) : [];
   });
@@ -79,6 +80,19 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
     sessionStorage.setItem('backpackItems', JSON.stringify(items));
   }, [items]);
 
+  const handleUnEquipItem = (item: Item) => {
+    if (item.type === 'Weapon') {
+      setWeapon(null);
+    } else if (item.type === 'Shield') {
+      setShield(null);
+    } else if (item.type === 'Armor') {
+      setArmor(null);
+    }
+    const updatedItems = [...items, item];
+    setItems(updatedItems);
+    sessionStorage.setItem('backpackItems', JSON.stringify(updatedItems));
+  };
+
   const value: GameContextProps = {
     chain,
     setChain,
@@ -103,6 +117,7 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
     setShield,
     items,
     setItems,
+    handleUnEquipItem,
   };
 
   return <GameContext.Provider value={value}>{children}</GameContext.Provider>;

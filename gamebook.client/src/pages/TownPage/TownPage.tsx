@@ -33,9 +33,11 @@ const TownPage: React.FC = () => {
           <Burgir onClick={togglePauseMenu} isOpen={isPauseMenuOpen}/>
         </div>
         {isPauseMenuOpen && <PauseMenu onClose={togglePauseMenu} currentPage='Town' />}
-        <RouteButton route="/Town/Tavern" label="Tavern" />
-        <RouteButton route="/Town/Blacksmith" label="Blacksmith"/>
-        <RouteButton route="/Map" label="Map"/>
+        <div className={styles.buttonContainer}>
+          <div><RouteButton route="/Town/Tavern" label="Tavern" /></div>
+          <div><RouteButton route="/Map" label="Map"/></div>
+          <div><RouteButton route="/Town/Blacksmith" label="Shopkeeper"/></div>
+        </div>
     </div>
   );
 };

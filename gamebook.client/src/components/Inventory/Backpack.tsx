@@ -41,28 +41,29 @@ const Backpack: React.FC = () => {
   }, [items]);
 
   const handleEquipItem = (item: Item) => {
-    let currentEquippedItem: Item | null = null;
-
+    let equippedItem = null;
+  
+    if (item.type === 'Weapon' && weapon) {
+      equippedItem = weapon;
+    } else if (item.type === 'Shield' && shield) {
+      equippedItem = shield;
+    } else if (item.type === 'Armor' && armor) {
+      equippedItem = armor;
+    }
+  
+    if (equippedItem) {
+      alert(`You already have a ${item.type.toLowerCase()} equipped: ${equippedItem.name}`);
+      return;
+    }
+  
     if (item.type === 'Weapon') {
-      currentEquippedItem = weapon;
       setWeapon(item);
-    }
-    if (item.type === 'Shield') {
-      currentEquippedItem = shield;
+    } else if (item.type === 'Shield') {
       setShield(item);
-    }
-    if (item.type === 'Armor') {
-      currentEquippedItem = armor;
+    } else if (item.type === 'Armor') {
       setArmor(item);
     }
-
-    if (currentEquippedItem) {
-      const updatedItems = [...items, currentEquippedItem];
-      setItems(updatedItems);
-      sessionStorage.setItem('backpackItems', JSON.stringify(updatedItems));
-      console.log('Item added to backpack:', currentEquippedItem);
-    }
-
+  
     removeItem(item.id);
   };
 
@@ -80,6 +81,7 @@ const Backpack: React.FC = () => {
     changeCoins(item.price);
     removeItem(item.id);
   };
+
   const handleUseItem = (item: Item) => {
     changeHealth(item.dmg);
     item.quantity = (item.quantity || 1) - 1;
@@ -87,6 +89,7 @@ const Backpack: React.FC = () => {
       removeItem(item.id);
     }
   };
+
   const isInTown = location.pathname.includes('/Blacksmith');
 
   return (

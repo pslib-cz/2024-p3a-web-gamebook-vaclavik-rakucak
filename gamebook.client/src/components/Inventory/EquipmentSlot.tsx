@@ -7,7 +7,7 @@ import axios from 'axios';
 import ImageWithBackground from '../ImageWithBackground/ImageWithBackground';
 
 const EquipmentSlot: React.FC = () => {
-  const { weapon, shield, armor, setWeapon, setShield, setArmor, changeCoins, items, setItems } = useGameContext();
+  const { weapon, shield, armor, setWeapon, setShield, setArmor, changeCoins, items, setItems, handleUnEquipItem } = useGameContext();
   const [images, setImages] = useState<{ [key: number]: string }>({});
   const [hoveredItem, setHoveredItem] = useState<Item | null>(null);
   const [isMobile, setIsMobile] = useState<boolean>(false);
@@ -40,25 +40,6 @@ const EquipmentSlot: React.FC = () => {
     const equippedItems = { weapon, shield, armor };
     sessionStorage.setItem('equippedItems', JSON.stringify(equippedItems));
   }, [weapon, shield, armor]);
-
-  const removeItem = (itemId: number) => {
-    const updatedItems = items.filter(item => item.id !== itemId);
-    setItems(updatedItems);
-    sessionStorage.setItem('backpackItems', JSON.stringify(updatedItems));
-  };
-
-  const handleUnEquipItem = (item: Item) => {
-    if (item.type === 'Weapon') {
-      setWeapon(null);
-    } else if (item.type === 'Shield') {
-      setShield(null);
-    } else if (item.type === 'Armor') {
-      setArmor(null);
-    }
-    const updatedItems = [...items, item];
-    setItems(updatedItems);
-    sessionStorage.setItem('backpackItems', JSON.stringify(updatedItems));
-  };
 
   const handleClick = (item: Item | null) => {
     setHoveredItem(prevItem => (prevItem === item ? null : item));
