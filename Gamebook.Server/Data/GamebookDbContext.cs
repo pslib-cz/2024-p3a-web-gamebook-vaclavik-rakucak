@@ -20,11 +20,12 @@ namespace Gamebook.Server.Data
         public DbSet<SpecialEffect> SpecialEffects { get; set; }
         public DbSet<Fork> Forks { get; set; }
         public DbSet<ForkConnection> ForkConnections { get; set; }
-
+        public DbSet<Key> Keys { get; set; } // Přidání DbSet pro Key
 
         public GamebookDbContext(DbContextOptions<GamebookDbContext> options) : base(options)
         {
         }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Hall>()
@@ -32,25 +33,63 @@ namespace Gamebook.Server.Data
                 .WithMany()
                 .HasForeignKey(h => h.RoomId);
 
-            // Odkomentovaná konfigurace pro Fork a ForkConnection:
+            // Konfigurace pro Fork a ForkConnection:
             modelBuilder.Entity<ForkConnection>()
                 .HasOne(fc => fc.Fork)
                 .WithMany(f => f.Connections)
                 .HasForeignKey(fc => fc.ForkId);
 
-            // Upravená konfigurace pro ForkConnection a Room:
             modelBuilder.Entity<ForkConnection>()
                 .HasOne(fc => fc.ConnectedRoom)
                 .WithOne()
                 .HasForeignKey<ForkConnection>(fc => fc.Id);
+
+            // Konfigurace pro Room a RoomItem:
+            modelBuilder.Entity<Room>()
+                .HasMany(r => r.RoomItems)
+                .WithOne(ri => ri.Room)
+                .HasForeignKey(ri => ri.RoomId);
+
+            // Konfigurace pro Room a Key:
+            modelBuilder.Entity<Room>()
+                .HasOne(r => r.Key)
+                .WithOne()
+                .HasForeignKey<Room>(r => r.KeyId);
+
+            // Konfigurace diskriminátoru pro dědičnost
+            modelBuilder.Entity<Equipment>()
+                .HasDiscriminator<string>("Discriminator")
+                .HasValue<Equipment>("Equipment")
+                .HasValue<Key>("Key");
         }
+
         public static void SeedData(IServiceProvider serviceProvider)
         {
             using (var scope = serviceProvider.CreateScope())
             {
                 var context = scope.ServiceProvider.GetRequiredService<GamebookDbContext>();
 
-               
+                context.Images.AddRange(
+                        new Image { Id = 54, Name = "Key", Data = new byte[0], ContentType = "image/webp" },
+                        new Image { Id = 55, Name = "Chest", Data = new byte[0], ContentType = "image/webp" }
+                    );
+
+                if (!context.Keys.Any())
+                {
+                    context.Keys.Add(
+                        new Key { Id = 1, Name = "Dungeon Key", Type = "Key", Price = null, Rarity = "Common", Dmg = 0, ImageId = 54, DungeonId = 2 }
+                    );
+                }
+
+                if (!context.RoomItems.Any())
+                {
+                    context.RoomItems.AddRange(
+                        new RoomItem { Id = 1, Name = "Trap", Type = "trap", Description = "A dangerous trap", damage = 10, RoomId = 1, ImageId = 1 },
+                        new RoomItem { Id = 2, Name = "Chest", Type = "chest", Description = "A locked chest", damage = null, RoomId = 3, EquipmentId = 4, ImageId = 55 }
+                    );
+                }
+
+                context.SaveChanges();
             }
         }
     }

@@ -84,7 +84,12 @@ namespace Gamebook.Server.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("Dmg")
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasMaxLength(13)
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("Dmg")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("ImageId")
@@ -115,6 +120,10 @@ namespace Gamebook.Server.Migrations
                     b.HasIndex("SpecialEffectId");
 
                     b.ToTable("Equipments");
+
+                    b.HasDiscriminator().HasValue("Equipment");
+
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("Gamebook.Server.Models.Fork", b =>
@@ -265,7 +274,16 @@ namespace Gamebook.Server.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<int?>("DungeonId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int>("ImageId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("ItemId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("MonsterId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
@@ -278,9 +296,18 @@ namespace Gamebook.Server.Migrations
                     b.Property<int?>("RewardItemId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int?>("RoomItemId")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("Id");
 
+                    b.HasIndex("DungeonId");
+
                     b.HasIndex("ImageId");
+
+                    b.HasIndex("ItemId");
+
+                    b.HasIndex("MonsterId");
 
                     b.HasIndex("NpcId");
 
@@ -305,6 +332,15 @@ namespace Gamebook.Server.Migrations
                     b.Property<int?>("ImageId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int?>("KeyId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("PositionX")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("PositionY")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Type")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -315,6 +351,9 @@ namespace Gamebook.Server.Migrations
 
                     b.HasIndex("ImageId");
 
+                    b.HasIndex("KeyId")
+                        .IsUnique();
+
                     b.ToTable("Rooms");
                 });
 
@@ -324,10 +363,13 @@ namespace Gamebook.Server.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("ImageId")
+                    b.Property<string>("Description")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("EquipmentId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("LockedBy")
+                    b.Property<int>("ImageId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
@@ -341,7 +383,12 @@ namespace Gamebook.Server.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<int?>("damage")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("EquipmentId");
 
                     b.HasIndex("ImageId");
 
@@ -395,6 +442,18 @@ namespace Gamebook.Server.Migrations
                     b.HasIndex("ParentTownId");
 
                     b.ToTable("Towns");
+                });
+
+            modelBuilder.Entity("Gamebook.Server.Models.Key", b =>
+                {
+                    b.HasBaseType("Gamebook.Server.Models.Equipment");
+
+                    b.Property<int>("DungeonId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasIndex("DungeonId");
+
+                    b.HasDiscriminator().HasValue("Key");
                 });
 
             modelBuilder.Entity("Gamebook.Server.Models.Dungeon", b =>
@@ -489,11 +548,23 @@ namespace Gamebook.Server.Migrations
 
             modelBuilder.Entity("Gamebook.Server.Models.Quest", b =>
                 {
+                    b.HasOne("Gamebook.Server.Models.Dungeon", "Dungeon")
+                        .WithMany()
+                        .HasForeignKey("DungeonId");
+
                     b.HasOne("Gamebook.Server.Models.Image", "Image")
                         .WithMany()
                         .HasForeignKey("ImageId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("Gamebook.Server.Models.RoomItem", "RoomItem")
+                        .WithMany()
+                        .HasForeignKey("ItemId");
+
+                    b.HasOne("Gamebook.Server.Models.Monster", "Monster")
+                        .WithMany()
+                        .HasForeignKey("MonsterId");
 
                     b.HasOne("Gamebook.Server.Models.Npc", "Npc")
                         .WithMany()
@@ -503,11 +574,17 @@ namespace Gamebook.Server.Migrations
                         .WithMany()
                         .HasForeignKey("RewardItemId");
 
+                    b.Navigation("Dungeon");
+
                     b.Navigation("Image");
+
+                    b.Navigation("Monster");
 
                     b.Navigation("Npc");
 
                     b.Navigation("RewardItem");
+
+                    b.Navigation("RoomItem");
                 });
 
             modelBuilder.Entity("Gamebook.Server.Models.Room", b =>
@@ -522,13 +599,23 @@ namespace Gamebook.Server.Migrations
                         .WithMany()
                         .HasForeignKey("ImageId");
 
+                    b.HasOne("Gamebook.Server.Models.Key", "Key")
+                        .WithOne()
+                        .HasForeignKey("Gamebook.Server.Models.Room", "KeyId");
+
                     b.Navigation("Dungeon");
 
                     b.Navigation("Image");
+
+                    b.Navigation("Key");
                 });
 
             modelBuilder.Entity("Gamebook.Server.Models.RoomItem", b =>
                 {
+                    b.HasOne("Gamebook.Server.Models.Equipment", "Equipment")
+                        .WithMany()
+                        .HasForeignKey("EquipmentId");
+
                     b.HasOne("Gamebook.Server.Models.Image", "Image")
                         .WithMany()
                         .HasForeignKey("ImageId")
@@ -536,10 +623,12 @@ namespace Gamebook.Server.Migrations
                         .IsRequired();
 
                     b.HasOne("Gamebook.Server.Models.Room", "Room")
-                        .WithMany()
+                        .WithMany("RoomItems")
                         .HasForeignKey("RoomId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Equipment");
 
                     b.Navigation("Image");
 
@@ -563,9 +652,25 @@ namespace Gamebook.Server.Migrations
                     b.Navigation("ParentTown");
                 });
 
+            modelBuilder.Entity("Gamebook.Server.Models.Key", b =>
+                {
+                    b.HasOne("Gamebook.Server.Models.Dungeon", "Dungeon")
+                        .WithMany()
+                        .HasForeignKey("DungeonId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Dungeon");
+                });
+
             modelBuilder.Entity("Gamebook.Server.Models.Fork", b =>
                 {
                     b.Navigation("Connections");
+                });
+
+            modelBuilder.Entity("Gamebook.Server.Models.Room", b =>
+                {
+                    b.Navigation("RoomItems");
                 });
 
             modelBuilder.Entity("Gamebook.Server.Models.Town", b =>
