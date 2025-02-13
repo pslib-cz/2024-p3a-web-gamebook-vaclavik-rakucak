@@ -20,7 +20,7 @@ namespace Gamebook.Server.Data
         public DbSet<SpecialEffect> SpecialEffects { get; set; }
         public DbSet<Fork> Forks { get; set; }
         public DbSet<ForkConnection> ForkConnections { get; set; }
-        public DbSet<Key> Keys { get; set; } // Přidání DbSet pro Key
+        public DbSet<Key> Keys { get; set; }
 
         public GamebookDbContext(DbContextOptions<GamebookDbContext> options) : base(options)
         {
@@ -46,15 +46,14 @@ namespace Gamebook.Server.Data
 
             // Konfigurace pro Room a RoomItem:
             modelBuilder.Entity<Room>()
-                .HasMany(r => r.RoomItems)
+                .HasOne(r => r.RoomItem)
                 .WithOne(ri => ri.Room)
-                .HasForeignKey(ri => ri.RoomId);
+                .HasForeignKey<Room>(r => r.RoomItemId);
 
-            // Konfigurace pro Room a Key:
-            modelBuilder.Entity<Room>()
-                .HasOne(r => r.Key)
-                .WithOne()
-                .HasForeignKey<Room>(r => r.KeyId);
+            modelBuilder.Entity<RoomItem>()
+                .HasOne(ri => ri.Room)
+                .WithOne(r => r.RoomItem)
+                .HasForeignKey<RoomItem>(ri => ri.RoomId);
 
             // Konfigurace diskriminátoru pro dědičnost
             modelBuilder.Entity<Equipment>()
@@ -67,7 +66,7 @@ namespace Gamebook.Server.Data
         {
             using (var scope = serviceProvider.CreateScope())
             {
-                
+                // Seed data logic here
             }
         }
     }

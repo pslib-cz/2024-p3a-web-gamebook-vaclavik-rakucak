@@ -1,0 +1,79 @@
+import React, { useState, useEffect } from 'react';
+import { Room, Key } from '../../types/ViewModels';
+import styles from './KeyRoom.module.css';
+
+type KeyRoomProps = {
+    room: Room;
+};
+
+const KeyRoom: React.FC<KeyRoomProps> = ({ room }) => {
+    const [key, setKey] = useState<Key | null>(null);
+    const [image, setImage] = useState<string | null>(null);
+
+    useEffect(() => {
+        const fetchKey = async () => {
+            if (room.keyId) {
+                const keyUrl = `${import.meta.env.VITE_API_URL}/keys/${room.keyId}`;
+                console.log('Fetching key from URL:', keyUrl);
+                try {
+                    const response = await fetch(keyUrl);
+                    if (!response.ok) {
+                        throw new Error(`Failed to fetch key: ${response.statusText}`);
+                    }
+                    const keyData: Key = await response.json();
+                    console.log('Key fetched successfully:', keyData);
+                    setKey(keyData);
+                } catch (error) {
+                    console.error('Error fetching key:', error);
+                }
+            }
+        };
+
+        fetchKey();
+    }, [room.keyId]);
+
+    useEffect(() => {
+        const fetchImage = async () => {
+            if (key?.imageId) {
+                const imageUrl = `${import.meta.env.VITE_API_URL}/images/${key.imageId}`;
+                console.log('Fetching image from URL:', imageUrl);
+                try {
+                    const response = await fetch(imageUrl);
+                    if (!response.ok) {
+                        throw new Error(`Failed to fetch image: ${response.statusText}`);
+                    }
+                    const blob = await response.blob();
+                    const imageObjectUrl = URL.createObjectURL(blob);
+                    console.log('Image fetched successfully:', imageObjectUrl);
+                    setImage(imageObjectUrl);
+                } catch (error) {
+                    console.error('Error fetching image:', error);
+                }
+            }
+        };
+
+        fetchImage();
+    }, [key]);
+
+    const handleKeyCollect = () => {
+        
+    };
+
+    return (
+        <div className={styles.keyRoom}>
+            <h2>Key Room {room.id}</h2>
+            <p>{room.description}</p>
+            {key && (
+                <div className={styles.keyInfo}>
+                    <p>Key: {key.name}</p>
+                    <div className={styles.imageContainer}>
+                        {image && <img src={image} alt={key.name} className={styles.image}/>}
+                    </div>
+                    <button onClick={handleKeyCollect}>Collect Key</button>
+                </div>
+            )}
+        </div>
+    );
+};
+
+export default KeyRoom;

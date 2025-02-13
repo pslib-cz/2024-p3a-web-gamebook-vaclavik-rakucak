@@ -6,17 +6,25 @@ import Button from '../../Buttons/ButtonLarge/ButtonLarge';
 type RoomContentProps = {
     room: Room;
     onFightStart: () => void;
+    onSearch: () => void;
 };
 
-const RoomContent: React.FC<RoomContentProps> = ({ room, onFightStart }) => {
-    const isActive = room.active !== undefined ? room.active : true;
+const RoomContent: React.FC<RoomContentProps> = ({ room, onFightStart, onSearch }) => {
+    const isActive = room.active != null ? room.active : true;
 
     return (
         <div className={styles.roomContent}>
             <h2>Místnost {room.id}</h2>
             <p>{room.description}</p>
-            {room.type === 'monster' && isActive && (
-                <Button onClick={onFightStart}>Start Fight</Button>
+            {isActive && (
+                <>
+                    {room.type === 'monsterRoom' && (
+                        <Button onClick={onFightStart}>Start Fight</Button>
+                    )}
+                    {(room.type === 'keyRoom' || room.type === 'chestRoom' || room.type === 'trapRoom') && (
+                        <Button onClick={onSearch}>Search</Button>
+                    )}
+                </>
             )}
         </div>
     );

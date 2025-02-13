@@ -44,7 +44,7 @@ public class DungeonChainController : ControllerBase
 
         for (int i = 0; i < chainLength; i++)
         {
-            if (i < chainLength - 2 && random.Next(100) < 0) //nejsou data v databazi zaze sance aan fork je 0
+            if (i < chainLength - 2 && random.Next(100) < 0) //nejsou data v databazi zaze sance na fork je 0
             {
                 var availableRooms = rooms.Where(r => r.Id != currentRoom.Id).ToList();
                 if (availableRooms.Count >= 2)

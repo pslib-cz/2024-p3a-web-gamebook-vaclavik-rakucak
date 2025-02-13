@@ -5,7 +5,7 @@ export type ChainElement =
 
 export interface Room {
     id: number;
-    type: string;
+    type: string; // "traproom", "chestroom", "keyroom"
     description: string;
     dungeonId: number;
     imageId?: number;
@@ -13,7 +13,30 @@ export interface Room {
     isDeadEnd?: boolean;
     monster?: Monster;
     active?: boolean;
+    roomItems?: RoomItem[];
+    keyId?: Key;
+    positionX?: number;
+    positionY?: number;
+    
+}
 
+export interface RoomItem {
+    id: number;
+    name: string;
+    type: string; // "trap", "chest", "crate"
+    description?: string;
+    damage?: number;
+    imageId: number;
+    image?: ImageDto;
+}
+
+export interface Key {
+    id: number;
+    name: string;
+    type: string;
+    dungeonId: number;
+    imageId: number;
+    image?: ImageDto;
 }
 
 export interface Hall {
@@ -52,6 +75,7 @@ export type Monster = {
     damage: number;
     imageId: number;
 };
+
 export interface Item {
     id: number;
     name: string;
@@ -70,4 +94,4 @@ export interface Dungeon {
     description: string;
     rewardMoney: number;
     dmgCondition: number;
-  };
+};

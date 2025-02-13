@@ -322,6 +322,9 @@ namespace Gamebook.Server.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<bool?>("Active")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -332,7 +335,13 @@ namespace Gamebook.Server.Migrations
                     b.Property<int?>("ImageId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<bool?>("IsDeadEnd")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int?>("KeyId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("MonsterId")
                         .HasColumnType("INTEGER");
 
                     b.Property<int?>("PositionX")
@@ -341,18 +350,20 @@ namespace Gamebook.Server.Migrations
                     b.Property<int?>("PositionY")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int?>("RoomItemId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Type")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DungeonId");
-
                     b.HasIndex("ImageId");
 
-                    b.HasIndex("KeyId")
-                        .IsUnique();
+                    b.HasIndex("KeyId");
+
+                    b.HasIndex("MonsterId");
 
                     b.ToTable("Rooms");
                 });
@@ -392,7 +403,8 @@ namespace Gamebook.Server.Migrations
 
                     b.HasIndex("ImageId");
 
-                    b.HasIndex("RoomId");
+                    b.HasIndex("RoomId")
+                        .IsUnique();
 
                     b.ToTable("RoomItems");
                 });
@@ -589,25 +601,23 @@ namespace Gamebook.Server.Migrations
 
             modelBuilder.Entity("Gamebook.Server.Models.Room", b =>
                 {
-                    b.HasOne("Gamebook.Server.Models.Dungeon", "Dungeon")
-                        .WithMany()
-                        .HasForeignKey("DungeonId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Gamebook.Server.Models.Image", "Image")
                         .WithMany()
                         .HasForeignKey("ImageId");
 
                     b.HasOne("Gamebook.Server.Models.Key", "Key")
-                        .WithOne()
-                        .HasForeignKey("Gamebook.Server.Models.Room", "KeyId");
+                        .WithMany()
+                        .HasForeignKey("KeyId");
 
-                    b.Navigation("Dungeon");
+                    b.HasOne("Gamebook.Server.Models.Monster", "Monster")
+                        .WithMany()
+                        .HasForeignKey("MonsterId");
 
                     b.Navigation("Image");
 
                     b.Navigation("Key");
+
+                    b.Navigation("Monster");
                 });
 
             modelBuilder.Entity("Gamebook.Server.Models.RoomItem", b =>
@@ -623,8 +633,8 @@ namespace Gamebook.Server.Migrations
                         .IsRequired();
 
                     b.HasOne("Gamebook.Server.Models.Room", "Room")
-                        .WithMany("RoomItems")
-                        .HasForeignKey("RoomId")
+                        .WithOne("RoomItem")
+                        .HasForeignKey("Gamebook.Server.Models.RoomItem", "RoomId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -670,7 +680,7 @@ namespace Gamebook.Server.Migrations
 
             modelBuilder.Entity("Gamebook.Server.Models.Room", b =>
                 {
-                    b.Navigation("RoomItems");
+                    b.Navigation("RoomItem");
                 });
 
             modelBuilder.Entity("Gamebook.Server.Models.Town", b =>

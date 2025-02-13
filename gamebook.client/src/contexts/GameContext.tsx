@@ -92,6 +92,7 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
     setItems(updatedItems);
     sessionStorage.setItem('backpackItems', JSON.stringify(updatedItems));
   };
+  
 
   const value: GameContextProps = {
     chain,

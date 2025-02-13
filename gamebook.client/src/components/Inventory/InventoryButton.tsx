@@ -21,7 +21,7 @@ const InventoryButton: React.FC<InventoryButtonProps> = ({ isInMenu }) => {
     <div>
       <div>
         <button onClick={toggleInventory} className={isInMenu ? styles.inventoryButtonMenu : styles.inventoryButton}>
-          {isInMenu ? 'Open Inventory' : <img src="/public/backpack-1.png" alt="Open Inventory" />}
+          {isInMenu ? 'Open Inventory' : <img src="/backpack-1.png" alt="Open Inventory" />}
         </button>
       </div>
       {isOpen && <Inventory onClose={closeInventory} />}

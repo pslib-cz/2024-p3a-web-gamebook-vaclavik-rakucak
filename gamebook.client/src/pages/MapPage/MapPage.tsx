@@ -33,7 +33,7 @@ const MapButton: React.FC<Dungeon> = ({ id, name, description, rewardMoney, dmgC
     <div className={styles.mapButton}>
       <Button onClick={handleClick}>{name}</Button>
       <img
-        src="/public/dungeon-icon.webp"
+        src="/dungeon-icon.webp"
         alt="dungeon icon"
         className={styles.mapButtonIcon}
         onClick={handleClick}

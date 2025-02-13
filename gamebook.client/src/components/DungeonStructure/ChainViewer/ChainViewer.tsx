@@ -11,6 +11,9 @@ import FightComponent from '../../FightComponent/FightComponent';
 import PauseMenu from '../../PauseMenu/PauseMenu';
 import Burgir from '../../Burgir/Burgir';
 import { Dungeon } from '../../../types/ViewModels';
+import KeyRoom from '../../Key/KeyRoom';
+import ChestRoom from '../../Chest/ChestRoom';
+import TrapRoom from '../../Trap/TrapRoom';
 
 const ChainViewer: React.FC = () => {
     const {
@@ -24,6 +27,9 @@ const ChainViewer: React.FC = () => {
     } = useGameContext();
     const [backgroundImageUrl, setBackgroundImageUrl] = useState<string>('');
     const [isFighting, setIsFighting] = useState<boolean>(false);
+    const [isKeyRoomActive, setIsKeyRoomActive] = useState<boolean>(false);
+    const [isChestRoomActive, setIsChestRoomActive] = useState<boolean>(false);
+    const [isTrapRoomActive, setIsTrapRoomActive] = useState<boolean>(false);
     const [dungeons, setDungeons] = useState<Dungeon[]>([]);
     const currentItem = chain ? chain[currentChainIndex] : null;
     const navigate = useNavigate();
@@ -36,6 +42,7 @@ const ChainViewer: React.FC = () => {
 
     useEffect(() => {
         const currentItem = chain ? chain[currentChainIndex] : null;
+        
         if (
             currentItem &&
             (currentItem.type === 'hall' || currentItem.type === 'room') &&
@@ -115,6 +122,21 @@ const ChainViewer: React.FC = () => {
         setIsFighting(true);
     };
 
+
+    const handleSearch = () => {
+        if (currentItem && currentItem.type === 'room') {
+           if (currentItem.data.type === 'keyRoom') {
+            setIsKeyRoomActive(true);
+           }
+           if (currentItem.data.type === 'chestRoom') {
+            setIsChestRoomActive(true);
+           }
+           if (currentItem.data.type === 'trapRoom') {
+            setIsTrapRoomActive(true);
+           }
+        }
+    };
+
     const togglePauseMenu = () => {
         setIsPauseMenuOpen(!isPauseMenuOpen);
     };
@@ -128,7 +150,7 @@ const ChainViewer: React.FC = () => {
     }
 
     const isLastRoom = currentChainIndex === chain.length - 1;
-    const isActive = currentItem.type === 'room' && currentItem.data.type === 'monster' ? true : false;;
+    const isActive = currentItem.type === 'room' && currentItem.data.type === 'monsterRoom' ? true : false;;
 
     return (
         <div className={styles.ViewContainer}>
@@ -154,15 +176,33 @@ const ChainViewer: React.FC = () => {
                 )}
 
             {/* Rozlišení typu currentItem a předání správných dat komponentám */}
-            {currentItem && currentItem.type === 'room' && !isFighting && (
-                <RoomContent
-                    room={currentItem.data}
-                    onFightStart={handleStartFight}
-                />
+            {currentItem && currentItem.type === 'room' 
+                && !isFighting 
+                && !isKeyRoomActive 
+                && !isChestRoomActive
+                && !isTrapRoomActive 
+                && (
+                    <RoomContent
+                        room={currentItem.data}
+                        onFightStart={handleStartFight}
+                     onSearch={handleSearch}
+                    />
             )}
             {/* Zobrazení FightComponent, pokud je aktivní boj */}
             {currentItem && currentItem.type === 'room' && isFighting && (
                 <FightComponent onFightEnd={handleFightEnd} />
+            )}
+
+            {currentItem && currentItem.type === 'room' && isKeyRoomActive && (
+               <KeyRoom room={currentItem.data} />
+            )}
+
+            {currentItem && currentItem.type === 'room' && isChestRoomActive && (
+                <ChestRoom room={currentItem.data} />
+            )}
+
+            {currentItem && currentItem.type === 'room' && isTrapRoomActive && (
+                <TrapRoom room={currentItem.data} />
             )}
 
             {currentItem && currentItem.type === 'hall' && (
