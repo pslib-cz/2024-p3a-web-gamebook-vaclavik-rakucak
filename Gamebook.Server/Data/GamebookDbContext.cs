@@ -67,29 +67,7 @@ namespace Gamebook.Server.Data
         {
             using (var scope = serviceProvider.CreateScope())
             {
-                var context = scope.ServiceProvider.GetRequiredService<GamebookDbContext>();
-
-                context.Images.AddRange(
-                        new Image { Id = 54, Name = "Key", Data = new byte[0], ContentType = "image/webp" },
-                        new Image { Id = 55, Name = "Chest", Data = new byte[0], ContentType = "image/webp" }
-                    );
-
-                if (!context.Keys.Any())
-                {
-                    context.Keys.Add(
-                        new Key { Id = 1, Name = "Dungeon Key", Type = "Key", Price = null, Rarity = "Common", Dmg = 0, ImageId = 54, DungeonId = 2 }
-                    );
-                }
-
-                if (!context.RoomItems.Any())
-                {
-                    context.RoomItems.AddRange(
-                        new RoomItem { Id = 1, Name = "Trap", Type = "trap", Description = "A dangerous trap", damage = 10, RoomId = 1, ImageId = 1 },
-                        new RoomItem { Id = 2, Name = "Chest", Type = "chest", Description = "A locked chest", damage = null, RoomId = 3, EquipmentId = 4, ImageId = 55 }
-                    );
-                }
-
-                context.SaveChanges();
+                
             }
         }
     }
