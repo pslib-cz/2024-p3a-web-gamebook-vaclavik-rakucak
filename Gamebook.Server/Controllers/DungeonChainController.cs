@@ -23,14 +23,11 @@ public class DungeonChainController : ControllerBase
         int chainLength = 10;
 
         var rooms = await _context.Rooms
-            .Include(r => r.Image)
             .Where(r => r.DungeonId == dungeonId)
             .ToListAsync();
 
         var halls = await _context.Halls
             .Include(h => h.Room)
-            .ThenInclude(r => r.Image)
-            .Include(h => h.Image)
             .Where(h => h.DungeonId == dungeonId)
             .ToListAsync();
 

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Room, Key } from '../../types/ViewModels';
 import styles from './KeyRoom.module.css';
+import { useGameContext } from '../../contexts/GameContext';
 
 type KeyRoomProps = {
     room: Room;
@@ -9,6 +10,7 @@ type KeyRoomProps = {
 const KeyRoom: React.FC<KeyRoomProps> = ({ room }) => {
     const [key, setKey] = useState<Key | null>(null);
     const [image, setImage] = useState<string | null>(null);
+    const { items, setItems } = useGameContext();
 
     useEffect(() => {
         const fetchKey = async () => {
@@ -56,7 +58,21 @@ const KeyRoom: React.FC<KeyRoomProps> = ({ room }) => {
     }, [key]);
 
     const handleKeyCollect = () => {
-        
+        if (key) {
+            const existingKeyIndex = items.findIndex(item => item.id === key.id && item.type === 'Key');
+            let updatedItems = [...items];
+
+            if (existingKeyIndex !== -1) {
+                updatedItems[existingKeyIndex].quantity = (updatedItems[existingKeyIndex].quantity || 1) + 1;
+            } else {
+                const newKey = { ...key, quantity: 1, dmg: 0, rarity: 'common', price: 0, type: 'Key' as const };
+                updatedItems.push(newKey);
+            }
+
+            setItems(updatedItems);
+            sessionStorage.setItem('backpackItems', JSON.stringify(updatedItems));
+            console.log('Key added to backpack:', key);
+        }
     };
 
     return (

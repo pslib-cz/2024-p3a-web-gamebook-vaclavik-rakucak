@@ -37,6 +37,7 @@ export interface Key {
     dungeonId: number;
     imageId: number;
     image?: ImageDto;
+    quantity?: number;
 }
 
 export interface Hall {
@@ -81,7 +82,7 @@ export interface Item {
     name: string;
     dmg: number;
     rarity: string;
-    type: 'Weapon' | 'Shield' | 'Armor' | 'Miscellaneous';
+    type: 'Weapon' | 'Shield' | 'Armor' | 'Miscellaneous' | 'Key';
     imageId: number;
     quantity?: number;
     price: number;

@@ -78,15 +78,22 @@ const Backpack: React.FC = () => {
   };
 
   const handleSellItem = (item: Item) => {
-    changeCoins(item.price);
-    removeItem(item.id);
+    if (item.type !== 'Key') {
+      changeCoins(item.price);
+      removeItem(item.id);
+    }
   };
 
   const handleUseItem = (item: Item) => {
-    changeHealth(item.dmg);
-    item.quantity = (item.quantity || 1) - 1;
-    if (item.quantity === 0) {
-      removeItem(item.id);
+    if (item.type === 'Key') {
+      alert('Key used to unlock something!');
+      // Implement logic for using the key
+    } else {
+      changeHealth(item.dmg);
+      item.quantity = (item.quantity || 1) - 1;
+      if (item.quantity === 0) {
+        removeItem(item.id);
+      }
     }
   };
 
@@ -112,13 +119,13 @@ const Backpack: React.FC = () => {
                 <p>Damage: {item.dmg}</p>
                 <p>Rarity: {item.rarity}</p>
                 
-                <Button onClick={() => item.type === 'Miscellaneous' ? handleUseItem(item) : handleEquipItem(item)}>
-                  {item.type === 'Miscellaneous' ? 'Use' : 'Equip'}
+                <Button onClick={() => item.type === 'Miscellaneous' || item.type === 'Key' ? handleUseItem(item) : handleEquipItem(item)}>
+                  {item.type === 'Miscellaneous' || item.type === 'Key' ? 'Use' : 'Equip'}
                 </Button>
-                {isInTown && <Button onClick={() => handleSellItem(item)}>Sell</Button>}
+                {isInTown && item.type !== 'Key' && <Button onClick={() => handleSellItem(item)}>Sell</Button>}
               </div>
             )}
-            {item.type === 'Miscellaneous' && <span className={styles.quantity}>{item.quantity}</span>}
+            {(item.type === 'Miscellaneous' || item.type === 'Key') && <span className={styles.quantity}>{item.quantity}</span>}
           </div>
         ))
       )}
