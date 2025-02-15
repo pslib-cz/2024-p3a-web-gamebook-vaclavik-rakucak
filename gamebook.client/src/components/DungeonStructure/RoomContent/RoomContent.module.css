@@ -1,0 +1,15 @@
+.roomContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.actionButtons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  position: fixed;
+  bottom: 2rem;
+  padding-bottom: 1rem;
+}

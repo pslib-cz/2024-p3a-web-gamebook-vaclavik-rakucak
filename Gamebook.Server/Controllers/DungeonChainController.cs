@@ -54,10 +54,10 @@ public class DungeonChainController : ControllerBase
                     {
                         DungeonId = dungeonId,
                         Connections = new List<ForkConnection>
-                        {
-                            new ForkConnection { ConnectedRoom = forkedRooms[0], IsDeadEnd = isFirstRoomDeadEnd },
-                            new ForkConnection { ConnectedRoom = forkedRooms[1], IsDeadEnd = isSecondRoomDeadEnd }
-                        }
+                    {
+                        new ForkConnection { ConnectedRoom = forkedRooms[0], IsDeadEnd = isFirstRoomDeadEnd },
+                        new ForkConnection { ConnectedRoom = forkedRooms[1], IsDeadEnd = isSecondRoomDeadEnd }
+                    }
                     };
                     _context.Forks.Add(fork);
                     await _context.SaveChangesAsync();
@@ -115,4 +115,5 @@ public class DungeonChainController : ControllerBase
 
         return Ok(chainVm);
     }
+
 }

@@ -86,8 +86,6 @@ const Backpack: React.FC = () => {
 
   const handleUseItem = (item: Item) => {
     if (item.type === 'Key') {
-      alert('Key used to unlock something!');
-      // Implement logic for using the key
     } else {
       changeHealth(item.dmg);
       item.quantity = (item.quantity || 1) - 1;

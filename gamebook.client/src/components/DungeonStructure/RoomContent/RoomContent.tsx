@@ -17,14 +17,14 @@ const RoomContent: React.FC<RoomContentProps> = ({ room, onFightStart, onSearch 
             <h2>Místnost {room.id}</h2>
             <p>{room.description}</p>
             {isActive && (
-                <>
+                <div className={styles.actionButtons}>
                     {room.type === 'monsterRoom' && (
                         <Button onClick={onFightStart}>Start Fight</Button>
                     )}
                     {(room.type === 'keyRoom' || room.type === 'chestRoom' || room.type === 'trapRoom') && (
                         <Button onClick={onSearch}>Search</Button>
                     )}
-                </>
+                </div>
             )}
         </div>
     );

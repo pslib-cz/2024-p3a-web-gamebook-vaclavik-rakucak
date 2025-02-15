@@ -2,12 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { Room, Key } from '../../types/ViewModels';
 import styles from './KeyRoom.module.css';
 import { useGameContext } from '../../contexts/GameContext';
+import Button from '../Buttons/ButtonLarge/ButtonLarge';
 
 type KeyRoomProps = {
     room: Room;
+    onRoomUpdate: (updatedRoom: Room) => void;
+    onClose: () => void;
 };
 
-const KeyRoom: React.FC<KeyRoomProps> = ({ room }) => {
+const KeyRoom: React.FC<KeyRoomProps> = ({ room, onRoomUpdate, onClose }) => {
     const [key, setKey] = useState<Key | null>(null);
     const [image, setImage] = useState<string | null>(null);
     const { items, setItems } = useGameContext();
@@ -72,7 +75,15 @@ const KeyRoom: React.FC<KeyRoomProps> = ({ room }) => {
             setItems(updatedItems);
             sessionStorage.setItem('backpackItems', JSON.stringify(updatedItems));
             console.log('Key added to backpack:', key);
+
+            // Update room state to inactive
+            const updatedRoom = { ...room, active: false };
+            onRoomUpdate(updatedRoom);
         }
+    };
+
+    const handleNoKeyCollect = () => {
+        onClose();
     };
 
     return (
@@ -83,9 +94,12 @@ const KeyRoom: React.FC<KeyRoomProps> = ({ room }) => {
                 <div className={styles.keyInfo}>
                     <p>Key: {key.name}</p>
                     <div className={styles.imageContainer}>
-                        {image && <img src={image} alt={key.name} className={styles.image}/>}
+                        {image && <img src={image} alt={key.name} className={styles.image} />}
                     </div>
-                    <button onClick={handleKeyCollect}>Collect Key</button>
+                    <div className={styles.buttons}>
+                        <Button onClick={handleKeyCollect}>Collect Key</Button>
+                        <Button onClick={handleNoKeyCollect}>Leave it here</Button>
+                    </div>
                 </div>
             )}
         </div>

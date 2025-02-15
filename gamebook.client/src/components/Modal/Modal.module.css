@@ -1,0 +1,20 @@
+.modal{
+    display: flex;
+    position: fixed;
+    z-index: 100;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    overflow: auto;
+    background-color: var(--Light-Brown);
+    border: solid 10px var(--Dark-Brown);
+    border-radius: 10px;
+    padding: 2rem;
+}
+.modal-content{
+    color: var(--Biege);
+    font-size: 2rem;
+    font-family: "Linden Hill", serif;
+    text-align: center;
+
+}

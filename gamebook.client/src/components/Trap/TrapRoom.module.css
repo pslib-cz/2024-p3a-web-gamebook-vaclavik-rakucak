@@ -1,0 +1,36 @@
+.trapRoom {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.trapInfo{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5rem;
+}
+.buttons{
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    position: fixed;
+    bottom: 2rem;
+    padding-bottom: 1rem;
+}
+.imageContainer{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 16rem;
+    height: 16rem;
+    overflow: hidden;
+}
+
+.image{
+    width: 100%;
+    object-fit: cover;
+}

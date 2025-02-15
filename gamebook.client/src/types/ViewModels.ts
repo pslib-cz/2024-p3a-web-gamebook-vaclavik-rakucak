@@ -13,7 +13,8 @@ export interface Room {
     isDeadEnd?: boolean;
     monster?: Monster;
     active?: boolean;
-    roomItems?: RoomItem[];
+    roomItemId?: number;
+    roomItems?: RoomItem;
     keyId?: Key;
     positionX?: number;
     positionY?: number;
@@ -87,6 +88,7 @@ export interface Item {
     quantity?: number;
     price: number;
     bought?: boolean;
+    dungeonId?: number;
 }
 
 export interface Dungeon {
