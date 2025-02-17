@@ -7,7 +7,7 @@ import Button from '../Buttons/ButtonLarge/ButtonLarge';
 import DeathCard from '../DeathCard/DeathCard';
 
 interface FightComponentProps {
-  onFightEnd: (monsterId?: number, playerDied?: boolean) => void; 
+  onFightEnd: (monsterId?: number, playerDied?: boolean, monsterName?: string) => void; 
 }
 
 const FightComponent: React.FC<FightComponentProps> = ({ onFightEnd }) => {
@@ -113,7 +113,7 @@ const FightComponent: React.FC<FightComponentProps> = ({ onFightEnd }) => {
         const newHealth = Math.max(0, prevHealth - weaponDmg);
         if (newHealth === 0) {
           changeCoins(10);
-          setTimeout(() => onFightEnd(monster.id), 0);
+          setTimeout(() => onFightEnd(monster.id, false, monster.name), 0);
           console.log("Monster defeated!");
         }
         return newHealth;

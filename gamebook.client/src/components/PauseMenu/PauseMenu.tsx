@@ -57,6 +57,20 @@ const PauseMenu: React.FC<PauseMenuProps> = ({ currentPage, onClose, setChain, s
   return (
     <div className={styles.pauseMenu}>
       <Button onClick={handleQuestClick}>Active Quest</Button>
+      {showActiveQuest && (
+        <div className={styles.activeQuest}>
+          {currentQuests.length > 0 ? (
+            <div>
+              <h3>{currentQuests[0].name}</h3>
+              <p>{currentQuests[0].description}</p>
+              <p>Progress: {currentQuests[0].progress}/{currentQuests[0].conditionValue}</p>
+            </div>
+          ) : (
+            <p>No active quests. Go check Tavern in town.</p>
+          )}
+          <Button onClick={handleQuestClick}>Close Active Quest</Button>
+        </div>
+      )}
       <InventoryButton isInMenu />
       <Button onClick={handleTutorialClick}>Tutorial</Button>
       {currentPage === 'dungeon' && (
@@ -76,20 +90,6 @@ const PauseMenu: React.FC<PauseMenuProps> = ({ currentPage, onClose, setChain, s
         <div className={styles.tutorial}>
           <p>Tutorial content goes here...</p>
           <Button onClick={handleTutorialClick}>Close Tutorial</Button>
-        </div>
-      )}
-      {showActiveQuest && (
-        <div className={styles.activeQuest}>
-          {currentQuests.length > 0 ? (
-            <div>
-              <h3>{currentQuests[0].name}</h3>
-              <p>{currentQuests[0].description}</p>
-              <p>Progress: {currentQuests[0].progress}/{currentQuests[0].conditionValue}</p>
-            </div>
-          ) : (
-            <p>No active quests</p>
-          )}
-          <Button onClick={handleQuestClick}>Close Active Quest</Button>
         </div>
       )}
     </div>

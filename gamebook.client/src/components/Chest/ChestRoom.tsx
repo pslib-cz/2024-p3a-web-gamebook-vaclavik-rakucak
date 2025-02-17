@@ -15,6 +15,7 @@ const ChestRoom: React.FC<ChestRoomProps> = ({ room, onRoomUpdate, onClose }) =>
     const [image, setImage] = useState<string | null>(null);
     const [roomItem, setRoomItem] = useState<RoomItem | null>(null);
     const [modalMessage, setModalMessage] = useState<string | null>(null);
+    const [keyAlert, setKeyAlert] = useState<boolean>(false);
     const { items, setItems } = useGameContext();
 
     useEffect(() => {
@@ -68,16 +69,18 @@ const ChestRoom: React.FC<ChestRoomProps> = ({ room, onRoomUpdate, onClose }) =>
                 }
 
                 setItems(updatedItems);
-                sessionStorage.setItem('backpackItems', JSON.stringify(updatedItems));
-                setModalMessage(`Item added to backpack: ${item.name}`);
+                sessionStorage.setItem('backpackItems', JSON.stringify(updatedItems))
+                setModalMessage(`You found ${item.name} in the chest!`);
                 console.log('Item added to backpack:', item);
             }
 
-            // Update room state to inactive
-            const updatedRoom = { ...room, active: false };
-            onRoomUpdate(updatedRoom);
+            setTimeout(() => {
+                // Update room state to inactive
+                const updatedRoom = { ...room, active: false };
+                onRoomUpdate(updatedRoom);
+            }, 3000);
         } else {
-            alert('You need a key to open this chest.');
+            setKeyAlert(true);
         }
     };
 
@@ -97,6 +100,7 @@ const ChestRoom: React.FC<ChestRoomProps> = ({ room, onRoomUpdate, onClose }) =>
                 <Button onClick={handleLeave}>Leave</Button>
             </div>
             {modalMessage && <Modal onClose={() => setModalMessage(null)}>{modalMessage}</Modal>}
+            {keyAlert && <Modal onClose={() => setKeyAlert(false)} children2='(You may come again to this dungeon.)'>You need a key from this dungeon to unlock this treasure.</Modal>}
         </div>
     );
 };

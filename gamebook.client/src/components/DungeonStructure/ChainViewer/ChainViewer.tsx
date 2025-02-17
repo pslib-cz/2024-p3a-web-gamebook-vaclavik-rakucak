@@ -14,6 +14,7 @@ import { Dungeon } from '../../../types/ViewModels';
 import KeyRoom from '../../Key/KeyRoom';
 import ChestRoom from '../../Chest/ChestRoom';
 import TrapRoom from '../../Trap/TrapRoom';
+import Modal from '../../Modal/Modal';
 
 const ChainViewer: React.FC = () => {
     const {
@@ -32,6 +33,7 @@ const ChainViewer: React.FC = () => {
     const [isChestRoomActive, setIsChestRoomActive] = useState<boolean>(false);
     const [isTrapRoomActive, setIsTrapRoomActive] = useState<boolean>(false);
     const [dungeons, setDungeons] = useState<Dungeon[]>([]);
+    const [modalMessage, setModalMessage] = useState<string | null>(null);
     const currentItem = chain ? chain[currentChainIndex] : null;
     const navigate = useNavigate();
     const [isPauseMenuOpen, setIsPauseMenuOpen] = useState<boolean>(false);
@@ -72,6 +74,16 @@ const ChainViewer: React.FC = () => {
         fetchDungeons();
     }, []);
 
+    useEffect(() => {
+        if (modalMessage) {
+            const timer = setTimeout(() => {
+                setModalMessage(null);
+            }, 3000); // Zavře modální okno po 3 vteřinách
+
+            return () => clearTimeout(timer);
+        }
+    }, [modalMessage]);
+
     const handleNext = () => {
         if (!chain) return;
 
@@ -90,22 +102,23 @@ const ChainViewer: React.FC = () => {
         }
     };
 
-    const handleFightEnd = (monsterId?: number, playerDied?: boolean) => {
-        setIsFighting(false);
-        if (playerDied) {
-            setChain(null);
-            navigate('/map');
-            clearSessionStorage();  
-            return;
+    const handleFightEnd = (monsterId?: number, playerDied?: boolean, monsterName?: string) => {
+    setIsFighting(false);
+    if (playerDied) {
+        setChain(null);
+        navigate('/map');
+        clearSessionStorage();  
+        return;
+    }
+    if (monsterId && monsterName) {
+        setDefeatedMonsters([...defeatedMonsters, monsterId]);
+        setModalMessage(`${monsterName} was defeated!`);
+        if (currentItem && currentItem.type === 'room') {
+            currentItem.data.type = 'empty';
+            currentItem.data.active = false; // Update room state to inactive
         }
-        if (monsterId) {
-            setDefeatedMonsters([...defeatedMonsters, monsterId]);
-            if (currentItem && currentItem.type === 'room') {
-                currentItem.data.type = 'empty';
-                currentItem.data.active = false; // Update room state to inactive
-            }
-        }
-    };
+    }
+};
 
     const handleGoBackToMap = () => {
         if (chain && chain.length > 0) {
@@ -113,7 +126,7 @@ const ChainViewer: React.FC = () => {
             const dungeon = dungeons.find(d => d.id === dungeonId);
             if (dungeon) {
                 changeCoins(dungeon.rewardMoney);
-                checkAndUpdateQuests(dungeon.id); // Add this line
+                checkAndUpdateQuests(dungeonId);
             }
         }
         setChain(null);
@@ -253,6 +266,7 @@ const ChainViewer: React.FC = () => {
                     <Button onClick={handleGoBackToMap}>Exit Dungeon</Button>
                 </div>
             )}
+            {modalMessage && <Modal onClose={() => setModalMessage(null)}>{modalMessage}</Modal>}
         </div>
     );
 };

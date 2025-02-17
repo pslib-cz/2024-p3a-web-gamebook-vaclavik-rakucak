@@ -4,9 +4,10 @@ import styles from './Modal.module.css';
 interface ModalProps {
     onClose: () => void;
     children: React.ReactNode;
+    children2?: string;
 }
 
-const Modal: React.FC<ModalProps> = ({ onClose, children }) => {
+const Modal: React.FC<ModalProps> = ({ onClose, children, children2 }) => {
     useEffect(() => {
         const timer = setTimeout(() => {
             onClose();
@@ -16,10 +17,15 @@ const Modal: React.FC<ModalProps> = ({ onClose, children }) => {
     }, [onClose]);
 
     return (
-        <div className={styles.modal}>
+        <div className={styles.modalOvberlay}>
+            <div className={styles.modal}>
             <div className={styles.modalContent}>
                 {children}
             </div>
+            <div className={styles.modalContentSmall}>
+                {children2}
+            </div>
+        </div>
         </div>
     );
 };

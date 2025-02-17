@@ -32,7 +32,7 @@ interface GameContextProps {
   updateQuestProgress: (questId: number, progress: number) => void;
   completeQuest: (questId: number) => void;
   checkAndUpdateQuests: (dungeonId: number) => void;
-  fetchQuests: () => void;
+  acceptQuest: (quest: Quest) => void;
 }
 
 const GameContext = createContext<GameContextProps | undefined>(undefined);
@@ -60,7 +60,7 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
   const [armor, setArmor] = useState<Item | null>(null);
   const [shield, setShield] = useState<Item | null>(null);
   const [items, setItems] = useState<Item[]>(() => {
-  const storedItems = sessionStorage.getItem('backpackItems');
+    const storedItems = sessionStorage.getItem('backpackItems');
     return storedItems ? JSON.parse(storedItems) : [];
   });
   const [defeatedMonsters, setDefeatedMonsters] = useState<number[]>(() => {
@@ -69,22 +69,47 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
   });
   const [currentQuests, setCurrentQuests] = useState<Quest[]>([]);
   const [completedQuests, setCompletedQuests] = useState<Quest[]>([]);
-  const fetchQuests = async () => {
-    try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/quests`); // Upravit endpoint podle potřeby
-      if (!response.ok) {
-        throw new Error('Failed to fetch quests');
+  const [availableQuests, setAvailableQuests] = useState<Quest[]>([]);
+
+  useEffect(() => {
+    const fetchAvailableQuests = async () => {
+      try {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/quests`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch quests');
+        }
+        const quests: Quest[] = await response.json();
+        setAvailableQuests(quests);
+      } catch (error) {
+        console.error('Error fetching quests:', error);
       }
-      const quests: Quest[] = await response.json();
-      setCurrentQuests(quests);
-    } catch (error) {
-      console.error('Error fetching quests:', error);
+    };
+
+    fetchAvailableQuests();
+  }, []);
+
+  const acceptQuest = (quest: Quest) => {
+    setCurrentQuests([quest]);
+    quest.progress = 0;
+  };
+
+  const completeQuest = (questId: number) => {
+    const quest = currentQuests.find((quest) => quest.id === questId);
+    if (quest) {
+      setCurrentQuests([]);
+      setCompletedQuests((prevQuests) => [...prevQuests, quest]);
+      // Handle quest rewards here
+      if (quest.rewardItemId) {
+        // Add reward item to player's inventory
+      }
+      // Offer the next quest in the sequence
+      const nextQuestIndex = availableQuests.findIndex((q) => q.id === questId) + 1;
+      if (nextQuestIndex < availableQuests.length) {
+        setCurrentQuests([availableQuests[nextQuestIndex]]);
+      }
     }
   };
 
-  useEffect(() => {
-    fetchQuests();
-  }, []);
   const updateQuestProgress = (questId: number, progress: number) => {
     setCurrentQuests((prevQuests) =>
       prevQuests.map((quest) =>
@@ -92,24 +117,13 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
       )
     );
   };
-  const completeQuest = (questId: number) => {
-    setCurrentQuests((prevQuests) =>
-      prevQuests.filter((quest) => quest.id !== questId)
-    );
-    setCompletedQuests((prevQuests) => [
-      ...prevQuests,
-      currentQuests.find((quest) => quest.id === questId)!,
-    ]);
-  };
 
   const checkAndUpdateQuests = (dungeonId: number) => {
     setCurrentQuests((prevQuests) =>
       prevQuests.map((quest) => {
         if (quest.condition === 'completeDungeon' && quest.dungeonId === dungeonId) {
-          const newProgress = quest.progress + 1;
-          if (newProgress >= quest.conditionValue) {
-            completeQuest(quest.id);
-          } else {
+          if (quest.progress < quest.conditionValue) {
+            const newProgress = quest.progress + 1;
             return { ...quest, progress: newProgress };
           }
         }
@@ -148,7 +162,6 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
     setItems(updatedItems);
     sessionStorage.setItem('backpackItems', JSON.stringify(updatedItems));
   };
-  
 
   const value: GameContextProps = {
     chain,
@@ -180,7 +193,7 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
     updateQuestProgress,
     completeQuest,
     checkAndUpdateQuests, 
-    fetchQuests,
+    acceptQuest,
   };
 
   return <GameContext.Provider value={value}>{children}</GameContext.Provider>;

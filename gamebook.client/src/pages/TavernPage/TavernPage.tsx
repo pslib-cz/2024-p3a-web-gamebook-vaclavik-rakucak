@@ -2,17 +2,18 @@ import React, { useState, useEffect } from 'react';
 import { fetchImage } from '../../api/imagesApi';
 import styles from './TavernPage.module.css';
 import RouteButton from '../../components/Buttons/routeButtons/routeButton.tsx';
-import Quest from '../../components/QuestCard/QuestCard.tsx';
+import { Quest } from '../../types/ViewModels.ts';
 import Button from '../../components/Buttons/ButtonLarge/ButtonLarge.tsx';
 import Burgir from '../../components/Burgir/Burgir.tsx';
 import PauseMenu from '../../components/PauseMenu/PauseMenu.tsx';
 import { useGameContext } from '../../contexts/GameContext';
+import QuestCard from '../../components/QuestCard/QuestCard.tsx';
 
 const TavernPage: React.FC = () => {
   const [backgroundImageUrl, setBackgroundImageUrl] = useState<string>('');
-  const [questId, setQuestId] = useState<number>(1); // Startovací quest id
+  const [availableQuests, setAvailableQuests] = useState<Quest[]>([]);
   const [isPauseMenuOpen, setIsPauseMenuOpen] = useState<boolean>(false);
-  const { currentQuests, updateQuestProgress, completeQuest, fetchQuests } = useGameContext();
+  const { currentQuests, acceptQuest, completeQuest } = useGameContext();
 
   const togglePauseMenu = () => {
     setIsPauseMenuOpen((prev) => !prev);
@@ -32,21 +33,38 @@ const TavernPage: React.FC = () => {
     loadImage();
   }, []);
 
-  const handleNextQuest = () => {
-    setQuestId((prevId) => prevId + 1);
-  };
+  useEffect(() => {
+    const fetchAvailableQuests = async () => {
+      try {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/quests`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch quests');
+        }
+        const quests: Quest[] = await response.json();
+        // Set only the first quest as available initially
+        setAvailableQuests(quests.filter((quest) => quest.id === 1));
+      } catch (error) {
+        console.error('Error fetching quests:', error);
+      }
+    };
 
-  const handlePreviousQuest = () => {
-    setQuestId((prevId) => (prevId > 1 ? prevId - 1 : 1));
+    fetchAvailableQuests();
+  }, []);
+
+  const handleAcceptQuest = (quest: Quest) => {
+    acceptQuest(quest);
   };
 
   const handleCompleteQuest = (questId: number) => {
     completeQuest(questId);
+    // Fetch the next quest in the sequence
+    const nextQuestIndex = availableQuests.findIndex((q) => q.id === questId) + 1;
+    if (nextQuestIndex < availableQuests.length) {
+      setAvailableQuests([availableQuests[nextQuestIndex]]);
+    }
   };
 
-  const handleAcceptQuests = () => {
-    fetchQuests();
-  };
+  const activeQuest = currentQuests.length > 0 ? currentQuests[0] : null;
 
   return (
     <div
@@ -64,26 +82,27 @@ const TavernPage: React.FC = () => {
         <Burgir onClick={togglePauseMenu} isOpen={isPauseMenuOpen} />
       </div>
       {isPauseMenuOpen && <PauseMenu onClose={togglePauseMenu} currentPage="Tavern" />}
-      <Quest questId={questId} />
-      <div style={{ display: 'flex', justifyContent: 'center', position: 'absolute', bottom: '10px', width: '100%' }}>
-        <Button onClick={handlePreviousQuest}>Previous quest</Button>
-        <Button onClick={handleNextQuest}>Next quest</Button>
-      </div>
-      <div className={styles.questList}>
-        {currentQuests.map((quest) => (
-          <div key={quest.id} className={styles.quest}>
-            <h3>{quest.name}</h3>
-            <p>{quest.description}</p>
-            <p>Progress: {quest.progress}/{quest.conditionValue}</p>
-            {quest.progress >= quest.conditionValue && (
-              <Button onClick={() => handleCompleteQuest(quest.id)}>Complete Quest</Button>
-            )}
-          </div>
-        ))}
-      </div>
-      <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
-        <Button onClick={handleAcceptQuests}>Accept Quests</Button>
-      </div>
+      {activeQuest ? (
+        <div className={styles.questList}>
+          <h2>Current Quest</h2>
+          <QuestCard questId={activeQuest.id} />
+          <p>Progress: {activeQuest.progress}/{activeQuest.conditionValue}</p>
+          {activeQuest.progress >= activeQuest.conditionValue && (
+            <Button onClick={() => handleCompleteQuest(activeQuest.id)}>Complete Quest</Button>
+          )}
+        </div>
+      ) : (
+        <div className={styles.questList}>
+          <h2>Available Quests</h2>
+          {availableQuests.map((quest) => (
+            <div key={quest.id} className={styles.quest}>
+              <h3>{quest.name}</h3>
+              <p>{quest.description}</p>
+              <Button onClick={() => handleAcceptQuest(quest)}>Accept Quest</Button>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

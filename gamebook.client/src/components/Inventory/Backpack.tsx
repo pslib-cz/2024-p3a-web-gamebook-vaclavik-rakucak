@@ -5,12 +5,14 @@ import { useGameContext } from '../../contexts/GameContext';
 import Button from '../Buttons/ButtonSmall/ButtonSmall';
 import { Item } from '../../types/ViewModels';
 import ImageWithBackground from '../ImageWithBackground/ImageWithBackground';
+import Modal from '../Modal/Modal';
 
 const Backpack: React.FC = () => {
   const [images, setImages] = useState<{ [key: number]: string }>({});
   const { items, setItems, weapon, shield, armor, setWeapon, setShield, setArmor, changeCoins, changeHealth } = useGameContext();
   const [hoveredItem, setHoveredItem] = useState<Item | null>(null);
   const [isMobile, setIsMobile] = useState<boolean>(false);
+  const [modalMessage, setModalMessage] = useState<string | null>(null);
 
   const baseApiUrl = import.meta.env.VITE_API_URL;
 
@@ -40,6 +42,16 @@ const Backpack: React.FC = () => {
     setIsMobile(window.innerWidth <= 768);
   }, [items]);
 
+  useEffect(() => {
+    if (modalMessage) {
+      const timer = setTimeout(() => {
+        setModalMessage(null);
+      }, 3000); // Zavře modální okno po 3 vteřinách
+
+      return () => clearTimeout(timer);
+    }
+  }, [modalMessage]);
+
   const handleEquipItem = (item: Item) => {
     let equippedItem = null;
   
@@ -52,7 +64,7 @@ const Backpack: React.FC = () => {
     }
   
     if (equippedItem) {
-      alert(`You already have a ${item.type.toLowerCase()} equipped: ${equippedItem.name}`);
+      setModalMessage(`You have equiped: ${equippedItem.name}, unequip it first`);
       return;
     }
   
@@ -127,6 +139,7 @@ const Backpack: React.FC = () => {
           </div>
         ))
       )}
+      {modalMessage && <Modal onClose={() => setModalMessage(null)}>{modalMessage}</Modal>}
     </div>
   );
 };

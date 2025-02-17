@@ -105,7 +105,7 @@ export interface Quest {
     description: string;
     condition: string; // Typ úkolu: "completeDungeon", "killMonster", "collectItem"
     conditionValue: number;
-    progress: number; // Add progress field
+    progress: number; 
     dungeonId?: number;
     monsterId?: number;
     roomItemId?: number;
