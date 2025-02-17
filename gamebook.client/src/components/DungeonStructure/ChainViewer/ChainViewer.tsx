@@ -23,7 +23,8 @@ const ChainViewer: React.FC = () => {
         setCurrentChainIndex,
         chain,
         changeCoins,
-        setChain
+        setChain,
+        checkAndUpdateQuests // Add this line
     } = useGameContext();
     const [backgroundImageUrl, setBackgroundImageUrl] = useState<string>('');
     const [isFighting, setIsFighting] = useState<boolean>(false);
@@ -112,6 +113,7 @@ const ChainViewer: React.FC = () => {
             const dungeon = dungeons.find(d => d.id === dungeonId);
             if (dungeon) {
                 changeCoins(dungeon.rewardMoney);
+                checkAndUpdateQuests(dungeon.id); // Add this line
             }
         }
         setChain(null);

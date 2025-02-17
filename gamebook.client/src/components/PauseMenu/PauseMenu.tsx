@@ -4,6 +4,7 @@ import Button from '../Buttons/ButtonLarge/ButtonLarge';
 import styles from './PauseMenu.module.css';
 import { ChainElement } from '../../types/ViewModels';
 import InventoryButton from '../Inventory/InventoryButton';
+import { useGameContext } from '../../contexts/GameContext';
 
 interface PauseMenuProps {
   onClose: () => void;
@@ -16,10 +17,12 @@ interface PauseMenuProps {
 const PauseMenu: React.FC<PauseMenuProps> = ({ currentPage, onClose, setChain, setCurrentChainIndex, changeCoins }) => {
   const [showTutorial, setShowTutorial] = useState(false);
   const [showConfirmExit, setShowConfirmExit] = useState(false);
+  const [showActiveQuest, setShowActiveQuest] = useState(false); // Přidáme tento stav
   const navigate = useNavigate();
+  const { currentQuests } = useGameContext();
 
   const handleQuestClick = () => {
-    // Implementace pro zobrazení aktivního questu
+    setShowActiveQuest(!showActiveQuest);
   };
 
   const handleTutorialClick = () => {
@@ -73,6 +76,20 @@ const PauseMenu: React.FC<PauseMenuProps> = ({ currentPage, onClose, setChain, s
         <div className={styles.tutorial}>
           <p>Tutorial content goes here...</p>
           <Button onClick={handleTutorialClick}>Close Tutorial</Button>
+        </div>
+      )}
+      {showActiveQuest && (
+        <div className={styles.activeQuest}>
+          {currentQuests.length > 0 ? (
+            <div>
+              <h3>{currentQuests[0].name}</h3>
+              <p>{currentQuests[0].description}</p>
+              <p>Progress: {currentQuests[0].progress}/{currentQuests[0].conditionValue}</p>
+            </div>
+          ) : (
+            <p>No active quests</p>
+          )}
+          <Button onClick={handleQuestClick}>Close Active Quest</Button>
         </div>
       )}
     </div>

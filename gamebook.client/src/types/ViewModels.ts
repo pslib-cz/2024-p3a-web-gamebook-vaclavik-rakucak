@@ -98,3 +98,18 @@ export interface Dungeon {
     rewardMoney: number;
     dmgCondition: number;
 };
+
+export interface Quest {
+    id: number;
+    name: string;
+    description: string;
+    condition: string; // Typ úkolu: "completeDungeon", "killMonster", "collectItem"
+    conditionValue: number;
+    progress: number; // Add progress field
+    dungeonId?: number;
+    monsterId?: number;
+    roomItemId?: number;
+    npcId?: number;
+    rewardItemId?: number;
+    imageId: number;
+  }
