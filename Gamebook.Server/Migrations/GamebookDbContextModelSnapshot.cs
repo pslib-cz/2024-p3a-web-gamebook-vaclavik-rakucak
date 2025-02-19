@@ -267,6 +267,10 @@ namespace Gamebook.Server.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("ConditionDescription")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<int>("ConditionValue")
                         .HasColumnType("INTEGER");
 

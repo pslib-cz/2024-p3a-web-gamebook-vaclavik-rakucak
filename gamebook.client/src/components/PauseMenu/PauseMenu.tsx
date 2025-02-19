@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import Button from '../Buttons/ButtonLarge/ButtonLarge';
 import styles from './PauseMenu.module.css';
 import { ChainElement } from '../../types/ViewModels';
-import InventoryButton from '../Inventory/InventoryButton';
 import { useGameContext } from '../../contexts/GameContext';
 
 interface PauseMenuProps {
@@ -60,7 +59,7 @@ const PauseMenu: React.FC<PauseMenuProps> = ({ currentPage, onClose, setChain, s
       {showActiveQuest && (
         <div className={styles.activeQuest}>
           {currentQuests.length > 0 ? (
-            <div>
+            <div className={styles.questInfo}>
               <h3>{currentQuests[0].name}</h3>
               <p>{currentQuests[0].description}</p>
               <p>Progress: {currentQuests[0].progress}/{currentQuests[0].conditionValue}</p>

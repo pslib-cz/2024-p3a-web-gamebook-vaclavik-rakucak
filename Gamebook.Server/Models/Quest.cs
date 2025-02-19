@@ -10,6 +10,7 @@ namespace Gamebook.Server.Models
         public string Name { get; set; }
         public string Description { get; set; }
         public string Condition { get; set; } // Typ úkolu: "completeDungeon", "killMonster", "collectItem"
+        public string ConditionDescription { get; set; } 
         public int ConditionValue { get; set; }
 
         public int? DungeonId { get; set; }

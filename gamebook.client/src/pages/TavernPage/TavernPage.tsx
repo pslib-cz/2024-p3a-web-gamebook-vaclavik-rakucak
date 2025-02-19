@@ -84,7 +84,7 @@ const TavernPage: React.FC = () => {
       {isPauseMenuOpen && <PauseMenu onClose={togglePauseMenu} currentPage="Tavern" />}
       {activeQuest ? (
         <div className={styles.activeQuest}>
-          <QuestCard questId={activeQuest.id}  />
+          <QuestCard quest={activeQuest}  />
           <div className={styles.completeButton}>
             {activeQuest.progress >= activeQuest.conditionValue && (
               <Button onClick={() => handleCompleteQuest(activeQuest.id)}>Complete Quest</Button>

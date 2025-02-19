@@ -106,6 +106,7 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
       const nextQuestIndex = availableQuests.findIndex((q) => q.id === questId) + 1;
       if (nextQuestIndex < availableQuests.length) {
         setCurrentQuests([availableQuests[nextQuestIndex]]);
+        availableQuests[nextQuestIndex].progress = 0;
       }
     }
   };

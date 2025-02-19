@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import useFetch from '../../hooks/useFetch';
 import styles from './QuestCard.module.css';
 
 type Npc = {
@@ -19,17 +18,15 @@ type Quest = {
   rewardItemId: number | null;
   rewardItem: any | null;
   imageId: number;
+  conditionDescription: string;
 };
 
 type NpcQuestCardProps = {
-  questId: number;
+  quest: Quest;
 };
 
-const NpcQuestCard: React.FC<NpcQuestCardProps> = ({ questId }) => {
+const NpcQuestCard: React.FC<NpcQuestCardProps> = ({ quest }) => {
   const baseApiUrl = import.meta.env.VITE_API_URL;
-  const questUrl = `${baseApiUrl}/quests/${questId}`;
-
-  const { data: questData, loading: questLoading, error: questError } = useFetch<Quest>(questUrl);
   const [npcData, setNpcData] = useState<Npc | null>(null);
   const [npcLoading, setNpcLoading] = useState<boolean>(false);
   const [npcError, setNpcError] = useState<string | null>(null);
@@ -37,11 +34,11 @@ const NpcQuestCard: React.FC<NpcQuestCardProps> = ({ questId }) => {
 
   useEffect(() => {
     const fetchNpc = async () => {
-      if (questData?.npcId) {
+      if (quest.npcId) {
         setNpcLoading(true);
         setNpcError(null);
         try {
-          const npcUrl = `${baseApiUrl}/npcs/${questData.npcId}`;
+          const npcUrl = `${baseApiUrl}/npcs/${quest.npcId}`;
           const response = await fetch(npcUrl);
           if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
@@ -58,13 +55,13 @@ const NpcQuestCard: React.FC<NpcQuestCardProps> = ({ questId }) => {
       }
     };
     fetchNpc();
-  }, [questData?.npcId, baseApiUrl]);
+  }, [quest.npcId, baseApiUrl]);
 
   useEffect(() => {
     const fetchImage = async () => {
-      if (questData?.imageId) {
+      if (quest.imageId) {
         try {
-          const imageUrl = `${baseApiUrl}/images/${questData.imageId}`;
+          const imageUrl = `${baseApiUrl}/images/${quest.imageId}`;
           const response = await fetch(imageUrl);
           if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
@@ -81,17 +78,17 @@ const NpcQuestCard: React.FC<NpcQuestCardProps> = ({ questId }) => {
       }
     };
     fetchImage();
-  }, [questData?.imageId, baseApiUrl]);
+  }, [quest.imageId, baseApiUrl]);
 
-  if (npcLoading || questLoading) {
+  if (npcLoading) {
     return <div>Loading...</div>;
   }
 
-  if (npcError || questError) {
-    return <div>Error: {npcError || questError}</div>;
+  if (npcError) {
+    return <div>Error: {npcError}</div>;
   }
 
-  if (!npcData || !questData) {
+  if (!npcData) {
     return <div>No data available.</div>;
   }
 
@@ -103,10 +100,12 @@ const NpcQuestCard: React.FC<NpcQuestCardProps> = ({ questId }) => {
       </div>
       <div className={styles.questInfo}>
         <div className={styles.questText}>
-          <h3 className={styles.questName}>{questData.name}</h3>
-          <p className={styles.questDescription}>{questData.description}</p>
+          <h3 className={styles.questName}>{quest.name}</h3>
+          <p className={styles.questDescription}>{quest.description}</p>
         </div>
-        <p className={styles.questCondition}>{questData.condition} {questData.progress}/{questData.conditionValue}</p>
+        <p className={styles.questCondition}>
+          {quest.conditionDescription} {quest.progress}/{quest.conditionValue}
+        </p>
       </div>
       {imageBlobUrl && (
         <div className={styles.imageContainer}>

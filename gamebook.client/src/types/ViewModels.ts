@@ -109,7 +109,9 @@ export interface Quest {
     dungeonId?: number;
     monsterId?: number;
     roomItemId?: number;
-    npcId?: number;
-    rewardItemId?: number;
+    npcId: number;
+    rewardItemId: number;
     imageId: number;
-  }
+    conditionDescription: string;
+    rewardItem: Item;
+};

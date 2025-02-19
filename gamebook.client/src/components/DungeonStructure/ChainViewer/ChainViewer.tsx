@@ -211,7 +211,7 @@ const ChainViewer: React.FC = () => {
                         className={styles.hallBackground}
                         style={{ backgroundImage: `url(${backgroundImageUrl})` }}
                     />
-                )}
+            )}
 
             {/* Rozlišení typu currentItem a předání správných dat komponentám */}
             {currentItem && currentItem.type === 'room' 
