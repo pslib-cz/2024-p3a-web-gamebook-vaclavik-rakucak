@@ -78,7 +78,7 @@ const ChestRoom: React.FC<ChestRoomProps> = ({ room, onRoomUpdate, onClose }) =>
                 // Update room state to inactive
                 const updatedRoom = { ...room, active: false };
                 onRoomUpdate(updatedRoom);
-            }, 3000);
+            }, 1000);
         } else {
             setKeyAlert(true);
         }

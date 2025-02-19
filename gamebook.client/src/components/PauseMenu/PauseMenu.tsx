@@ -68,10 +68,9 @@ const PauseMenu: React.FC<PauseMenuProps> = ({ currentPage, onClose, setChain, s
           ) : (
             <p>No active quests. Go check Tavern in town.</p>
           )}
-          <Button onClick={handleQuestClick}>Close Active Quest</Button>
+          <Button onClick={handleQuestClick}>Close</Button>
         </div>
       )}
-      <InventoryButton isInMenu />
       <Button onClick={handleTutorialClick}>Tutorial</Button>
       {currentPage === 'dungeon' && (
         <Button onClick={handleExitDungeonClick}>Exit Dungeon</Button>

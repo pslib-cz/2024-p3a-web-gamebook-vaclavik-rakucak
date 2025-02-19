@@ -8,3 +8,30 @@
     top: 1rem;
     left: 1rem;
 }
+
+.questList{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 2rem;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: var(--Biege);
+    background-color: var(--Light-Brown);
+    padding: 1rem;
+    border: 10px solid var(--Dark-Brown);
+    border-radius: 10px;
+
+}
+
+.completeButton{
+    position: absolute;
+    bottom: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+}

@@ -14,7 +14,7 @@ type Quest = {
   description: string;
   condition: string;
   conditionValue: number;
-  progress: number; // Add progress field
+  progress: number;
   npcId: number;
   rewardItemId: number | null;
   rewardItem: any | null;

@@ -52,7 +52,7 @@ const TrapRoom: React.FC<TrapRoomProps> = ({ room, onRoomUpdate }) => {
                 setTrapModalMessage(null);
                 const updatedRoom = { ...room, active: false };
                 onRoomUpdate(updatedRoom);
-            }, 3000);
+            }, 1000);
         }
     };
 
@@ -68,7 +68,7 @@ const TrapRoom: React.FC<TrapRoomProps> = ({ room, onRoomUpdate }) => {
                 setDisarmModalMessage(null);
                 const updatedRoom = { ...room, active: false };
                 onRoomUpdate(updatedRoom);
-            }, 3000);
+            }, 1000);
         }
     };
 

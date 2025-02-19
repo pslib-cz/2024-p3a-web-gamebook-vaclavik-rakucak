@@ -83,17 +83,17 @@ const TavernPage: React.FC = () => {
       </div>
       {isPauseMenuOpen && <PauseMenu onClose={togglePauseMenu} currentPage="Tavern" />}
       {activeQuest ? (
-        <div className={styles.questList}>
-          <h2>Current Quest</h2>
-          <QuestCard questId={activeQuest.id} />
-          <p>Progress: {activeQuest.progress}/{activeQuest.conditionValue}</p>
-          {activeQuest.progress >= activeQuest.conditionValue && (
-            <Button onClick={() => handleCompleteQuest(activeQuest.id)}>Complete Quest</Button>
-          )}
+        <div className={styles.activeQuest}>
+          <QuestCard questId={activeQuest.id}  />
+          <div className={styles.completeButton}>
+            {activeQuest.progress >= activeQuest.conditionValue && (
+              <Button onClick={() => handleCompleteQuest(activeQuest.id)}>Complete Quest</Button>
+            )}
+          </div>
         </div>
       ) : (
         <div className={styles.questList}>
-          <h2>Available Quests</h2>
+          <h2>Available Quests:</h2>
           {availableQuests.map((quest) => (
             <div key={quest.id} className={styles.quest}>
               <h3>{quest.name}</h3>

@@ -78,7 +78,7 @@ const ChainViewer: React.FC = () => {
         if (modalMessage) {
             const timer = setTimeout(() => {
                 setModalMessage(null);
-            }, 3000); // Zavře modální okno po 3 vteřinách
+            }, 1000); // Zavře modální okno po 3 vteřinách
 
             return () => clearTimeout(timer);
         }

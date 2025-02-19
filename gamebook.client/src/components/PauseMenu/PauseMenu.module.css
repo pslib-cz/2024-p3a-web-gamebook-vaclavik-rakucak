@@ -78,3 +78,13 @@
     padding: 20px;
     border-radius: 10px;
   }
+
+.activeQuest{
+    background-color: var(--Brown);
+    border: 10px solid var(--Dark-Brown);
+    border-radius: 20px;
+    padding: 20px;
+    border-radius: 5px;
+    position: relative;
+    z-index: 10;
+}

@@ -11,7 +11,7 @@ const Modal: React.FC<ModalProps> = ({ onClose, children, children2 }) => {
     useEffect(() => {
         const timer = setTimeout(() => {
             onClose();
-        }, 3000); // Modal se zavře po 3 vteřinách
+        }, 1000); // Modal se zavře po 3 vteřinách
 
         return () => clearTimeout(timer);
     }, [onClose]);
