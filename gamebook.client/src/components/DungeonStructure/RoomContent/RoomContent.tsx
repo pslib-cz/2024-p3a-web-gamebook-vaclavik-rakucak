@@ -21,7 +21,7 @@ const RoomContent: React.FC<RoomContentProps> = ({ room, onFightStart, onSearch 
                     {room.type === 'monsterRoom' && (
                         <Button onClick={onFightStart}>Start Fight</Button>
                     )}
-                    {(room.type === 'keyRoom' || room.type === 'chestRoom' || room.type === 'trapRoom') && (
+                    {(room.type === 'keyRoom' || room.type === 'chestRoom' || room.type === 'trapRoom' || room.type === 'questRoom') && (
                         <Button onClick={onSearch}>Search</Button>
                     )}
                 </div>

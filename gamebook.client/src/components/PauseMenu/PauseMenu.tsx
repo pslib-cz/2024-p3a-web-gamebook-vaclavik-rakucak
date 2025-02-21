@@ -4,6 +4,7 @@ import Button from '../Buttons/ButtonLarge/ButtonLarge';
 import styles from './PauseMenu.module.css';
 import { ChainElement } from '../../types/ViewModels';
 import { useGameContext } from '../../contexts/GameContext';
+import RouteButton from '../Buttons/routeButtons/routeButton';
 
 interface PauseMenuProps {
   onClose: () => void;
@@ -90,6 +91,7 @@ const PauseMenu: React.FC<PauseMenuProps> = ({ currentPage, onClose, setChain, s
           <Button onClick={handleTutorialClick}>Close Tutorial</Button>
         </div>
       )}
+      <RouteButton route='/Login' label='Login'/>
     </div>
   );
 };

@@ -1,0 +1,60 @@
+import React, { useState, useEffect } from 'react';
+import { Room, RoomItem, Quest } from '../../types/ViewModels';
+import Button from '../Buttons/ButtonLarge/ButtonLarge';
+import styles from './QuestRoom.module.css';
+import Modal from '../Modal/Modal';
+
+type QuestRoomProps = {
+    room: Room;
+    quest: Quest;
+    onRoomUpdate: (updatedRoom: Room) => void;
+    onClose: () => void;
+};
+
+const QuestRoom: React.FC<QuestRoomProps> = ({ room, quest, onRoomUpdate, onClose }) => {
+    const [roomItem, setRoomItem] = useState<RoomItem | null>(null);
+    const [modalMessage, setModalMessage] = useState<string | null>(null);
+
+    useEffect(() => {
+        const fetchRoomItem = async () => {
+            if (room.roomItemId) {
+                const response = await fetch(`${import.meta.env.VITE_API_URL}/roomitems/${room.roomItemId}`);
+                const data: RoomItem = await response.json();
+                setRoomItem(data);
+            }
+        };
+
+        fetchRoomItem();
+    }, [room.roomItemId]);
+
+    const handleCollect = () => {
+        // Implement the collect functionality here
+    };
+
+    const handleLeave = () => {
+        console.log(quest.roomItemId);
+        onClose();
+    };
+
+    return (
+        <div className={styles.questRoom}>
+            <h2>Quest Room {room.id}</h2>
+            <p>{room.description}</p>
+            {roomItem && (
+                <div className={styles.roomItem}>
+                    <h3>{roomItem.name}</h3>
+                    <p>{roomItem.description}</p>
+                </div>
+            )}
+            <div className={styles.buttons}>
+                {roomItem && quest.roomItemId === roomItem.id && (
+                    <Button onClick={handleCollect}>Collect</Button>
+                )}
+                <Button onClick={handleLeave}>Leave</Button>
+            </div>
+            {modalMessage && <Modal onClose={() => setModalMessage(null)}>{modalMessage}</Modal>}
+        </div>
+    );
+};
+
+export default QuestRoom;

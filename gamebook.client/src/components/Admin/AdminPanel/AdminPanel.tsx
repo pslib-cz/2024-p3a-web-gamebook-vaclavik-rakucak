@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+import React from 'react';
+import FormComponent from './FormComponent';
+import ImageUploadComponent from './ImageUploadComponent';
 import styles from './AdminPanel.module.css';
 
 interface AdminPanelProps {
@@ -7,115 +8,167 @@ interface AdminPanelProps {
 }
 
 const AdminPanel: React.FC<AdminPanelProps> = ({ token }) => {
-  const [roomItemName, setRoomItemName] = useState('');
-  const [roomItemType, setRoomItemType] = useState('');
-  const [roomItemDescription, setRoomItemDescription] = useState('');
-  const [roomItemDamage, setRoomItemDamage] = useState<number | null>(null);
-  const [roomItemRoomId, setRoomItemRoomId] = useState<number | null>(null);
-  const [roomItemEquipmentId, setRoomItemEquipmentId] = useState<number | null>(null);
-  const [roomItemImageId, setRoomItemImageId] = useState<number | null>(null);
-  const [loading, setLoading] = useState(false);
-
   const baseApiUrl = import.meta.env.VITE_API_URL;
 
-  const handleAddRoomItem = async () => {
-    setLoading(true);
-    try {
-      const newRoomItem = {
-        name: roomItemName,
-        type: roomItemType,
-        description: roomItemDescription,
-        damage: roomItemDamage,
-        roomId: roomItemRoomId,
-        equipmentId: roomItemEquipmentId,
-        imageId: roomItemImageId,
-      };
+  const roomItemFields = [
+    { name: 'name', type: 'text', placeholder: 'Name' },
+    { name: 'type', type: 'text', placeholder: 'Type' },
+    { name: 'description', type: 'text', placeholder: 'Description' },
+    { name: 'damage', type: 'number', placeholder: 'Damage' },
+    { name: 'roomId', type: 'number', placeholder: 'Room ID' },
+    { name: 'equipmentId', type: 'number', placeholder: 'Equipment ID' },
+    { name: 'imageId', type: 'number', placeholder: 'Image ID' },
+  ];
 
-      await axios.post(`${baseApiUrl}/RoomItems`, newRoomItem, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+  const dungeonFields = [
+    { name: 'name', type: 'text', placeholder: 'Name' },
+    { name: 'description', type: 'text', placeholder: 'Description' },
+    { name: 'rewardMoney', type: 'number', placeholder: 'Reward Money' },
+    { name: 'dmgCondition', type: 'number', placeholder: 'Damage Condition' },
+    { name: 'imageId', type: 'number', placeholder: 'Image ID' },
+  ];
 
-      alert('Room item added successfully!');
-      // Clear form fields
-      setRoomItemName('');
-      setRoomItemType('');
-      setRoomItemDescription('');
-      setRoomItemDamage(null);
-      setRoomItemRoomId(null);
-      setRoomItemEquipmentId(null);
-      setRoomItemImageId(null);
-    } catch (error) {
-      console.error('Error adding room item:', error);
-      alert(error instanceof Error ? error.message : 'Error adding room item.');
-    } finally {
-      setLoading(false);
-    }
-  };
+  const equipmentFields = [
+    { name: 'name', type: 'text', placeholder: 'Name' },
+    { name: 'type', type: 'text', placeholder: 'Type' },
+    { name: 'price', type: 'number', placeholder: 'Price' },
+    { name: 'rarity', type: 'text', placeholder: 'Rarity' },
+    { name: 'dmg', type: 'number', placeholder: 'Damage' },
+    { name: 'specialEffectId', type: 'number', placeholder: 'Special Effect ID' },
+    { name: 'imageId', type: 'number', placeholder: 'Image ID' },
+  ];
+
+  const hallFields = [
+    { name: 'imageId', type: 'number', placeholder: 'Image ID' },
+    { name: 'roomId', type: 'number', placeholder: 'Room ID' },
+    { name: 'dungeonId', type: 'number', placeholder: 'Dungeon ID' },
+  ];
+
+  const keyFields = [
+    { name: 'name', type: 'text', placeholder: 'Name' },
+    { name: 'type', type: 'text', placeholder: 'Type' },
+    { name: 'price', type: 'number', placeholder: 'Price' },
+    { name: 'rarity', type: 'text', placeholder: 'Rarity' },
+    { name: 'dmg', type: 'number', placeholder: 'Damage' },
+    { name: 'specialEffectId', type: 'number', placeholder: 'Special Effect ID' },
+    { name: 'imageId', type: 'number', placeholder: 'Image ID' },
+    { name: 'dungeonId', type: 'number', placeholder: 'Dungeon ID' },
+  ];
+
+  const monsterFields = [
+    { name: 'name', type: 'text', placeholder: 'Name' },
+    { name: 'hitpoints', type: 'number', placeholder: 'Hitpoints' },
+    { name: 'damage', type: 'number', placeholder: 'Damage' },
+    { name: 'imageId', type: 'number', placeholder: 'Image ID' },
+  ];
+
+  const npcFields = [
+    { name: 'name', type: 'text', placeholder: 'Name' },
+    { name: 'description', type: 'text', placeholder: 'Description' },
+  ];
+
+  const questFields = [
+    { name: 'name', type: 'text', placeholder: 'Name' },
+    { name: 'description', type: 'text', placeholder: 'Description' },
+    { name: 'condition', type: 'text', placeholder: 'Condition' },
+    { name: 'conditionDescription', type: 'text', placeholder: 'Condition Description' },
+    { name: 'conditionValue', type: 'number', placeholder: 'Condition Value' },
+    { name: 'dungeonId', type: 'number', placeholder: 'Dungeon ID' },
+    { name: 'monsterId', type: 'number', placeholder: 'Monster ID' },
+    { name: 'roomItemId', type: 'number', placeholder: 'Room Item ID' },
+    { name: 'npcId', type: 'number', placeholder: 'NPC ID' },
+    { name: 'rewardItemId', type: 'number', placeholder: 'Reward Item ID' },
+    { name: 'imageId', type: 'number', placeholder: 'Image ID' },
+  ];
+
+  const roomFields = [
+    { name: 'type', type: 'text', placeholder: 'Type' },
+    { name: 'description', type: 'text', placeholder: 'Description' },
+    { name: 'dungeonId', type: 'number', placeholder: 'Dungeon ID' },
+    { name: 'imageId', type: 'number', placeholder: 'Image ID' },
+    { name: 'isDeadEnd', type: 'checkbox', placeholder: 'Is Dead End' },
+    { name: 'monsterId', type: 'number', placeholder: 'Monster ID' },
+    { name: 'active', type: 'checkbox', placeholder: 'Active' },
+    { name: 'roomItemId', type: 'number', placeholder: 'Room Item ID' },
+    { name: 'keyId', type: 'number', placeholder: 'Key ID' },
+    { name: 'positionX', type: 'number', placeholder: 'Position X' },
+    { name: 'positionY', type: 'number', placeholder: 'Position Y' },
+  ];
+
+  const specialEffectFields = [
+    { name: 'name', type: 'text', placeholder: 'Name' },
+    { name: 'description', type: 'text', placeholder: 'Description' },
+    { name: 'value', type: 'number', placeholder: 'Value' },
+  ];
 
   return (
     <div className={styles.adminPanel}>
-      <h1>Admin Panel</h1>
-
-      {/* Form to add a new RoomItem */}
-      <div>
-        <h2>Add Room Item</h2>
-        <input
-          type="text"
-          placeholder="Name"
-          value={roomItemName}
-          onChange={(e) => setRoomItemName(e.target.value)}
-          className={styles.inputField}
+      <div className={styles.formContainer}>
+        <h1>Admin Panel</h1>
+        <FormComponent
+          token={token}
+          entityName="Room Item"
+          fields={roomItemFields}
+          apiUrl={`${baseApiUrl}/RoomItems`}
         />
-        <input
-          type="text"
-          placeholder="Type"
-          value={roomItemType}
-          onChange={(e) => setRoomItemType(e.target.value)}
-          className={styles.inputField}
+        <FormComponent
+          token={token}
+          entityName="Dungeon"
+          fields={dungeonFields}
+          apiUrl={`${baseApiUrl}/Dungeons`}
         />
-        <input
-          type="text"
-          placeholder="Description"
-          value={roomItemDescription}
-          onChange={(e) => setRoomItemDescription(e.target.value)}
-          className={styles.inputField}
+        <FormComponent
+          token={token}
+          entityName="Equipment"
+          fields={equipmentFields}
+          apiUrl={`${baseApiUrl}/Equipments`}
         />
-        <input
-          type="number"
-          placeholder="Damage"
-          value={roomItemDamage ?? ''}
-          onChange={(e) => setRoomItemDamage(Number(e.target.value))}
-          className={styles.inputField}
+        <FormComponent
+          token={token}
+          entityName="Hall"
+          fields={hallFields}
+          apiUrl={`${baseApiUrl}/Halls`}
         />
-        <input
-          type="number"
-          placeholder="Room ID"
-          value={roomItemRoomId ?? ''}
-          onChange={(e) => setRoomItemRoomId(Number(e.target.value))}
-          className={styles.inputField}
+        <FormComponent
+          token={token}
+          entityName="Key"
+          fields={keyFields}
+          apiUrl={`${baseApiUrl}/Keys`}
         />
-        <input
-          type="number"
-          placeholder="Equipment ID"
-          value={roomItemEquipmentId ?? ''}
-          onChange={(e) => setRoomItemEquipmentId(Number(e.target.value))}
-          className={styles.inputField}
+        <FormComponent
+          token={token}
+          entityName="Monster"
+          fields={monsterFields}
+          apiUrl={`${baseApiUrl}/Monsters`}
         />
-        <input
-          type="number"
-          placeholder="Image ID"
-          value={roomItemImageId ?? ''}
-          onChange={(e) => setRoomItemImageId(Number(e.target.value))}
-          className={styles.inputField}
+        <FormComponent
+          token={token}
+          entityName="Npc"
+          fields={npcFields}
+          apiUrl={`${baseApiUrl}/Npcs`}
         />
-        <button
-          onClick={handleAddRoomItem}
-          disabled={loading || !roomItemName || !roomItemType}
-        >
-          Add Room Item
-        </button>
+        <FormComponent
+          token={token}
+          entityName="Quest"
+          fields={questFields}
+          apiUrl={`${baseApiUrl}/Quests`}
+        />
+        <FormComponent
+          token={token}
+          entityName="Room"
+          fields={roomFields}
+          apiUrl={`${baseApiUrl}/Rooms`}
+        />
+        <FormComponent
+          token={token}
+          entityName="Special Effect"
+          fields={specialEffectFields}
+          apiUrl={`${baseApiUrl}/SpecialEffects`}
+        />
+        <ImageUploadComponent
+          token={token}
+          apiUrl={`${baseApiUrl}/Images`}
+        />
       </div>
     </div>
   );

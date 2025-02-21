@@ -15,6 +15,7 @@ import KeyRoom from '../../Key/KeyRoom';
 import ChestRoom from '../../Chest/ChestRoom';
 import TrapRoom from '../../Trap/TrapRoom';
 import Modal from '../../Modal/Modal';
+import QuestRoom from '../../Quest/QuestRoom';
 
 const ChainViewer: React.FC = () => {
     const {
@@ -25,13 +26,15 @@ const ChainViewer: React.FC = () => {
         chain,
         changeCoins,
         setChain,
-        checkAndUpdateQuests // Add this line
+        checkAndUpdateQuests,
+        currentQuests,
     } = useGameContext();
     const [backgroundImageUrl, setBackgroundImageUrl] = useState<string>('');
     const [isFighting, setIsFighting] = useState<boolean>(false);
     const [isKeyRoomActive, setIsKeyRoomActive] = useState<boolean>(false);
     const [isChestRoomActive, setIsChestRoomActive] = useState<boolean>(false);
     const [isTrapRoomActive, setIsTrapRoomActive] = useState<boolean>(false);
+    const [isQuestRoomActive, setIsQuestRoomActive] = useState<boolean>(false);
     const [dungeons, setDungeons] = useState<Dungeon[]>([]);
     const [modalMessage, setModalMessage] = useState<string | null>(null);
     const currentItem = chain ? chain[currentChainIndex] : null;
@@ -103,23 +106,23 @@ const ChainViewer: React.FC = () => {
     };
 
     const handleFightEnd = (monsterId?: number, playerDied?: boolean, monsterName?: string) => {
-    setIsFighting(false);
-    if (playerDied) {
-        setChain(null);
-        navigate('/map');
-        clearSessionStorage();  
-        return;
-    }
-    if (monsterId && monsterName) {
-        setDefeatedMonsters([...defeatedMonsters, monsterId]);
-        setModalMessage(`${monsterName} was defeated!`);
-        if (currentItem && currentItem.type === 'room') {
-            currentItem.data.type = 'empty';
-            currentItem.data.active = false; // Update room state to inactive
-            checkAndUpdateQuests(monsterId);
+        setIsFighting(false);
+        if (playerDied) {
+            setChain(null);
+            navigate('/map');
+            clearSessionStorage();  
+            return;
         }
-    }
-};
+        if (monsterId && monsterName) {
+            setDefeatedMonsters([...defeatedMonsters, monsterId]);
+            setModalMessage(`${monsterName} was defeated!`);
+            if (currentItem && currentItem.type === 'room') {
+                currentItem.data.type = 'empty';
+                currentItem.data.active = false; // Update room state to inactive
+                checkAndUpdateQuests(monsterId);
+            }
+        }
+    };
 
     const handleGoBackToMap = () => {
         if (chain && chain.length > 0) {
@@ -141,16 +144,20 @@ const ChainViewer: React.FC = () => {
 
     const handleSearch = () => {
         if (currentItem && currentItem.type === 'room') {
-           if (currentItem.data.type === 'keyRoom') {
-            setIsKeyRoomActive(true);
-           }
-           if (currentItem.data.type === 'chestRoom') {
-            setIsChestRoomActive(true);
-           }
-           if (currentItem.data.type === 'trapRoom') {
-            setIsTrapRoomActive(true);
-           }
+            if (currentItem.data.type === 'keyRoom') {
+                setIsKeyRoomActive(true);
+            }
+            if (currentItem.data.type === 'chestRoom') {
+                setIsChestRoomActive(true);
+            }
+            if (currentItem.data.type === 'trapRoom') {
+                setIsTrapRoomActive(true);
+            }
+            if (currentItem.data.type === 'questRoom') {
+                setIsQuestRoomActive(true);
+            }
         }
+        console.log(currentQuests);
     };
 
     const handleRoomUpdate = (updatedRoom: any) => {
@@ -165,6 +172,9 @@ const ChainViewer: React.FC = () => {
             if (updatedRoom.type === 'trapRoom') {
                 setIsTrapRoomActive(false);
             }
+            if (updatedRoom.type === 'questRoom') {
+                setIsQuestRoomActive(false);
+            }
         }
     };
 
@@ -177,6 +187,9 @@ const ChainViewer: React.FC = () => {
 
     const togglePauseMenu = () => {
         setIsPauseMenuOpen(!isPauseMenuOpen);
+    };
+    const handleCloseQuestRoom = () => {
+        setIsQuestRoomActive(false);
     };
 
     if (!chain || chain.length === 0) {
@@ -224,7 +237,7 @@ const ChainViewer: React.FC = () => {
                     <RoomContent
                         room={currentItem.data}
                         onFightStart={handleStartFight}
-                     onSearch={handleSearch}
+                        onSearch={handleSearch}
                     />
             )}
             {/* Zobrazení ruzných typu room */}
@@ -233,7 +246,7 @@ const ChainViewer: React.FC = () => {
             )}
 
             {currentItem && currentItem.type === 'room' && isKeyRoomActive && (
-               <KeyRoom room={currentItem.data} onRoomUpdate={handleRoomUpdate} onClose={handleCloseKeyRoom} />
+                <KeyRoom room={currentItem.data} onRoomUpdate={handleRoomUpdate} onClose={handleCloseKeyRoom} />
             )}
 
             {currentItem && currentItem.type === 'room' && isChestRoomActive && (
@@ -249,6 +262,9 @@ const ChainViewer: React.FC = () => {
             )}
             {currentItem && currentItem.type === 'fork' && (
                 <ForkContent fork={currentItem.data} />
+            )}
+            {currentItem && currentItem.type === 'room' && isQuestRoomActive && (
+                <QuestRoom room={currentItem.data} quest={currentQuests[0]} onRoomUpdate={handleRoomUpdate} onClose={handleCloseQuestRoom} />
             )}
 
             <NavigationButtons
