@@ -36,6 +36,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ token }) => {
     { name: 'dmg', type: 'number', placeholder: 'Damage' },
     { name: 'specialEffectId', type: 'number', placeholder: 'Special Effect ID' },
     { name: 'imageId', type: 'number', placeholder: 'Image ID' },
+    { name: 'phase', type: 'number', placeholder: 'Phase' },
   ];
 
   const hallFields = [

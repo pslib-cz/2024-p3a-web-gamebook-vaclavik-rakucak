@@ -99,6 +99,9 @@ namespace Gamebook.Server.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<int?>("Phase")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int?>("Price")
                         .HasColumnType("INTEGER");
 

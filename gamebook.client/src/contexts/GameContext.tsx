@@ -134,6 +134,12 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
             return { ...quest, progress: newProgress };
           }
         }
+        if (quest.condition === 'collectItem' && quest.roomItemId === number) {
+          if (quest.progress < quest.conditionValue) {
+            const newProgress = quest.progress + 1;
+            return { ...quest, progress: newProgress };
+          }
+        }
         return quest;
       })
     );

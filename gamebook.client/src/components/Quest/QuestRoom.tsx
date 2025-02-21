@@ -3,6 +3,7 @@ import { Room, RoomItem, Quest } from '../../types/ViewModels';
 import Button from '../Buttons/ButtonLarge/ButtonLarge';
 import styles from './QuestRoom.module.css';
 import Modal from '../Modal/Modal';
+import { useGameContext } from '../../contexts/GameContext';
 
 type QuestRoomProps = {
     room: Room;
@@ -14,6 +15,7 @@ type QuestRoomProps = {
 const QuestRoom: React.FC<QuestRoomProps> = ({ room, quest, onRoomUpdate, onClose }) => {
     const [roomItem, setRoomItem] = useState<RoomItem | null>(null);
     const [modalMessage, setModalMessage] = useState<string | null>(null);
+    const { checkAndUpdateQuests} = useGameContext();
 
     useEffect(() => {
         const fetchRoomItem = async () => {
@@ -28,9 +30,15 @@ const QuestRoom: React.FC<QuestRoomProps> = ({ room, quest, onRoomUpdate, onClos
     }, [room.roomItemId]);
 
     const handleCollect = () => {
-        // Implement the collect functionality here
+        if (roomItem?.id !== undefined) {
+            checkAndUpdateQuests(roomItem.id);
+            setModalMessage(`You collected ${roomItem.name}. (added to quest progress)`);
+            setTimeout(() => {
+                const updatedRoom = { ...room, active: false };
+                onRoomUpdate(updatedRoom);
+            }, 1000);
+        }
     };
-
     const handleLeave = () => {
         console.log(quest.roomItemId);
         onClose();
@@ -47,10 +55,10 @@ const QuestRoom: React.FC<QuestRoomProps> = ({ room, quest, onRoomUpdate, onClos
                 </div>
             )}
             <div className={styles.buttons}>
+                <Button onClick={handleLeave}>Leave</Button>
                 {roomItem && quest.roomItemId === roomItem.id && (
                     <Button onClick={handleCollect}>Collect</Button>
                 )}
-                <Button onClick={handleLeave}>Leave</Button>
             </div>
             {modalMessage && <Modal onClose={() => setModalMessage(null)}>{modalMessage}</Modal>}
         </div>

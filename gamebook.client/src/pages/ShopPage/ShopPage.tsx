@@ -12,7 +12,7 @@ const ShopPage: React.FC = () => {
   const [equipment, setEquipment] = useState<any[]>([]);
   const [images, setImages] = useState<{ [key: number]: string }>({});
   const [backgroundImage, setBackgroundImage] = useState<string | null>(null);
-  const { coins, changeCoins, items, setItems } = useGameContext();
+  const { coins, changeCoins, items, setItems, completedQuests } = useGameContext();
   const [isPauseMenuOpen, setIsPauseMenuOpen] = useState<boolean>(false);
   const togglePauseMenu = () => {
     setIsPauseMenuOpen((prev) => !prev);
@@ -22,30 +22,23 @@ const ShopPage: React.FC = () => {
 
   useEffect(() => {
     const fetchEquipment = async () => {
-      const storedEquipment = sessionStorage.getItem('shopEquipment');
-      if (storedEquipment) {
-        const parsedEquipment = JSON.parse(storedEquipment);
-        if (Array.isArray(parsedEquipment)) {
-          setEquipment(parsedEquipment);
-        } else {
-          console.error('Stored equipment is not an array:', parsedEquipment);
-        }
-      } else {
-        try {
-          const response = await axios.get(`${baseApiUrl}/ShopOffer/random`);
-          if (response.headers['content-type']?.includes('application/json')) {
-            if (Array.isArray(response.data)) {
-              setEquipment(response.data);
-              sessionStorage.setItem('shopEquipment', JSON.stringify(response.data));
-            } else {
-              console.error('Unexpected response data:', response.data);
-            }
+      const phase = 1;
+      try {
+        const response = await axios.get(`${baseApiUrl}/ShopOffer/random`, {
+          params: { phase }
+        });
+        if (response.headers['content-type']?.includes('application/json')) {
+          if (Array.isArray(response.data)) {
+            setEquipment(response.data);
+            sessionStorage.setItem('shopEquipment', JSON.stringify(response.data));
           } else {
-            console.error('Unexpected response format:', response);
+            console.error('Unexpected response data:', response.data);
           }
-        } catch (error) {
-          console.error('Error fetching equipment:', error);
+        } else {
+          console.error('Unexpected response format:', response);
         }
+      } catch (error) {
+        console.error('Error fetching equipment:', error);
       }
     };
 
@@ -82,7 +75,7 @@ const ShopPage: React.FC = () => {
 
     fetchEquipment().then(fetchImages);
     fetchBackgroundImage();
-  }, []);
+  }, [completedQuests]);
 
   const handleBuyItem = (item: any) => {
     if (coins >= item.price) {
