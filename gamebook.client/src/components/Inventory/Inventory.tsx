@@ -11,13 +11,14 @@ const Inventory: React.FC<InventoryProps> = ({ onClose }) => {
   return (
     <div className={styles.inventory}>
       <button className={styles.closeButton} onClick={onClose}>X</button>
+      <h2>Equipment</h2>
       <div className={styles.equipmentAndImageContainer}>
         <div className={styles.equipmentContainer}>
           <EquipmentSlot />
         </div>
       </div>
+      <h2>Backpack</h2>
       <div className={styles.backpackContainer}>
-        <h2>Backpack</h2>
         <Backpack />
       </div>
     </div>

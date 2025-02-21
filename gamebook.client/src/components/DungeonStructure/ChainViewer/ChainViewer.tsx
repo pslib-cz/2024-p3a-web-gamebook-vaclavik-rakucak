@@ -116,6 +116,7 @@ const ChainViewer: React.FC = () => {
         if (currentItem && currentItem.type === 'room') {
             currentItem.data.type = 'empty';
             currentItem.data.active = false; // Update room state to inactive
+            checkAndUpdateQuests(monsterId);
         }
     }
 };

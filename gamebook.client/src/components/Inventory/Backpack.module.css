@@ -1,18 +1,20 @@
 .backpack {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    grid-template-rows: repeat(auto-fill, minmax(100px, 1fr));
+    grid-template-columns: repeat(8, 1fr);
+    grid-template-rows: repeat(auto-fill, minmax(88px, 1fr));
     width: 100%;
-  }
-  
-  .backpackItem {
+    min-height: 352px; /* Set a fixed height */
+    overflow-y: auto; /* Ensure the backpack items can scroll */
+}
+
+.backpackItem {
     position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
-  }
-  
-  .imageContainer {
+}
+
+.imageContainer {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -20,9 +22,9 @@
     height: 4rem;
     background-color: var(--Item-Backround-light);
     border: solid 10px var(--Item-Backround);
-  }
-  
-  .info {
+}
+
+.info {
     position: absolute;
     top: 0;
     left: 100%;
@@ -34,16 +36,17 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-  }
-  
-  .info p {
+}
+
+.info p {
     margin: 0;
-  }
-  
-  .info button {
+}
+
+.info button {
     margin-top: 5px;
-  }
-  .imgContainer{
+}
+
+.imgContainer {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -51,15 +54,17 @@
     height: 4rem;
     background-color: var(--Item-Backround-light);
     border: solid 10px var(--Item-Backround);
-  }
-  .img{
+}
+
+.img {
     width: 100%;
     height: 100%;
-  }
-  .quantity{
+}
+
+.quantity {
     position: absolute;
     top: 0;
     right: 1.8rem;
     font-size: 1.5rem;
     color: var(--Dark-Brown);
-  }
+}

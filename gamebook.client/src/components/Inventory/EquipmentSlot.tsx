@@ -49,9 +49,8 @@ const EquipmentSlot: React.FC = () => {
 
   return (
     <div className={styles.equipmentSlot}>
-      <h2>Equipment</h2>
       <div className={styles.slot} onClick={() => handleClick(weapon)}>
-        {weapon && (
+        {weapon ? (
           <>
             <div className={styles.imageContainer}>
               <ImageWithBackground
@@ -70,10 +69,12 @@ const EquipmentSlot: React.FC = () => {
               <p>Damage: {weapon.dmg}</p>
             </div>
           </>
+        ) : (
+          <div className={styles.emptySlot}>Empty Slot</div>
         )}
       </div>
       <div className={styles.slot} onClick={() => handleClick(shield)}>
-        {shield && (
+        {shield ? (
           <>
             <div className={styles.imageContainer}>
               <ImageWithBackground
@@ -92,10 +93,12 @@ const EquipmentSlot: React.FC = () => {
               <p>Defense: {shield.dmg} %</p>
             </div>
           </>
+        ) : (
+          <div className={styles.emptySlot}>Empty Slot</div>
         )}
       </div>
       <div className={styles.slot} onClick={() => handleClick(armor)}>
-        {armor && (
+        {armor ? (
           <>
             <div className={styles.imageContainer}>
               <ImageWithBackground
@@ -114,6 +117,8 @@ const EquipmentSlot: React.FC = () => {
               <p>Defense: {armor.dmg}</p>
             </div>
           </>
+        ) : (
+          <div className={styles.emptySlot}>Empty Slot</div>
         )}
       </div>
     </div>

@@ -6,7 +6,6 @@
 .slot {
   display: flex;
   position: relative;
-  padding-top: 2rem;
 }
 
 .imageContainer {
@@ -16,10 +15,12 @@
   width: 6.625rem;
   height: 6.625rem;
 }
-.image{
+
+.image {
   width: 5rem;
   height: auto;
 }
+
 .info {
   position: absolute;
   top: 50%;
@@ -39,7 +40,7 @@
   margin-top: 5px;
 }
 
-.sideInfo{
+.sideInfo {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -47,4 +48,17 @@
   padding: 1rem;
   font-size: 1.5rem;
   gap: 1rem;
+}
+
+.emptySlot {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 6.625rem;
+  height: 6.625rem;
+  background-color: var(--Brown);
+  border: solid 10px var(--Dark-Brown);
+  color: var(--Biege);
+  font-size: 1rem;
+  text-align: center;
 }

@@ -119,12 +119,18 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
     );
   };
 
-  const checkAndUpdateQuests = (dungeonId: number) => {
+  const checkAndUpdateQuests = (number: number) => {
     setCurrentQuests((prevQuests) =>
       prevQuests.map((quest) => {
-        if (quest.condition === 'completeDungeon' && quest.dungeonId === dungeonId) {
+        if (quest.condition === 'completeDungeon' && quest.dungeonId === number) {
           if (quest.progress < quest.conditionValue) {
             const newProgress = quest.progress + 1;
+            return { ...quest, progress: newProgress };
+          }
+        }
+        if (quest.condition === 'killMonster' && quest.monsterId === number) {
+          if (quest.progress < quest.conditionValue) {
+            const newProgress = quest.progress + .5;
             return { ...quest, progress: newProgress };
           }
         }
