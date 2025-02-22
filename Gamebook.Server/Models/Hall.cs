@@ -11,12 +11,12 @@ namespace Gamebook.Server.Models
         public int? ImageId { get; set; }
         [ForeignKey("ImageId")]
         public Image? Image { get; set; }
-        public int RoomId { get; set; }
+        public int? RoomId { get; set; }
         [ForeignKey("RoomId")]
-        public Room Room { get; set; }
-        public int DungeonId { get; set; }
+        public Room? Room { get; set; }
+        public int? DungeonId { get; set; }
         [ForeignKey("DungeonId")]
-        public Dungeon Dungeon { get; set; }
+        public Dungeon? Dungeon { get; set; }
     }
 
 }

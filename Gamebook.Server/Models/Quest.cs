@@ -33,7 +33,7 @@ namespace Gamebook.Server.Models
         [ForeignKey("RewardItemId")]
         public Equipment? RewardItem { get; set; }
 
-        public int ImageId { get; set; }    
+        public int? ImageId { get; set; }    
         [ForeignKey("ImageId")]
         public Image? Image { get; set; }
     }

@@ -54,7 +54,7 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
   const [currentChainIndex, setCurrentChainIndex] = useState<number>(0);
   const [dungeonId, setDungeonId] = useState<string | undefined>(undefined);
   const [playerHealth, setPlayerHealth] = useState<number>(100);
-  const [coins, setCoins] = useState<number>(1000);
+  const [coins, setCoins] = useState<number>(30);
   const maxPlayerHealth = 100;
   const [weapon, setWeapon] = useState<Item | null>(null);
   const [armor, setArmor] = useState<Item | null>(null);

@@ -9,13 +9,13 @@ namespace Gamebook.Server.Models
         [Key]
         public int Id { get; set; }
         public string Name { get; set; }
-        public int ImageId { get; set; }
+        public int? ImageId { get; set; }
         [ForeignKey("ImageId")]
-        public Image Image { get; set; }
+        public Image? Image { get; set; }
 
         public int? ParentTownId { get; set; }
         [ForeignKey("ParentTownId")]
-        public Town ParentTown { get; set; }
+        public Town? ParentTown { get; set; }
 
         public ICollection<Town> ChildTowns { get; set; }
 

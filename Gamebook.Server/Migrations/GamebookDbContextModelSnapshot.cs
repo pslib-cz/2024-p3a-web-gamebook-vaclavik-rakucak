@@ -172,13 +172,13 @@ namespace Gamebook.Server.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("DungeonId")
+                    b.Property<int?>("DungeonId")
                         .HasColumnType("INTEGER");
 
                     b.Property<int?>("ImageId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("RoomId")
+                    b.Property<int?>("RoomId")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
@@ -230,12 +230,15 @@ namespace Gamebook.Server.Migrations
                     b.Property<int>("Hitpoints")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("ImageId")
+                    b.Property<int?>("ImageId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("TEXT");
+
+                    b.Property<int?>("RewardMoney")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -289,7 +292,7 @@ namespace Gamebook.Server.Migrations
                     b.Property<int?>("DungeonId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("ImageId")
+                    b.Property<int?>("ImageId")
                         .HasColumnType("INTEGER");
 
                     b.Property<int?>("ItemId")
@@ -449,7 +452,7 @@ namespace Gamebook.Server.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("ImageId")
+                    b.Property<int?>("ImageId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
@@ -472,7 +475,7 @@ namespace Gamebook.Server.Migrations
                 {
                     b.HasBaseType("Gamebook.Server.Models.Equipment");
 
-                    b.Property<int>("DungeonId")
+                    b.Property<int?>("DungeonId")
                         .HasColumnType("INTEGER");
 
                     b.HasIndex("DungeonId");
@@ -538,9 +541,7 @@ namespace Gamebook.Server.Migrations
                 {
                     b.HasOne("Gamebook.Server.Models.Dungeon", "Dungeon")
                         .WithMany()
-                        .HasForeignKey("DungeonId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("DungeonId");
 
                     b.HasOne("Gamebook.Server.Models.Image", "Image")
                         .WithMany()
@@ -548,9 +549,7 @@ namespace Gamebook.Server.Migrations
 
                     b.HasOne("Gamebook.Server.Models.Room", "Room")
                         .WithMany()
-                        .HasForeignKey("RoomId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("RoomId");
 
                     b.Navigation("Dungeon");
 
@@ -568,9 +567,7 @@ namespace Gamebook.Server.Migrations
 
                     b.HasOne("Gamebook.Server.Models.Image", "Image")
                         .WithMany()
-                        .HasForeignKey("ImageId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ImageId");
 
                     b.Navigation("Dungeon");
 
@@ -585,9 +582,7 @@ namespace Gamebook.Server.Migrations
 
                     b.HasOne("Gamebook.Server.Models.Image", "Image")
                         .WithMany()
-                        .HasForeignKey("ImageId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ImageId");
 
                     b.HasOne("Gamebook.Server.Models.RoomItem", "RoomItem")
                         .WithMany()
@@ -668,9 +663,7 @@ namespace Gamebook.Server.Migrations
                 {
                     b.HasOne("Gamebook.Server.Models.Image", "Image")
                         .WithMany()
-                        .HasForeignKey("ImageId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ImageId");
 
                     b.HasOne("Gamebook.Server.Models.Town", "ParentTown")
                         .WithMany("ChildTowns")
@@ -685,9 +678,7 @@ namespace Gamebook.Server.Migrations
                 {
                     b.HasOne("Gamebook.Server.Models.Dungeon", "Dungeon")
                         .WithMany()
-                        .HasForeignKey("DungeonId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("DungeonId");
 
                     b.Navigation("Dungeon");
                 });
