@@ -143,10 +143,10 @@ Jsi vyvolený strážce, pověřený znovu zapečetěním Srdce světa. Tvůj ú
 3. Dungeon: { 16, 22 } - Další zvýšení poškození, hráč by měl cítit, že se zlepšuje.
 4. Dungeon: { 23, 30 } - Silné zbraně pro poslední dungeon před bossem.
 ### Brnění
-Dungeon 1: 2, 3
-Dungeon 2: 4, 5
-Dungeon 3: 6, 7
-Dungeon 4: 8, 9
+1. Dungeon 1: 2, 3
+2. Dungeon 2: 4, 5
+3. Dungeon 3: 6, 7
+4. Dungeon 4: 8, 9
    
 ### Nepřátelé
 - minHP, maxHp, minDmg, maxDmg
@@ -154,6 +154,6 @@ Dungeon 4: 8, 9
 2. Dungeon: { 65, 80, 9, 12 } - Zvýšení HP a DMG, ale stále ne drastické.
 3. Dungeon: { 90, 110, 13, 17 } - Nepřátelé začínají být opravdu nebezpeční.
 4. Dungeon: { 120, 140, 18, 22 } - Nejtěžší běžní nepřátelé před bossem.
-Boss HP: { 180, 220 } - Výrazně více HP než běžní nepřátelé.
-Boss DMG: { 25, 30 } - Vysoké poškození, vyžaduje dobrou strategii a využití brnění.
+-Boss HP: { 180, 220 } - Výrazně více HP než běžní nepřátelé.
+-Boss DMG: { 25, 30 } - Vysoké poškození, vyžaduje dobrou strategii a využití brnění.
 ---
