@@ -134,45 +134,26 @@ Jsi vyvolený strážce, pověřený znovu zapečetěním Srdce světa. Tvůj ú
 - 
 ---
 
-## Obtížnosti - vybaveni hráče a nepřátel
-- 1000 testovacich kol
-  
-**Dungeon 1**: 
-Hráč vyhrál: 1000x
-Nepřítel vyhrál: 0x
-Uspešnost: Hráč: 100% Nepřítel: 0%
-
-**Dungeon 2**:
-Hráč vyhrál: 860x
-Nepřítel vyhrál: 142x
-Uspešnost: Hráč: 86% Nepřítel: 14,2%
-
-**Dungeon 3**:
-Hráč vyhrál: 648x
-Nepřítel vyhrál: 354x
-Uspešnost: Hráč: 64,8% Nepřítel: 35,4%
-
-**Dungeon 4**:
-Hráč vyhrál: 551x
-Nepřítel vyhrál: 451x
-Uspešnost: Hráč: 55,1% Nepřítel: 45,1%
-
 ### Hráč
-- playerHP = 50;
-- playerHealAmount = 15; 
-- maxHeals = 2;
-#### Zbraně a brnění
-- zozptyl zbraní pod dungeonech
-1. { 8, 14 }
-2. { 10, 16 }
-3. { 16, 24 }
-4. { 25, 31 }
-- brnění:  3, 5, 6, 8 
+- playerHP = 100;
+- playerHealAmount = lektvary;
+#### Zbraně
+1. Dungeon: { 5, 9 } - Základní zbraně, menší poškození pro začátek hry.
+2. Dungeon: { 10, 15 } - Znatelný nárůst poškození oproti prvnímu dungeonu.
+3. Dungeon: { 16, 22 } - Další zvýšení poškození, hráč by měl cítit, že se zlepšuje.
+4. Dungeon: { 23, 30 } - Silné zbraně pro poslední dungeon před bossem.
+### Brnění
+Dungeon 1: 2, 3
+Dungeon 2: 4, 5
+Dungeon 3: 6, 7
+Dungeon 4: 8, 9
    
 ### Nepřátelé
 - minHP, maxHp, minDmg, maxDmg
-1. { 50, 60, 8, 12 }
-2. { 70, 80, 13, 16 }
-3. { 80, 100, 13, 18 }
-4. { 110, 120, 12, 20 }
+1. Dungeon: { 40, 55, 5, 8 } - Nižší HP a DMG pro začátek. Hráč se učí mechaniky.
+2. Dungeon: { 65, 80, 9, 12 } - Zvýšení HP a DMG, ale stále ne drastické.
+3. Dungeon: { 90, 110, 13, 17 } - Nepřátelé začínají být opravdu nebezpeční.
+4. Dungeon: { 120, 140, 18, 22 } - Nejtěžší běžní nepřátelé před bossem.
+Boss HP: { 180, 220 } - Výrazně více HP než běžní nepřátelé.
+Boss DMG: { 25, 30 } - Vysoké poškození, vyžaduje dobrou strategii a využití brnění.
 ---
