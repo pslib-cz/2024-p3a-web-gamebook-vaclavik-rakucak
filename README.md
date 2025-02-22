@@ -154,6 +154,6 @@ Jsi vyvolený strážce, pověřený znovu zapečetěním Srdce světa. Tvůj ú
 2. Dungeon: { 65, 80, 9, 12 } - Zvýšení HP a DMG, ale stále ne drastické.
 3. Dungeon: { 90, 110, 13, 17 } - Nepřátelé začínají být opravdu nebezpeční.
 4. Dungeon: { 120, 140, 18, 22 } - Nejtěžší běžní nepřátelé před bossem.
--Boss HP: { 180, 220 } - Výrazně více HP než běžní nepřátelé.
--Boss DMG: { 25, 30 } - Vysoké poškození, vyžaduje dobrou strategii a využití brnění.
+5. Boss HP: { 180, 220 } - Výrazně více HP než běžní nepřátelé.
+6. Boss DMG: { 25, 30 } - Vysoké poškození, vyžaduje dobrou strategii a využití brnění.
 ---
