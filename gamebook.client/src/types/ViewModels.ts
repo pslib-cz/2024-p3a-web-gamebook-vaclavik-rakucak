@@ -29,6 +29,7 @@ export interface RoomItem {
     damage?: number;
     imageId: number;
     image?: ImageDto;
+    equipmentId?: number;
 }
 
 export interface Key {

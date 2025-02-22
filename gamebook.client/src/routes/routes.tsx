@@ -10,6 +10,9 @@ import TavernPage from '../pages/TavernPage/TavernPage';
 import ShopPage from '../pages/ShopPage/ShopPage';
 import InventoryButton from '../components/Inventory/InventoryButton';
 import CoinAndHealthBar from '../components/StatusCard/CoinAndHealthBar.tsx';
+import Burgir from '../components/Burgir/Burgir';
+import PauseMenu from '../components/PauseMenu/PauseMenu.tsx';
+import { useState } from 'react';
 
 interface RoutesProps {
   token: string;
@@ -19,12 +22,28 @@ interface RoutesProps {
 
 const AppRoutes: React.FC<RoutesProps> = ({ token, role, onLogin }) => {
   const location = useLocation();
-  const hideCoinAndHealthBar = location.pathname === '/Town/Tavern' || location.pathname === '/Town/Blacksmith';
+  const hide = location.pathname === '/Town/Tavern' 
+            || location.pathname === '/Login'
+            || location.pathname === '/AdminPanel'
+            || location.pathname === '/';
+  const hideMenu = location.pathname === '/Login' || location.pathname === '/AdminPanel';
+  const [isPauseMenuOpen, setIsPauseMenuOpen] = useState<boolean>(false);
+  const togglePauseMenu = () => {
+    setIsPauseMenuOpen((prev) => !prev);
+  };
+
+
 
   return (
     <>
-      {!hideCoinAndHealthBar && <CoinAndHealthBar />}
-      <InventoryButton />
+      {!hide && <CoinAndHealthBar />}
+      {!hide && <InventoryButton />}
+      {!hideMenu && 
+        <div style={{ position: 'absolute', top: '0', right: '0', zIndex: 100 }}>
+          <Burgir onClick={togglePauseMenu} isOpen={isPauseMenuOpen}/>
+        </div>
+      }
+      {isPauseMenuOpen && <PauseMenu onClose={togglePauseMenu}/>}
       <Routes>
         <Route path="/" element={<MenuPage />} />
         <Route path="/Map" element={<MainMapPage />} />

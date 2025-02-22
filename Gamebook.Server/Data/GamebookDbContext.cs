@@ -60,6 +60,11 @@ namespace Gamebook.Server.Data
                 .HasDiscriminator<string>("Discriminator")
                 .HasValue<Equipment>("Equipment")
                 .HasValue<Key>("Key");
+            modelBuilder.Entity<Monster>()
+                .HasOne(m => m.Dungeon)
+                .WithMany() // Dungeon nemá kolekci Monsters
+                .HasForeignKey(m => m.DungeonId)
+                .OnDelete(DeleteBehavior.SetNull);
         }
 
         public static void SeedData(IServiceProvider serviceProvider)

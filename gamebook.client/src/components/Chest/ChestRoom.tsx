@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Room, RoomItem, Item, Key } from '../../types/ViewModels';
+import { Room, RoomItem, Item } from '../../types/ViewModels';
 import { useGameContext } from '../../contexts/GameContext';
 import Button from '../Buttons/ButtonLarge/ButtonLarge';
 import styles from './ChestRoom.module.css';
@@ -57,7 +57,7 @@ const ChestRoom: React.FC<ChestRoomProps> = ({ room, onRoomUpdate, onClose }) =>
 
             // Fetch item z truhly
             if (roomItem) {
-                const response = await fetch(`${import.meta.env.VITE_API_URL}/Equipments/${roomItem.id}`);
+                const response = await fetch(`${import.meta.env.VITE_API_URL}/Equipments/${roomItem.equipmentId}`);
                 const item: Item = await response.json();
                 const existingItemIndex = updatedItems.findIndex(i => i.id === item.id);
 

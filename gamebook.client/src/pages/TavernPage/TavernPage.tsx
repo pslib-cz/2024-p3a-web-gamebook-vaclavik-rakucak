@@ -4,20 +4,13 @@ import styles from './TavernPage.module.css';
 import RouteButton from '../../components/Buttons/routeButtons/routeButton.tsx';
 import { Quest } from '../../types/ViewModels.ts';
 import Button from '../../components/Buttons/ButtonLarge/ButtonLarge.tsx';
-import Burgir from '../../components/Burgir/Burgir.tsx';
-import PauseMenu from '../../components/PauseMenu/PauseMenu.tsx';
 import { useGameContext } from '../../contexts/GameContext';
 import QuestCard from '../../components/QuestCard/QuestCard.tsx';
 
 const TavernPage: React.FC = () => {
   const [backgroundImageUrl, setBackgroundImageUrl] = useState<string>('');
   const [availableQuests, setAvailableQuests] = useState<Quest[]>([]);
-  const [isPauseMenuOpen, setIsPauseMenuOpen] = useState<boolean>(false);
   const { currentQuests, acceptQuest, completeQuest } = useGameContext();
-
-  const togglePauseMenu = () => {
-    setIsPauseMenuOpen((prev) => !prev);
-  };
 
   useEffect(() => {
     const loadImage = async () => {
@@ -78,10 +71,6 @@ const TavernPage: React.FC = () => {
       <div className={styles.back}>
         <RouteButton route="/Town" label="Back" />
       </div>
-      <div style={{ position: 'absolute', top: '0', right: '0', zIndex: 100 }}>
-        <Burgir onClick={togglePauseMenu} isOpen={isPauseMenuOpen} />
-      </div>
-      {isPauseMenuOpen && <PauseMenu onClose={togglePauseMenu} currentPage="Tavern" />}
       {activeQuest ? (
         <div className={styles.activeQuest}>
           <QuestCard quest={activeQuest}  />

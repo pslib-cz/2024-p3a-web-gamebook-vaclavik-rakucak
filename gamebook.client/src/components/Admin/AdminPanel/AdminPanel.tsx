@@ -2,6 +2,7 @@ import React from 'react';
 import FormComponent from './FormComponent';
 import ImageUploadComponent from './ImageUploadComponent';
 import styles from './AdminPanel.module.css';
+import { useNavigate } from 'react-router-dom';
 
 interface AdminPanelProps {
   token: string;
@@ -9,6 +10,7 @@ interface AdminPanelProps {
 
 const AdminPanel: React.FC<AdminPanelProps> = ({ token }) => {
   const baseApiUrl = import.meta.env.VITE_API_URL;
+  const navigate = useNavigate();
 
   const roomItemFields = [
     { name: 'name', type: 'text', placeholder: 'Name' },
@@ -61,6 +63,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ token }) => {
     { name: 'hitpoints', type: 'number', placeholder: 'Hitpoints' },
     { name: 'damage', type: 'number', placeholder: 'Damage' },
     { name: 'imageId', type: 'number', placeholder: 'Image ID' },
+    { name: 'dungeonId', type: 'number', placeholder: 'Dungeon ID' },
   ];
 
   const npcFields = [
@@ -171,6 +174,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ token }) => {
           apiUrl={`${baseApiUrl}/Images`}
         />
       </div>
+      <button onClick={() => navigate('/map') }>Log Out</button>
     </div>
   );
 };

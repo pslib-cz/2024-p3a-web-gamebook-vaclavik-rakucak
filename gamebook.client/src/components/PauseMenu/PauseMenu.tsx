@@ -4,11 +4,10 @@ import Button from '../Buttons/ButtonLarge/ButtonLarge';
 import styles from './PauseMenu.module.css';
 import { ChainElement } from '../../types/ViewModels';
 import { useGameContext } from '../../contexts/GameContext';
-import RouteButton from '../Buttons/routeButtons/routeButton';
 
 interface PauseMenuProps {
   onClose: () => void;
-  currentPage: string;
+  currentPage?: string;
   setChain?: (chain: ChainElement[] | null) => void;
   setCurrentChainIndex?: (index: number) => void;
   changeCoins?: (amount: number) => void;
@@ -53,6 +52,10 @@ const PauseMenu: React.FC<PauseMenuProps> = ({ currentPage, onClose, setChain, s
     navigate('/map');
     onClose();
   };
+  const handleAdminClick = () => {
+    navigate('/Login');
+    onClose();
+  };
 
   return (
     <div className={styles.pauseMenu}>
@@ -91,7 +94,7 @@ const PauseMenu: React.FC<PauseMenuProps> = ({ currentPage, onClose, setChain, s
           <Button onClick={handleTutorialClick}>Close Tutorial</Button>
         </div>
       )}
-      <RouteButton route='/Login' label='Login'/>
+      <Button onClick={handleAdminClick}>Admin</Button>
     </div>
   );
 };

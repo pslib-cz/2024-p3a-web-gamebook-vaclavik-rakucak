@@ -92,7 +92,7 @@ const DungeonPage: React.FC = () => {
         return <div>Loading dungeon data...</div>;
     }
 
-    return <ChainViewer />;
+    return <ChainViewer dungeonId={parseInt(dungeonId!)} />;
 };
 
 export default DungeonPage;

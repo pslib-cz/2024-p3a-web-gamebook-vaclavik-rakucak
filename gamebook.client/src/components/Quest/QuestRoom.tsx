@@ -14,6 +14,7 @@ type QuestRoomProps = {
 
 const QuestRoom: React.FC<QuestRoomProps> = ({ room, quest, onRoomUpdate, onClose }) => {
     const [roomItem, setRoomItem] = useState<RoomItem | null>(null);
+    const [image, setImage] = useState<string | null>(null);
     const [modalMessage, setModalMessage] = useState<string | null>(null);
     const { checkAndUpdateQuests} = useGameContext();
 
@@ -28,6 +29,17 @@ const QuestRoom: React.FC<QuestRoomProps> = ({ room, quest, onRoomUpdate, onClos
 
         fetchRoomItem();
     }, [room.roomItemId]);
+    useEffect(() => {
+        const fetchImage = async () => {
+            if (roomItem && roomItem.imageId) {
+                const response = await fetch(`${import.meta.env.VITE_API_URL}/images/${roomItem.imageId}`);
+                const blob = await response.blob();
+                setImage(URL.createObjectURL(blob));
+            }
+        };
+
+        fetchImage();
+    }, [roomItem]);
 
     const handleCollect = () => {
         if (roomItem?.id !== undefined) {
@@ -52,8 +64,11 @@ const QuestRoom: React.FC<QuestRoomProps> = ({ room, quest, onRoomUpdate, onClos
                 <div className={styles.roomItem}>
                     <h3>{roomItem.name}</h3>
                     <p>{roomItem.description}</p>
-                </div>
+                </div>   
             )}
+            <div className={styles.imageContainer}>
+                {image && <img src={image} alt="roomItem" className={styles.image} />}
+            </div>
             <div className={styles.buttons}>
                 <Button onClick={handleLeave}>Leave</Button>
                 {roomItem && quest.roomItemId === roomItem.id && (

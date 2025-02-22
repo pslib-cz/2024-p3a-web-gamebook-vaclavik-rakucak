@@ -6,11 +6,12 @@ import { Monster } from '../../types/ViewModels';
 import Button from '../Buttons/ButtonLarge/ButtonLarge';
 import DeathCard from '../DeathCard/DeathCard';
 
-interface FightComponentProps {
-  onFightEnd: (monsterId?: number, playerDied?: boolean, monsterName?: string) => void; 
+type FightComponentProps = {
+  onFightEnd: (monsterId?: number, playerDied?: boolean, monsterName?: string) => void;
+  dungeonId: number; // Přidání dungeonId jako prop
 }
 
-const FightComponent: React.FC<FightComponentProps> = ({ onFightEnd }) => {
+const FightComponent: React.FC<FightComponentProps> = ({ onFightEnd, dungeonId }) => {
   const { changeCoins, changeHealth, weapon, armor, shield, playerHealth, setPlayerHealth } = useGameContext();
   const [monsterHealth, setMonsterHealth] = useState<number>(0);
   const [maxMonsterHealth, setMaxMonsterHealth] = useState<number>(0);
@@ -26,8 +27,7 @@ const FightComponent: React.FC<FightComponentProps> = ({ onFightEnd }) => {
     const fetchMonsterData = async () => {
       setIsLoading(true);
       try {
-        const randomMonsterId = getRandomMonsterId();
-        const response = await fetch(`${baseApiUrl}/monsters/${randomMonsterId}`);
+        const response = await fetch(`${baseApiUrl}/monsters/random/${dungeonId}`);
         if (!response.ok) {
           throw new Error('Failed to fetch monster data');
         }
@@ -44,7 +44,7 @@ const FightComponent: React.FC<FightComponentProps> = ({ onFightEnd }) => {
     };
 
     fetchMonsterData();
-  }, []);
+  }, [dungeonId]);
 
   useEffect(() => {
     const fetchMonsterImage = async (imageId: number) => {
@@ -121,10 +121,6 @@ const FightComponent: React.FC<FightComponentProps> = ({ onFightEnd }) => {
       setIsPlayerTurn(false);
       console.log(`Player attacks! Monster takes ${weaponDmg} damage.`);
     }
-  };
-
-  const getRandomMonsterId = () => {
-    return 1; // Vrací prvního monstra pro testování
   };
 
   const handleRespawn = () => {

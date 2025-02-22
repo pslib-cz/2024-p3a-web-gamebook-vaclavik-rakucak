@@ -55,6 +55,7 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
             onChange={(e) => setPassword(e.target.value)}
         />
         <button type="submit" className={styles.button}>Login</button>
+        <button type="button" className={styles.button} onClick={() => navigate('/Map')}>Back</button>
         </form>
     );
 };

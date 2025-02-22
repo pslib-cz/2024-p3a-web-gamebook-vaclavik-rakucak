@@ -9,7 +9,7 @@ namespace Gamebook.Server.Models
         public int Id { get; set; }
         public string Type { get; set; } // "traproom", "chestroom", "keyroom"
         public string Description { get; set; }
-        public int DungeonId { get; set; }
+        public int? DungeonId { get; set; }
         public int? ImageId { get; set; }
         [ForeignKey("ImageId")]
         public Image? Image { get; set; }

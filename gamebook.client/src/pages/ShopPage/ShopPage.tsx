@@ -22,7 +22,7 @@ const ShopPage: React.FC = () => {
 
   useEffect(() => {
     const fetchEquipment = async () => {
-      const phase = 1;
+      const phase = Math.floor(completedQuests.length/3 ) + 1;
       try {
         const response = await axios.get(`${baseApiUrl}/ShopOffer/random`, {
           params: { phase }

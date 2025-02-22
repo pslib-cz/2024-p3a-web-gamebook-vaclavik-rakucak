@@ -105,5 +105,21 @@ namespace Gamebook.Server.Controllers
         {
             return _context.Monsters.Any(e => e.Id == id);
         }
+
+        [HttpGet("random/{dungeonId}")]
+        public async Task<ActionResult<Monster>> GetRandomMonster(int dungeonId)
+        {
+            var monsters = await _context.Monsters.Where(m => m.DungeonId == dungeonId).ToListAsync();
+
+            if (monsters == null || monsters.Count == 0)
+            {
+                return NotFound();
+            }
+
+            var random = new Random();
+            var randomMonster = monsters[random.Next(monsters.Count)];
+
+            return randomMonster;
+        }
     }
 }

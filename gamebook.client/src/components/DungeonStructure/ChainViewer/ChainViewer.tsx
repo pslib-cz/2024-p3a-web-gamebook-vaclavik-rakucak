@@ -17,7 +17,11 @@ import TrapRoom from '../../Trap/TrapRoom';
 import Modal from '../../Modal/Modal';
 import QuestRoom from '../../Quest/QuestRoom';
 
-const ChainViewer: React.FC = () => {
+interface ChainViewerProps {
+  dungeonId: number; // Přidání dungeonId jako prop
+}
+
+const ChainViewer: React.FC<ChainViewerProps> = ({ dungeonId }) => {
     const {
         defeatedMonsters,
         setDefeatedMonsters,
@@ -242,7 +246,7 @@ const ChainViewer: React.FC = () => {
             )}
             {/* Zobrazení ruzných typu room */}
             {currentItem && currentItem.type === 'room' && isFighting && (
-                <FightComponent onFightEnd={handleFightEnd} />
+                <FightComponent onFightEnd={handleFightEnd} dungeonId={dungeonId} />
             )}
 
             {currentItem && currentItem.type === 'room' && isKeyRoomActive && (

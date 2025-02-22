@@ -6,8 +6,6 @@ import { fetchImage } from '../../api/imagesApi';
 import Button from '../../components/Buttons/ButtonSmall/ButtonSmall';
 import RouteButton from '../../components/Buttons/routeButtonSmall/routeButton';
 import { useGameContext } from '../../contexts/GameContext';
-import PauseMenu from '../../components/PauseMenu/PauseMenu';
-import Burgir from '../../components/Burgir/Burgir';
 import { Dungeon } from '../../types/ViewModels';
 import DungeonCard from '../../components/DungeonCard/DungeonCard';
 
@@ -53,10 +51,6 @@ const MapButton: React.FC<Dungeon> = ({ id, name, description, rewardMoney, dmgC
 const MainMapPage: React.FC = () => {
   const [backgroundImageUrl, setBackgroundImageUrl] = useState<string>('');
   const [dungeons, setDungeons] = useState<Dungeon[]>([]);
-  const [isPauseMenuOpen, setIsPauseMenuOpen] = useState<boolean>(false);
-  const togglePauseMenu = () => {
-    setIsPauseMenuOpen((prev) => !prev);
-  };
 
   const baseApiUrl = import.meta.env.VITE_API_URL;
 
@@ -99,10 +93,6 @@ const MainMapPage: React.FC = () => {
         backgroundPosition: 'center',
       }}
     >
-      <div style={{ position: 'absolute', top: '0', right: '0', zIndex: 100 }}>
-        <Burgir onClick={togglePauseMenu} isOpen={isPauseMenuOpen} />
-      </div>
-      {isPauseMenuOpen && <PauseMenu onClose={togglePauseMenu} currentPage='Map' />}
       <div className={styles.mapButtonContainer}>
         {dungeons.map((dungeon) => (
           <div key={dungeon.id} className={styles[`Dungeon${dungeon.id}`]}>
