@@ -1,7 +1,7 @@
 export type ChainElement =
     | { type: "room"; data: Room }
     | { type: "hall"; data: Hall }
-    | { type: "fork"; data: Fork };
+    | { type: "fork"; data: Fork }
 
 export interface Room {
     id: number;
@@ -16,9 +16,7 @@ export interface Room {
     roomItemId?: number;
     roomItems?: RoomItem;
     keyId?: Key;
-    positionX?: number;
-    positionY?: number;
-    
+    monsterId?: number;
 }
 
 export interface RoomItem {
@@ -98,13 +96,14 @@ export interface Dungeon {
     description: string;
     rewardMoney: number;
     dmgCondition: number;
+    imageId: number;
 };
 
 export interface Quest {
     id: number;
     name: string;
     description: string;
-    condition: string; // Typ úkolu: "completeDungeon", "killMonster", "collectItem"
+    condition: string; // Typ úkolu: "completeDungeon", "killMonster", "collectItem",'killBoss'
     conditionValue: number;
     progress: number; 
     dungeonId?: number;
@@ -115,4 +114,5 @@ export interface Quest {
     imageId: number;
     conditionDescription: string;
     rewardItem: Item;
+    bossRoomId?: number;
 };

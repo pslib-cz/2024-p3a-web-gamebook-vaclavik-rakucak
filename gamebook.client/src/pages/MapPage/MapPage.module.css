@@ -22,6 +22,10 @@
   width: fit-content;
   height: fit-content;
 }
+.mapButtonIcon{
+  cursor: pointer;
+  height: 4.5rem;
+}
   
 .mapButton {
   display: flex;
@@ -34,38 +38,38 @@
   cursor: pointer;
 }
 /*pozicovani*/
-.Dungeon1 {
-  position: absolute;
-  top: 48%;
-  left: 19%;
-  transform: translate(-50%, -50%);
-  z-index: 10;
-}
 .Dungeon2 {
   position: absolute;
-  top: 18%;
-  left: 44%;
+  top: 56%;
+  left: 20%;
   transform: translate(-50%, -50%);
   z-index: 10;
 }
 .Dungeon3 {
   position: absolute;
-  top: 24%;
-  left: 65%;
+  top: 23%;
+  left: 38%;
   transform: translate(-50%, -50%);
   z-index: 10;
 }
 .Dungeon4 {
   position: absolute;
-  top: 45%;
+  top: 24%;
   left: 74%;
   transform: translate(-50%, -50%);
-  z-index: 10;
+  z-index: 11;
 }
 .Dungeon5 {
   position: absolute;
-  top: 78%;
-  left: 63%;
+  top: 51%;
+  left: 79%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+}
+.Dungeon6{
+  position: absolute;
+  top: 12%;
+  left: 54%;
   transform: translate(-50%, -50%);
   z-index: 10;
 }

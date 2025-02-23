@@ -6,7 +6,7 @@ import { ChainElement } from '../../types/ViewModels';
 
 const DungeonPage: React.FC = () => {
     const { dungeonId, type, index } = useParams<{ dungeonId?: string; type?: string; index?: string }>();
-    const { chain, setChain, currentChainIndex, setCurrentChainIndex, setDungeonId, setPlayerHealth, setCoins, setDefeatedMonsters } = useGameContext();
+    const { chain, setChain, currentChainIndex, setCurrentChainIndex, setDungeonId, setPlayerHealth, setCoins, setDefeatedMonsters, currentQuests } = useGameContext();
     const navigate = useNavigate();
 
     const baseApiUrl = import.meta.env.VITE_API_URL;
@@ -27,11 +27,22 @@ const DungeonPage: React.FC = () => {
                     }
 
                     const apiData: ChainElement[] = await response.json();
+                    const quest = currentQuests.find(q => q.condition === 'killBoss' && q.dungeonId === parseInt(dungeonId!));
+                    if (quest && quest.bossRoomId) {
+                        const bossRoomResponse = await fetch(`${baseApiUrl}/Rooms/${quest.bossRoomId}`);
+                        if (!bossRoomResponse.ok) {
+                            throw new Error(`Failed to fetch boss room data: ${bossRoomResponse.statusText}`);
+                        }
+                        const bossRoomData = await bossRoomResponse.json();
+                        const bossRoomElement: ChainElement = { type: 'room', data: bossRoomData };
+                        apiData.push(bossRoomElement);
+                    }
                     apiData.forEach(item => {
                         if (item.type === 'room' && item.data.active === undefined) {
                             item.data.active = true; //nastaveni active property na true pro vsechny rooms
                         }
                     });
+
                     setChain(apiData);
                 }
 
@@ -44,7 +55,7 @@ const DungeonPage: React.FC = () => {
         if (dungeonId) {
             fetchData();
         }
-    }, [dungeonId, setChain, navigate, setDungeonId]);
+    }, [dungeonId, setChain, navigate, setDungeonId, currentQuests]);
 
     useEffect(() => {
         // Nastavení indexu z URL, pokud je chain k dispozici

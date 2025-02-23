@@ -12,6 +12,7 @@ namespace Gamebook.Server.Models
         public string Condition { get; set; } // Typ úkolu: "completeDungeon", "killMonster", "collectItem"
         public string ConditionDescription { get; set; } 
         public int ConditionValue { get; set; }
+        public int? BossRoomId { get; set; }
 
         public int? DungeonId { get; set; }
         [ForeignKey("DungeonId")]

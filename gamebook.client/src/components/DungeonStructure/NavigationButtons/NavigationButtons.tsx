@@ -12,6 +12,7 @@ type NavigationButtonsProps = {
   isFighting: boolean;
   isActive: boolean;
   isRoomActive: boolean;
+  isFightBoss: boolean;
 }
 
 const NavigationButtons: React.FC<NavigationButtonsProps> = ({
@@ -24,6 +25,7 @@ const NavigationButtons: React.FC<NavigationButtonsProps> = ({
   isFighting,
   isActive,
   isRoomActive,
+  isFightBoss,
 }) => {
   const isFirstItem = currentChainIndex === 0;
   const isLastItem = currentChainIndex === chainLength - 1;
@@ -32,13 +34,13 @@ const NavigationButtons: React.FC<NavigationButtonsProps> = ({
     <div className={styles.nvBtnContainer}>
       <Button
         onClick={onPrevious}
-        disabled={isFirstItem || isFighting || isRoomActive }
+        disabled={isFirstItem || isFighting || isRoomActive || isActive || isFightBoss}
       >
         Go back
       </Button>
       <Button
         onClick={onNext}
-        disabled={isLastItem || isRoomDeadEnd || isFork || isFighting || isActive || isRoomActive}
+        disabled={isLastItem || isRoomDeadEnd || isFork || isFighting || isActive || isRoomActive || isFightBoss}
       >
         Go further
       </Button>

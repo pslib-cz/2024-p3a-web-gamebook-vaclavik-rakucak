@@ -35,6 +35,7 @@ const ChainViewer: React.FC<ChainViewerProps> = ({ dungeonId }) => {
     } = useGameContext();
     const [backgroundImageUrl, setBackgroundImageUrl] = useState<string>('');
     const [isFighting, setIsFighting] = useState<boolean>(false);
+    const [isFightingBoss, setIsFightingBoss] = useState<boolean>(false);
     const [isKeyRoomActive, setIsKeyRoomActive] = useState<boolean>(false);
     const [isChestRoomActive, setIsChestRoomActive] = useState<boolean>(false);
     const [isTrapRoomActive, setIsTrapRoomActive] = useState<boolean>(false);
@@ -98,6 +99,7 @@ const ChainViewer: React.FC<ChainViewerProps> = ({ dungeonId }) => {
             const nextIndex = currentChainIndex + 1;
             setCurrentChainIndex(nextIndex);
             setIsFighting(false);
+            console.log(currentItem);
         }
     };
 
@@ -106,6 +108,7 @@ const ChainViewer: React.FC<ChainViewerProps> = ({ dungeonId }) => {
             const prevIndex = currentChainIndex - 1;
             setCurrentChainIndex(prevIndex);
             setIsFighting(false);
+            console.log(currentItem);
         }
     };
 
@@ -128,6 +131,27 @@ const ChainViewer: React.FC<ChainViewerProps> = ({ dungeonId }) => {
         }
     };
 
+    const handleBossFightEnd = (monsterId?: number, playerDied?: boolean, monsterName?: string) => {
+        setIsFightingBoss(false);
+        if (playerDied) {
+            setChain(null);
+            navigate('/map');
+            clearSessionStorage();  
+            return;
+        }
+        if (monsterId && monsterName) {
+            setDefeatedMonsters([...defeatedMonsters, monsterId]);
+            setModalMessage(`${monsterName} was defeated!`);
+            if (currentItem && currentItem.type === 'room') {
+                currentItem.data.type = 'empty';
+                currentItem.data.active = false; // Update room state to inactive
+                checkAndUpdateQuests(monsterId);
+                console.log(currentQuests);
+                console.log(monsterId);
+            }
+        }
+    }
+
     const handleGoBackToMap = () => {
         if (chain && chain.length > 0) {
             const dungeonId = chain[0].data.dungeonId;
@@ -143,7 +167,12 @@ const ChainViewer: React.FC<ChainViewerProps> = ({ dungeonId }) => {
     };
 
     const handleStartFight = () => {
-        setIsFighting(true);
+        if (currentItem && currentItem.type === 'room' && currentItem.data.type === 'monsterRoom') {
+            setIsFighting(true);
+        }
+        else if(currentItem && currentItem.type === 'room' && currentItem.data.type === 'bossRoom') {
+            setIsFightingBoss(true);
+        }
     };
 
     const handleSearch = () => {
@@ -195,6 +224,7 @@ const ChainViewer: React.FC<ChainViewerProps> = ({ dungeonId }) => {
     const handleCloseQuestRoom = () => {
         setIsQuestRoomActive(false);
     };
+
 
     if (!chain || chain.length === 0) {
         return <div className={styles.ViewContainer}>No chain data available.</div>;
@@ -248,6 +278,10 @@ const ChainViewer: React.FC<ChainViewerProps> = ({ dungeonId }) => {
             {currentItem && currentItem.type === 'room' && isFighting && (
                 <FightComponent onFightEnd={handleFightEnd} dungeonId={dungeonId} />
             )}
+            {currentItem && currentItem.type === 'room' && isFightingBoss && (
+                <FightComponent onFightEnd={handleBossFightEnd} monsterId={currentItem.data.monsterId} />
+            )
+            }
 
             {currentItem && currentItem.type === 'room' && isKeyRoomActive && (
                 <KeyRoom room={currentItem.data} onRoomUpdate={handleRoomUpdate} onClose={handleCloseKeyRoom} />
@@ -279,12 +313,15 @@ const ChainViewer: React.FC<ChainViewerProps> = ({ dungeonId }) => {
                 onPrevious={handlePrevious}
                 onNext={handleNext}
                 isFighting={isFighting}
+                isFightBoss={isFightingBoss}
                 isActive={isActive} 
                 isRoomActive={isRoomActive}
             />
-            {isLastRoom && (
+            {isLastRoom && !(currentItem.type === 'room' && currentItem.data.type === 'bossRoom' || currentItem.type === 'room' && currentItem.data.type === 'monsterRoom')  && (
                 <div className={styles.goBackButton}>
-                    <Button onClick={handleGoBackToMap}>Exit Dungeon</Button>
+                    <Button onClick={handleGoBackToMap} >
+                        Exit Dungeon
+                    </Button>
                 </div>
             )}
             {modalMessage && <Modal onClose={() => setModalMessage(null)}>{modalMessage}</Modal>}

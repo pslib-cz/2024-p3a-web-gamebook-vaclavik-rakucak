@@ -274,6 +274,9 @@ namespace Gamebook.Server.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<int?>("BossRoomId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Condition")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -357,12 +360,6 @@ namespace Gamebook.Server.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<int?>("MonsterId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int?>("PositionX")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int?>("PositionY")
                         .HasColumnType("INTEGER");
 
                     b.Property<int?>("RoomItemId")

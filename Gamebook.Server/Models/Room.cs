@@ -24,7 +24,5 @@ namespace Gamebook.Server.Models
         public int? KeyId { get; set; }
         [ForeignKey("KeyId")]
         public Key? Key { get; set; }
-        public int? PositionX { get; set; }
-        public int? PositionY { get; set; }
     }
 }

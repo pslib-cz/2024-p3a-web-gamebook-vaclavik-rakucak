@@ -9,10 +9,24 @@ import { useGameContext } from '../../contexts/GameContext';
 import { Dungeon } from '../../types/ViewModels';
 import DungeonCard from '../../components/DungeonCard/DungeonCard';
 
-const MapButton: React.FC<Dungeon> = ({ id, name, description, rewardMoney, dmgCondition }) => {
+const MapButton: React.FC<Dungeon> = ({ id, name, description, rewardMoney, dmgCondition, imageId }) => {
   const navigate = useNavigate();
   const { setDungeonId, setCurrentChainIndex, weapon } = useGameContext();
   const [isDungeonCardOpen, setIsDungeonCardOpen] = useState(false);
+  const [dungeonImageUrl, setDungeonImageUrl] = useState<string>('');
+
+  useEffect(() => {
+    const loadImage = async () => {
+      try {
+        const url = await fetchImage(imageId);
+        setDungeonImageUrl(url);
+      } catch (error) {
+        console.error('Error loading dungeon image:', error);
+      }
+    };
+
+    loadImage();
+  }, [imageId]);
 
   const handleClick = () => {
     setIsDungeonCardOpen(true);
@@ -25,22 +39,22 @@ const MapButton: React.FC<Dungeon> = ({ id, name, description, rewardMoney, dmgC
         localStorage.setItem('firstEntry', 'true');
         navigate(`/Dungeon/${dungeonId}/room/0`);
     }
-};
+  };
 
   return (
     <div className={styles.mapButton}>
       <Button onClick={handleClick}>{name}</Button>
       <img
-        src="/dungeon-icon.webp"
+        src={dungeonImageUrl}
         alt="dungeon icon"
         className={styles.mapButtonIcon}
         onClick={handleClick}
       />
       {isDungeonCardOpen && (
         <DungeonCard
-          dungeon={{ id, name, description, rewardMoney, dmgCondition }}
+          dungeon={{ id, name, description, rewardMoney, dmgCondition, imageId }}
           onClose={() => setIsDungeonCardOpen(false)}
-          onEnter={handleEnterDungeon}
+          onEnter={handleEnterDungeon} 
           playerDamage={weapon ? weapon.dmg : 0}
         />
       )}

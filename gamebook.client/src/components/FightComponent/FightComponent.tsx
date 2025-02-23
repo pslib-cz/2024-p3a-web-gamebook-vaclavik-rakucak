@@ -8,10 +8,11 @@ import DeathCard from '../DeathCard/DeathCard';
 
 type FightComponentProps = {
   onFightEnd: (monsterId?: number, playerDied?: boolean, monsterName?: string) => void;
-  dungeonId: number; // Přidání dungeonId jako prop
+  dungeonId?: number; // Přidání dungeonId jako prop
+  monsterId?: number; // Přidání monsterId jako prop
 }
 
-const FightComponent: React.FC<FightComponentProps> = ({ onFightEnd, dungeonId }) => {
+const FightComponent: React.FC<FightComponentProps> = ({ onFightEnd, dungeonId, monsterId }) => {
   const { changeCoins, changeHealth, weapon, armor, shield, playerHealth, setPlayerHealth } = useGameContext();
   const [monsterHealth, setMonsterHealth] = useState<number>(0);
   const [maxMonsterHealth, setMaxMonsterHealth] = useState<number>(0);
@@ -27,11 +28,22 @@ const FightComponent: React.FC<FightComponentProps> = ({ onFightEnd, dungeonId }
     const fetchMonsterData = async () => {
       setIsLoading(true);
       try {
-        const response = await fetch(`${baseApiUrl}/monsters/random/${dungeonId}`);
-        if (!response.ok) {
-          throw new Error('Failed to fetch monster data');
+        let data;
+        if (dungeonId) {
+          const response = await fetch(`${baseApiUrl}/monsters/random/${dungeonId}`);
+          if (!response.ok) {
+            throw new Error('Failed to fetch monster data');
+          }
+          data = await response.json();
+        } else if (monsterId) {
+          const response = await fetch(`${baseApiUrl}/monsters/${monsterId}`);
+          if (!response.ok) {
+            throw new Error('Failed to fetch monster data');
+          }
+          data = await response.json();
+        } else {
+          throw new Error('No dungeonId or monsterId provided');
         }
-        const data = await response.json();
         console.log("Fetched monster data:", data);
         setMonsterHealth(data.hitpoints);
         setMaxMonsterHealth(data.hitpoints);
@@ -44,7 +56,7 @@ const FightComponent: React.FC<FightComponentProps> = ({ onFightEnd, dungeonId }
     };
 
     fetchMonsterData();
-  }, [dungeonId]);
+  }, [dungeonId, monsterId]);
 
   useEffect(() => {
     const fetchMonsterImage = async (imageId: number) => {
