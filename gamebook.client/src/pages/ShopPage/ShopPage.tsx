@@ -65,7 +65,7 @@ const ShopPage: React.FC = () => {
 
     const fetchBackgroundImage = async () => {
       try {
-        const response = await axios.get(`${baseApiUrl}/Images/26`, { responseType: 'blob' });
+        const response = await axios.get(`${baseApiUrl}/Images/27`, { responseType: 'blob' });
         const url = URL.createObjectURL(response.data);
         setBackgroundImage(url);
       } catch (error) {
