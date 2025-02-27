@@ -2,6 +2,7 @@ import React from 'react';
 import styles from './DungeonCard.module.css';
 import Button from '../Buttons/ButtonSmall/ButtonSmall';
 import { Dungeon } from '../../types/ViewModels';
+import { useGameContext } from '../../contexts/GameContext';
 
 type DungeonCardProps = {
   dungeon: Dungeon | null;
@@ -13,7 +14,8 @@ type DungeonCardProps = {
 const DungeonCard: React.FC<DungeonCardProps> = ({ dungeon, onClose, onEnter, playerDamage }) => {
   if (!dungeon) return null;
 
-  const canEnter = playerDamage >= dungeon.dmgCondition;
+  const { currentQuests } = useGameContext();
+  const canEnter = playerDamage >= dungeon.dmgCondition && currentQuests.length > 0;
 
   return (
     <div className={styles.overlay}>
@@ -21,7 +23,7 @@ const DungeonCard: React.FC<DungeonCardProps> = ({ dungeon, onClose, onEnter, pl
         <h2>{dungeon.name}</h2>
         <p>{dungeon.description}</p>
         <p>Reward: {dungeon.rewardMoney} gold</p>
-        <p>Required damage: {dungeon.dmgCondition}</p>
+        <p>Required damage: {dungeon.dmgCondition} and quest</p>
         {canEnter ? (
           <Button onClick={() => onEnter(dungeon.id)}>Enter</Button>
         ) : (

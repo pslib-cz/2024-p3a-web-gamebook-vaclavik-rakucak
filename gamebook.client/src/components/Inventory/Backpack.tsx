@@ -11,7 +11,6 @@ const Backpack: React.FC = () => {
   const [images, setImages] = useState<{ [key: number]: string }>({});
   const { items, setItems, weapon, shield, armor, setWeapon, setShield, setArmor, changeCoins, changeHealth } = useGameContext();
   const [hoveredItem, setHoveredItem] = useState<Item | null>(null);
-  const [isMobile, setIsMobile] = useState<boolean>(false);
   const [modalMessage, setModalMessage] = useState<string | null>(null);
 
   const baseApiUrl = import.meta.env.VITE_API_URL;
@@ -39,14 +38,13 @@ const Backpack: React.FC = () => {
     };
 
     fetchImages();
-    setIsMobile(window.innerWidth <= 768);
   }, [items]);
 
   useEffect(() => {
     if (modalMessage) {
       const timer = setTimeout(() => {
         setModalMessage(null);
-      }, 1000); // Zavře modální okno po 3 vteřinách
+      }, 1000); 
 
       return () => clearTimeout(timer);
     }
