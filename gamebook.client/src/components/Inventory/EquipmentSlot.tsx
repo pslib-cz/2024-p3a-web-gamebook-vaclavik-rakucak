@@ -7,10 +7,9 @@ import axios from 'axios';
 import ImageWithBackground from '../ImageWithBackground/ImageWithBackground';
 
 const EquipmentSlot: React.FC = () => {
-  const { weapon, shield, armor, setWeapon, setShield, setArmor, changeCoins, items, setItems, handleUnEquipItem } = useGameContext();
+  const { weapon, shield, armor, handleUnEquipItem } = useGameContext();
   const [images, setImages] = useState<{ [key: number]: string }>({});
   const [hoveredItem, setHoveredItem] = useState<Item | null>(null);
-  const [isMobile, setIsMobile] = useState<boolean>(false);
 
   const baseApiUrl = import.meta.env.VITE_API_URL;
 
@@ -33,7 +32,6 @@ const EquipmentSlot: React.FC = () => {
   useEffect(() => {
     const equippedItems = { weapon, shield, armor };
     fetchImages(equippedItems);
-    setIsMobile(window.innerWidth <= 768);
   }, [weapon, shield, armor]);
 
   useEffect(() => {
@@ -44,8 +42,6 @@ const EquipmentSlot: React.FC = () => {
   const handleClick = (item: Item | null) => {
     setHoveredItem(prevItem => (prevItem === item ? null : item));
   };
-
-  const isInTown = location.pathname.includes('/Blacksmith');
 
   return (
     <div className={styles.equipmentSlot}>

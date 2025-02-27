@@ -7,6 +7,7 @@ import styles from './ShopPage.module.css';
 import Burgir from '../../components/Burgir/Burgir';
 import PauseMenu from '../../components/PauseMenu/PauseMenu.tsx';
 import ImageWithBackground from '../../components/ImageWithBackground/ImageWithBackground';
+import Modal from '../../components/Modal/Modal'; // Import Modal
 
 const ShopPage: React.FC = () => {
   const [equipment, setEquipment] = useState<any[]>([]);
@@ -14,8 +15,14 @@ const ShopPage: React.FC = () => {
   const [backgroundImage, setBackgroundImage] = useState<string | null>(null);
   const { coins, changeCoins, items, setItems, completedQuests } = useGameContext();
   const [isPauseMenuOpen, setIsPauseMenuOpen] = useState<boolean>(false);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false); // State for Modal
+
   const togglePauseMenu = () => {
     setIsPauseMenuOpen((prev) => !prev);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
   };
 
   const baseApiUrl = import.meta.env.VITE_API_URL;
@@ -109,7 +116,7 @@ const ShopPage: React.FC = () => {
         sessionStorage.setItem('shopEquipment', JSON.stringify(updatedEquipment));
       }
     } else {
-      alert('Nedostatek mincí');
+      setIsModalOpen(true); // Open Modal
     }
   };
 
@@ -161,6 +168,11 @@ const ShopPage: React.FC = () => {
       <div className={styles.content}>
         {sections.map((sectionItems, index) => renderSection(sectionItems, index))}
       </div>
+      {isModalOpen && (
+        <Modal onClose={closeModal}>
+          Nedostatek mincí
+        </Modal>
+      )}
     </div>
   );
 };

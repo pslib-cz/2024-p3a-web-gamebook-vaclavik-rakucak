@@ -3,8 +3,8 @@
     grid-template-columns: repeat(8, 1fr);
     grid-template-rows: repeat(auto-fill, minmax(88px, 1fr));
     width: 100%;
-    min-height: 352px; /* Set a fixed height */
-    overflow-y: auto; /* Ensure the backpack items can scroll */
+    min-height: 352px;
+    overflow-y: auto;
 }
 
 .backpackItem {
@@ -63,8 +63,8 @@
 
 .quantity {
     position: absolute;
-    top: 0;
-    right: 1.8rem;
+    top: 45%;
+    right: 20%;
     font-size: 1.5rem;
     color: var(--Dark-Brown);
 }

@@ -18,7 +18,7 @@ import Modal from '../../Modal/Modal';
 import QuestRoom from '../../Quest/QuestRoom';
 
 interface ChainViewerProps {
-  dungeonId: number; // Přidání dungeonId jako prop
+  dungeonId: number;
 }
 
 const ChainViewer: React.FC<ChainViewerProps> = ({ dungeonId }) => {
@@ -266,7 +266,8 @@ const ChainViewer: React.FC<ChainViewerProps> = ({ dungeonId }) => {
                 && !isFighting 
                 && !isKeyRoomActive 
                 && !isChestRoomActive
-                && !isTrapRoomActive 
+                && !isTrapRoomActive
+                && !isQuestRoomActive 
                 && (
                     <RoomContent
                         room={currentItem.data}
