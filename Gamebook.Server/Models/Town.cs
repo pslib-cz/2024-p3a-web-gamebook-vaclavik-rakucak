@@ -10,6 +10,7 @@ namespace Gamebook.Server.Models
         public int Id { get; set; }
         public string Name { get; set; }
         public int? ImageId { get; set; }
+        public string? Text { get; set; }
         [ForeignKey("ImageId")]
         public Image? Image { get; set; }
 
@@ -17,7 +18,7 @@ namespace Gamebook.Server.Models
         [ForeignKey("ParentTownId")]
         public Town? ParentTown { get; set; }
 
-        public ICollection<Town> ChildTowns { get; set; }
+        public ICollection<Town>? ChildTowns { get; set; }
 
     }
 }

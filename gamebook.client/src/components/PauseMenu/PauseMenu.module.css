@@ -22,11 +22,7 @@
     color: white;
     margin-left: 20px;
   }
-  
-  .pauseMenu button {
-    margin-bottom: 10px;
-    z-index: 101;
-  }
+
   
   .tutorial {
     display: flex;
@@ -43,9 +39,6 @@
   
   .tutorial h3 {
       margin-top: 0;
-  }
-  
-  .tutorial button {
   }
   
   .confirmExit {

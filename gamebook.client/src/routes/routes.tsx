@@ -12,6 +12,7 @@ import InventoryButton from '../components/Inventory/InventoryButton';
 import CoinAndHealthBar from '../components/StatusCard/CoinAndHealthBar.tsx';
 import Burgir from '../components/Burgir/Burgir';
 import PauseMenu from '../components/PauseMenu/PauseMenu.tsx';
+import TextPage from '../pages/TextPage/TextPage';
 import { useState } from 'react';
 
 interface RoutesProps {
@@ -32,8 +33,6 @@ const AppRoutes: React.FC<RoutesProps> = ({ token, role, onLogin }) => {
     setIsPauseMenuOpen((prev) => !prev);
   };
 
-
-
   return (
     <>
       {!hide && <CoinAndHealthBar />}
@@ -52,6 +51,7 @@ const AppRoutes: React.FC<RoutesProps> = ({ token, role, onLogin }) => {
         <Route path='/Town' element={<TownPage />} />
         <Route path='/Town/Tavern' element={<TavernPage />} />
         <Route path='/Town/Blacksmith' element={<ShopPage />} />
+        <Route path="/Prologue" element={<TextPage />} />
         <Route
           path="/AdminPanel"
           element={

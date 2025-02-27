@@ -4,6 +4,9 @@ import Button from '../Buttons/ButtonLarge/ButtonLarge';
 import styles from './PauseMenu.module.css';
 import { ChainElement } from '../../types/ViewModels';
 import { useGameContext } from '../../contexts/GameContext';
+import GameControls from '../GameControls/GameControls';
+
+
 
 interface PauseMenuProps {
   onClose: () => void;
@@ -95,6 +98,7 @@ const PauseMenu: React.FC<PauseMenuProps> = ({ currentPage, onClose, setChain, s
         </div>
       )}
       <Button onClick={handleAdminClick}>Admin</Button>
+      <GameControls />
     </div>
   );
 };

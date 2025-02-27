@@ -105,6 +105,13 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ token }) => {
     { name: 'value', type: 'number', placeholder: 'Value' },
   ];
 
+  const townFields = [
+    { name: 'name', type: 'text', placeholder: 'Name' },
+    { name: 'imageId', type: 'number', placeholder: 'Image ID' },
+    { name: 'text', type: 'text', placeholder: 'Text' },
+    { name: 'parentTownId', type: 'number', placeholder: 'Parent Town ID' },
+  ];
+
   return (
     <div className={styles.adminPanel}>
       <div className={styles.formContainer}>
@@ -169,12 +176,18 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ token }) => {
           fields={specialEffectFields}
           apiUrl={`${baseApiUrl}/SpecialEffects`}
         />
+        <FormComponent
+          token={token}
+          entityName="Town"
+          fields={townFields}
+          apiUrl={`${baseApiUrl}/Towns`}
+        />
         <ImageUploadComponent
           token={token}
           apiUrl={`${baseApiUrl}/Images`}
         />
       </div>
-      <button onClick={() => navigate('/map') }>Log Out</button>
+      <button onClick={() => navigate(-1) }>Log Out</button>
     </div>
   );
 };

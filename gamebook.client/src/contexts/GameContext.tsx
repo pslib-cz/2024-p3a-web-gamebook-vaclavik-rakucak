@@ -33,6 +33,8 @@ interface GameContextProps {
   completeQuest: (questId: number) => void;
   checkAndUpdateQuests: (dungeonId: number) => void;
   acceptQuest: (quest: Quest) => void;
+  exportGameState: () => void;
+  importGameState: (file: File) => void;
 }
 
 const GameContext = createContext<GameContextProps | undefined>(undefined);
@@ -182,6 +184,55 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
     sessionStorage.setItem('backpackItems', JSON.stringify(updatedItems));
   };
 
+  const exportGameState = () => {
+    const gameState = {
+      chain,
+      currentChainIndex,
+      dungeonId,
+      playerHealth,
+      coins,
+      weapon,
+      armor,
+      shield,
+      items,
+      defeatedMonsters,
+      currentQuests,
+      completedQuests,
+      availableQuests,
+    };
+    const gameStateJson = JSON.stringify(gameState);
+    const blob = new Blob([gameStateJson], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'gameState.json';
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const importGameState = (file: File) => {
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      if (event.target?.result) {
+        const gameState = JSON.parse(event.target.result as string);
+        setChain(gameState.chain);
+        setCurrentChainIndex(gameState.currentChainIndex);
+        setDungeonId(gameState.dungeonId);
+        setPlayerHealth(gameState.playerHealth);
+        setCoins(gameState.coins);
+        setWeapon(gameState.weapon);
+        setArmor(gameState.armor);
+        setShield(gameState.shield);
+        setItems(gameState.items);
+        setDefeatedMonsters(gameState.defeatedMonsters);
+        setCurrentQuests(gameState.currentQuests);
+        setCompletedQuests(gameState.completedQuests);
+        setAvailableQuests(gameState.availableQuests);
+      }
+    };
+    reader.readAsText(file);
+  };
+
   const value: GameContextProps = {
     chain,
     setChain,
@@ -213,6 +264,8 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
     completeQuest,
     checkAndUpdateQuests, 
     acceptQuest,
+    exportGameState,
+    importGameState,
   };
 
   return <GameContext.Provider value={value}>{children}</GameContext.Provider>;

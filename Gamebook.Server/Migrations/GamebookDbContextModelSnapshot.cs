@@ -199,15 +199,12 @@ namespace Gamebook.Server.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("ContentType")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<byte[]>("Data")
-                        .IsRequired()
                         .HasColumnType("BLOB");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -458,6 +455,9 @@ namespace Gamebook.Server.Migrations
 
                     b.Property<int?>("ParentTownId")
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("Text")
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
