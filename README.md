@@ -1,6 +1,6 @@
 # Dungeonborne
 
-**Gamebook-style dungeon RPG**, kde se hráč-rytíř vydává do různých dungeonů (3–4) podle obtížnosti. Každý dungeon je generován předem a hráč si klade za cíl projít jej celý a získat **peníze**. Hlavním cílem hry je dosáhnout co nejvyšší slávy.
+**Gamebook-style dungeon RPG**, kde se hráč-rytíř vydává do různých dungeonů (3–4) podle obtížnosti. Každý dungeon je generován předem a hráč si klade za cíl projít jej celý a získat **peníze**. Hlavním cílem hry je dokoncit vsechny questy a posledni dungeon.
 
 ---
 
@@ -12,8 +12,8 @@ Hra začíná **prologem**, který vysvětluje:
 - Jaký je jeho cíl.
 
 Po úvodním dialogu se hráč objeví ve **městě**, kde obdrží svůj první úkol:
-- **Přinést předmět** získaný po zabití monstra.
-- (Poznámka: Hráč může být nucen projít dungeon vícekrát.)
+- **Dokončit** první dungeon.
+- Nakoupí si vybavení a vezme si quest.
 
 Hra postupně pokračuje úkoly a příběhovou linkou.
 
@@ -23,11 +23,16 @@ Hra postupně pokračuje úkoly a příběhovou linkou.
 
 ### Generování dungeonů
 - Každý dungeon je vytvořen před vstupem hráče.
-- Při pohybu hráče mezi místnostmi se rozhoduje pevně, jaké místnosti budou následovat.
-- Funkce pro generování dungeonu zajišťuje strukturované větvení a křižovatky.
+- Při pohybu hráče mezi místnostmi se rozhoduje pevně, jaké místnosti budou následovat, struktura zahrnuje třídání místností a chodeb.
 
 ### Pool map
 - Místnosti jsou spravovány v **"poolu"**, odkud jsou náhodně vybírány během generace světa.
+- **Typy místností:**
+  - místnost s nepřítelem
+  - questovým itemem
+  - nástrahou
+  - truhlou
+  - klíčem
 
 ---
 
@@ -35,11 +40,11 @@ Hra postupně pokračuje úkoly a příběhovou linkou.
 
 ### Itemy a inventář
 - **Město**:
-  - Obchod, kde lze nakupovat/vylepšovat vybavení.
-- **Základní vybavení**:
-  - Zbraně (např. obouruční meče, štíty).
-  - Brnění.
-  - Doplňky (např. léčivé/dmg elixíry).
+  - Obchod, kde lze nakupovat vybavení.
+- **Vybavení**:
+  - Zbraně (např. obouruční meče, sekery, luk).
+  - Brnění + štít.
+  - Doplňky (např. léčivé elixíry, klíče).
 - **Inventář**:
   - Pole pro vybavení a další předměty, které hráč sbírá během hry.
 
@@ -47,31 +52,19 @@ Hra postupně pokračuje úkoly a příběhovou linkou.
 - **Fantasy stvoření**:
   - Náhodně generováni v závislosti na typu místnosti.
 - **Statistiky**:
-  - Pevně dané hodnoty HP a DMG.
+  - Pevně dané hodnoty HP a DMG / armor (neguje příchozí dmg) / štít ( % šance na vyhnutí se dmg).
 - **Odměny**:
   - Peníze, předměty nebo vybavení.
 - **Mechanika boje**:
   - Hráč uděluje poškození podle zbraní, které má vybavené.
-  - Nepřátelé mají pevné nebo náhodné útoky. Brnění hráče neguje část poškození.
-
----
-
-## Struktura dungeonů
-
-### Místnosti
-- Každá místnost obsahuje:
-  - **Popis** – atmosférický text s příběhovým pozadím.
-  - **Speciální prvky** – například:
-    - Poklad (truhly).
-    - Zamčené dveře (vyžadující klíč).
-    - Křižovatky (více cest dál).
+  - Nepřátelé mají pevně dané útoky. Brnění hráče neguje část poškození.
 
 ---
 
 ## Cíle hry
 - Prozkoumat dungeony.
 - Porazit nepřátele.
-- Sbírat předměty, peníze a zvyšovat slávu.
+- Sbírat předměty a peníze.
 - Stát se nejslavnějším rytířem všech dob!
 
 ---
@@ -131,7 +124,6 @@ Jsi vyvolený strážce, pověřený znovu zapečetěním Srdce světa. Tvůj ú
 ### Tharok, Válečník klanu Skalních štítů  
 - Hrubý, ale loajální bojovník, který se přidal k tobě, aby ochránil svůj lid před následky kultistických útoků. Nabízí fyzickou pomoc a informace o podzemních oblastech.  
 - **Osobnost:** Přímočarý, někdy netrpělivý, ale oddaný své misi.
-- 
 ---
 
 ### Hráč
@@ -142,6 +134,7 @@ Jsi vyvolený strážce, pověřený znovu zapečetěním Srdce světa. Tvůj ú
 2. Dungeon: { 10, 15 } - Znatelný nárůst poškození oproti prvnímu dungeonu.
 3. Dungeon: { 16, 22 } - Další zvýšení poškození, hráč by měl cítit, že se zlepšuje.
 4. Dungeon: { 23, 30 } - Silné zbraně pro poslední dungeon před bossem.
+5. 
 ### Brnění
 1. Dungeon 1: 2, 3
 2. Dungeon 2: 4, 5
