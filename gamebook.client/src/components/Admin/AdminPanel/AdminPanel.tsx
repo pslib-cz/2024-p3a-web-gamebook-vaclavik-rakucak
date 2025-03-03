@@ -2,6 +2,7 @@ import React from 'react';
 import FormComponent from './FormComponent';
 import ImageUploadComponent from './ImageUploadComponent';
 import styles from './AdminPanel.module.css';
+import DeleteComponent from './DeleteComponent';
 import { useNavigate } from 'react-router-dom';
 
 interface AdminPanelProps {
@@ -185,6 +186,10 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ token }) => {
         <ImageUploadComponent
           token={token}
           apiUrl={`${baseApiUrl}/Images`}
+        />
+        <DeleteComponent
+          token={token}
+          baseApiUrl={baseApiUrl}
         />
       </div>
       <button onClick={() => navigate(-1) }>Log Out</button>
