@@ -36,3 +36,20 @@
     cursor: pointer;
 }
 
+/* Media query for mobile devices in landscape orientation */
+@media (max-width: 768px) and (orientation: landscape) {
+    .gameControls {
+        flex-direction: column;
+        padding: 0.5rem;
+        gap: 0.5rem;
+    }
+
+    .gameControls button {
+        font-size: 0.8rem;
+        padding: 0.4rem;
+    }
+
+    .import input[type="file"] {
+        font-size: 80px;
+    }
+}

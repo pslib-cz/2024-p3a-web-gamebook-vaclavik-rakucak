@@ -1,17 +1,21 @@
 import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import Prologue from '../../components/Prologue/Prologue';
 import { fetchImage } from '../../api/imagesApi';
 import { fetchTown } from '../../api/townsApi';
 
 const TextPage: React.FC = () => {
-  const townId = 1; // ID of the town to fetch
+  const { townId } = useParams<{ townId?: string }>();
   const [prologueText, setPrologueText] = useState<string>('Vítejte v naší hře! Toto je váš prolog...');
   const [imageUrl, setImageUrl] = useState<string>('');
 
   useEffect(() => {
     const loadTownData = async () => {
       try {
-        const town = await fetchTown(townId);
+        if (!townId) {
+          throw new Error('Town ID is missing.');
+        }
+        const town = await fetchTown(parseInt(townId));
         setPrologueText(town.text);
         const url = await fetchImage(town.imageId);
         setImageUrl(url);
@@ -26,7 +30,6 @@ const TextPage: React.FC = () => {
   return (
     <div>
       <Prologue prologueText={prologueText} imageUrl={imageUrl} />
-      {/* Další obsah stránky */}
     </div>
   );
 };

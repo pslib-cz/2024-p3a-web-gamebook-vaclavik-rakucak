@@ -35,3 +35,27 @@
     left: 50%;
     transform: translateX(-50%);
 }
+
+/* Media query for mobile devices in landscape orientation */
+@media (max-width: 768px) and (orientation: landscape) {
+    .tavernPage {
+        padding: 1rem;
+    }
+
+    .back {
+        top: 0.5rem;
+        left: 0.5rem;
+    }
+
+    .questList {
+        margin-top: 1rem;
+        padding: 0.5rem;
+        border: 8px solid var(--Dark-Brown);
+        border-radius: 8px;
+    }
+
+    .completeButton {
+        bottom: 0.5rem;
+        padding: 0.5rem;
+    }
+}

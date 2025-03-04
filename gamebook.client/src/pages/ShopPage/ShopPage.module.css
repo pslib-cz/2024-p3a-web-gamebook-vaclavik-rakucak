@@ -98,3 +98,38 @@
 .hidden {
   display: none;
 }
+
+/* Media query for mobile devices in landscape orientation */
+@media (max-width: 768px) and (orientation: landscape) {
+  .content {
+      grid-template-columns: 1fr;
+      grid-template-rows: auto;
+      gap: 1rem;
+  }
+
+  .containerHeading {
+      font-size: 1.5rem;
+      padding: 0.3rem;
+  }
+
+  .imageContainer {
+      width: 3rem;
+      height: 3rem;
+      border: 15px solid var(--Item-Backround);
+  }
+
+  .image {
+      width: 3rem;
+      height: 3rem;
+  }
+
+  .itemContainer {
+      flex-direction: column;
+      align-items: flex-start;
+  }
+
+  .itemStats {
+      flex-direction: column;
+      align-items: flex-start;
+  }
+}

@@ -34,3 +34,23 @@
     width: 100%;
     object-fit: cover;
 }
+/* Media query for mobile devices in landscape orientation */
+@media (max-width: 768px) and (orientation: landscape) {
+    .keyRoom {
+        flex-direction: row;
+    }
+
+    .keyInfo {
+        gap: 2rem;
+    }
+
+    .buttons {
+        bottom: 1rem;
+        gap: 0.5rem;
+    }
+
+    .imageContainer {
+        width: 12rem;
+        height: 12rem;
+    }
+}

@@ -1,13 +1,18 @@
+import axios from 'axios';
+
 const BASE_URL = 'https://localhost:7190/api/images';
 
 export const fetchImage = async (imageId: number) => {
-  const response = await fetch(`${BASE_URL}/${imageId}`);
+  try {
+    const response = await axios.get(`${BASE_URL}/${imageId}`, { responseType: 'blob' });
 
-  if (!response.ok) {
-    throw new Error(`Failed to fetch image: ${response.statusText}`);
+    const url = URL.createObjectURL(response.data);
+    return url;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw new Error(`Failed to fetch image: ${error.response?.statusText || error.message}`);
+    } else {
+      throw new Error(`Failed to fetch image: ${(error as Error).message}`);
+    }
   }
-
-  const blob = await response.blob();
-  const url = URL.createObjectURL(blob);
-  return url;
 };

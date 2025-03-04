@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { Room, Key } from '../../types/ViewModels';
 import styles from './KeyRoom.module.css';
 import { useGameContext } from '../../contexts/GameContext';
 import Button from '../Buttons/ButtonLarge/ButtonLarge';
+import { fetchImage } from '../../api/imagesApi';
 
 type KeyRoomProps = {
     room: Room;
@@ -21,11 +23,8 @@ const KeyRoom: React.FC<KeyRoomProps> = ({ room, onRoomUpdate, onClose }) => {
                 const keyUrl = `${import.meta.env.VITE_API_URL}/keys/${room.keyId}`;
                 console.log('Fetching key from URL:', keyUrl);
                 try {
-                    const response = await fetch(keyUrl);
-                    if (!response.ok) {
-                        throw new Error(`Failed to fetch key: ${response.statusText}`);
-                    }
-                    const keyData: Key = await response.json();
+                    const response = await axios.get(keyUrl);
+                    const keyData: Key = response.data;
                     console.log('Key fetched successfully:', keyData);
                     setKey(keyData);
                 } catch (error) {
@@ -38,26 +37,19 @@ const KeyRoom: React.FC<KeyRoomProps> = ({ room, onRoomUpdate, onClose }) => {
     }, [room.keyId]);
 
     useEffect(() => {
-        const fetchImage = async () => {
+        const fetchImageForKey = async () => {
             if (key?.imageId) {
-                const imageUrl = `${import.meta.env.VITE_API_URL}/images/${key.imageId}`;
-                console.log('Fetching image from URL:', imageUrl);
                 try {
-                    const response = await fetch(imageUrl);
-                    if (!response.ok) {
-                        throw new Error(`Failed to fetch image: ${response.statusText}`);
-                    }
-                    const blob = await response.blob();
-                    const imageObjectUrl = URL.createObjectURL(blob);
-                    console.log('Image fetched successfully:', imageObjectUrl);
-                    setImage(imageObjectUrl);
+                    const imageUrl = await fetchImage(key.imageId);
+                    console.log('Image fetched successfully:', imageUrl);
+                    setImage(imageUrl);
                 } catch (error) {
                     console.error('Error fetching image:', error);
                 }
             }
         };
 
-        fetchImage();
+        fetchImageForKey();
     }, [key]);
 
     const handleKeyCollect = () => {

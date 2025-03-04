@@ -5,6 +5,7 @@ import EnemyHealthBar from '../EnemyHealthBar/EnemyHealthBar';
 import { Monster } from '../../types/ViewModels';
 import Button from '../Buttons/ButtonLarge/ButtonLarge';
 import DeathCard from '../DeathCard/DeathCard';
+import { fetchImage } from '../../api/imagesApi';
 
 type FightComponentProps = {
   onFightEnd: (monsterId?: number, playerDied?: boolean, monsterName?: string) => void;
@@ -61,15 +62,10 @@ const FightComponent: React.FC<FightComponentProps> = ({ onFightEnd, dungeonId, 
   useEffect(() => {
     const fetchMonsterImage = async (imageId: number) => {
       try {
-        const response = await fetch(`${baseApiUrl}/images/${imageId}`);
-        if (!response.ok) {
-          throw new Error('Failed to fetch image data');
-        }
-        const blob = await response.blob();
-        const imageUrl = URL.createObjectURL(blob);
+        const imageUrl = await fetchImage(imageId);
         setMonsterImage(imageUrl);
       } catch (error) {
-        console.error(error);
+        console.error('Failed to fetch image:', error);
         setMonsterImage(null);
       }
     };

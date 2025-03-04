@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import styles from './QuestCard.module.css';
+import { fetchImage } from '../../api/imagesApi';
+import { Quest } from '../../types/ViewModels';
 
 type Npc = {
   id: number;
@@ -7,19 +10,6 @@ type Npc = {
   description: string;
 };
 
-type Quest = {
-  id: number;
-  name: string;
-  description: string;
-  condition: string;
-  conditionValue: number;
-  progress: number;
-  npcId: number;
-  rewardItemId: number | null;
-  rewardItem: any | null;
-  imageId: number;
-  conditionDescription: string;
-};
 
 type NpcQuestCardProps = {
   quest: Quest;
@@ -39,11 +29,8 @@ const NpcQuestCard: React.FC<NpcQuestCardProps> = ({ quest }) => {
         setNpcError(null);
         try {
           const npcUrl = `${baseApiUrl}/npcs/${quest.npcId}`;
-          const response = await fetch(npcUrl);
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
-          const npcJson = await response.json();
+          const response = await axios.get(npcUrl);
+          const npcJson = response.data;
           setNpcData(npcJson);
         } catch (err) {
           setNpcError(err instanceof Error ? err.message : 'Unknown error');
@@ -58,17 +45,11 @@ const NpcQuestCard: React.FC<NpcQuestCardProps> = ({ quest }) => {
   }, [quest.npcId, baseApiUrl]);
 
   useEffect(() => {
-    const fetchImage = async () => {
+    const fetchImageForQuest = async () => {
       if (quest.imageId) {
         try {
-          const imageUrl = `${baseApiUrl}/images/${quest.imageId}`;
-          const response = await fetch(imageUrl);
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
-          const blob = await response.blob();
-          const url = URL.createObjectURL(blob);
-          setImageBlobUrl(url);
+          const imageUrl = await fetchImage(quest.imageId);
+          setImageBlobUrl(imageUrl);
         } catch (err) {
           console.error('Error fetching image:', err);
           setImageBlobUrl(null);
@@ -77,8 +58,8 @@ const NpcQuestCard: React.FC<NpcQuestCardProps> = ({ quest }) => {
         setImageBlobUrl(null);
       }
     };
-    fetchImage();
-  }, [quest.imageId, baseApiUrl]);
+    fetchImageForQuest();
+  }, [quest.imageId]);
 
   if (npcLoading) {
     return <div>Loading...</div>;

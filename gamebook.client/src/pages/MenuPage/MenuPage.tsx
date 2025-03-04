@@ -27,7 +27,7 @@ const MenuPage: React.FC = () => {
     >
       <h1 className={styles.title}>Dungeonborne</h1>
       <div className={styles.buttonContainer}>
-        <Button route="/Prologue" label="Start Game" />
+        <Button route="/Text/1" label="Start Game" />
       </div>
     </div>
   );

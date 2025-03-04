@@ -7,7 +7,8 @@ import styles from './ShopPage.module.css';
 import Burgir from '../../components/Burgir/Burgir';
 import PauseMenu from '../../components/PauseMenu/PauseMenu.tsx';
 import ImageWithBackground from '../../components/ImageWithBackground/ImageWithBackground';
-import Modal from '../../components/Modal/Modal'; // Import Modal
+import Modal from '../../components/Modal/Modal';
+import { fetchImage } from '../../api/imagesApi';
 
 const ShopPage: React.FC = () => {
   const [equipment, setEquipment] = useState<any[]>([]);
@@ -15,7 +16,7 @@ const ShopPage: React.FC = () => {
   const [backgroundImage, setBackgroundImage] = useState<string | null>(null);
   const { coins, changeCoins, items, setItems, completedQuests } = useGameContext();
   const [isPauseMenuOpen, setIsPauseMenuOpen] = useState<boolean>(false);
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false); // State for Modal
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   const togglePauseMenu = () => {
     setIsPauseMenuOpen((prev) => !prev);
@@ -29,7 +30,7 @@ const ShopPage: React.FC = () => {
 
   useEffect(() => {
     const fetchEquipment = async () => {
-      const phase = Math.floor(completedQuests.length/3 ) + 1;
+      const phase = Math.floor(completedQuests.length / 3) + 1;
       try {
         const response = await axios.get(`${baseApiUrl}/ShopOffer/random`, {
           params: { phase }
@@ -54,13 +55,10 @@ const ShopPage: React.FC = () => {
       if (storedEquipment) {
         const equipment = JSON.parse(storedEquipment);
         if (Array.isArray(equipment)) {
-          const imagePromises = equipment.map((item: any) =>
-            axios.get(`${baseApiUrl}/Images/${item.imageId}`, { responseType: 'blob' })
-          );
-          const imageResponses = await Promise.all(imagePromises);
+          const imagePromises = equipment.map((item: any) => fetchImage(item.imageId));
+          const imageUrls = await Promise.all(imagePromises);
           const imageMap: { [key: number]: string } = {};
-          imageResponses.forEach((response, index) => {
-            const url = URL.createObjectURL(response.data);
+          imageUrls.forEach((url, index) => {
             imageMap[equipment[index].imageId] = url;
           });
           setImages(imageMap);
@@ -72,8 +70,7 @@ const ShopPage: React.FC = () => {
 
     const fetchBackgroundImage = async () => {
       try {
-        const response = await axios.get(`${baseApiUrl}/Images/27`, { responseType: 'blob' });
-        const url = URL.createObjectURL(response.data);
+        const url = await fetchImage(27);
         setBackgroundImage(url);
       } catch (error) {
         console.error('Error fetching background image:', error);
@@ -87,13 +84,13 @@ const ShopPage: React.FC = () => {
   const handleBuyItem = (item: any) => {
     if (coins >= item.price) {
       changeCoins(-item.price);
-  
+
       let updatedItems = [...items];
       if (item.type === 'Miscellaneous') {
         const existingItemIndex = updatedItems.findIndex(
           (invItem) => invItem.id === item.id
         );
-  
+
         if (existingItemIndex !== -1) {
           updatedItems[existingItemIndex].quantity =
             (updatedItems[existingItemIndex].quantity || 1) + 1;
@@ -104,7 +101,7 @@ const ShopPage: React.FC = () => {
       } else {
         updatedItems.push(item);
       }
-  
+
       setItems(updatedItems);
       sessionStorage.setItem('backpackItems', JSON.stringify(updatedItems));
       console.log('Item added to backpack:', item);
@@ -116,7 +113,7 @@ const ShopPage: React.FC = () => {
         sessionStorage.setItem('shopEquipment', JSON.stringify(updatedEquipment));
       }
     } else {
-      setIsModalOpen(true); // Open Modal
+      setIsModalOpen(true);
     }
   };
 
@@ -139,8 +136,8 @@ const ShopPage: React.FC = () => {
                 <div className={styles.itemStats}>
                   <p>Price: {item.price}</p>
                   {sectionIndex % 3 === 0 && <p>Damage: {item.dmg}</p>}
-                  {sectionIndex % 3 === 1 && <p>Defense: {item.dmg}</p>}
-                  {sectionIndex % 3 === 2 && <p>Speed: {item.dmg}</p>}
+                  {sectionIndex % 3 === 1 && <p>Defense: {item.dmg}%</p>}
+                  {sectionIndex % 3 === 2 && <p>Defense: {item.dmg}</p>}
                 </div>
               </div>
               <Button onClick={() => handleBuyItem(item)}>Buy</Button>

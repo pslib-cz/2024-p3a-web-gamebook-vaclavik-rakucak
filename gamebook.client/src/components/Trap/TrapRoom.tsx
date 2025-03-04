@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { Room, RoomItem } from '../../types/ViewModels';
 import { useGameContext } from '../../contexts/GameContext';
 import Modal from '../Modal/Modal';
 import styles from './TrapRoom.module.css';
 import Button from '../Buttons/ButtonLarge/ButtonLarge';
+import { fetchImage } from '../../api/imagesApi';
 
 type TrapRoomProps = {
     room: Room;
@@ -20,8 +22,8 @@ const TrapRoom: React.FC<TrapRoomProps> = ({ room, onRoomUpdate }) => {
     useEffect(() => {
         const fetchRoomItem = async () => {
             if (room.roomItemId) {
-                const response = await fetch(`${import.meta.env.VITE_API_URL}/roomitems/${room.roomItemId}`);
-                const data: RoomItem = await response.json();
+                const response = await axios.get(`${import.meta.env.VITE_API_URL}/roomitems/${room.roomItemId}`);
+                const data: RoomItem = response.data;
                 setRoomItem(data);
             }
         };
@@ -30,15 +32,18 @@ const TrapRoom: React.FC<TrapRoomProps> = ({ room, onRoomUpdate }) => {
     }, [room.roomItemId]);
 
     useEffect(() => {
-        const fetchImage = async () => {
-            if (roomItem && roomItem.imageId) {
-                const response = await fetch(`${import.meta.env.VITE_API_URL}/images/${roomItem.imageId}`);
-                const blob = await response.blob();
-                setImage(URL.createObjectURL(blob));
+        const fetchImageForRoomItem = async () => {
+            if (roomItem?.imageId) {
+                try {
+                    const imageUrl = await fetchImage(roomItem.imageId);
+                    setImage(imageUrl);
+                } catch (error) {
+                    console.error('Error fetching image:', error);
+                }
             }
         };
 
-        fetchImage();
+        fetchImageForRoomItem();
     }, [roomItem]);
 
     const handleTrapActivate = () => {

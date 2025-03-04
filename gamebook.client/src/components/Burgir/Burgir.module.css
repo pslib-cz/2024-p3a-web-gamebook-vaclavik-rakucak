@@ -33,6 +33,21 @@
   transform-origin: center;
   transform: translate(0,-16px) rotate(-45deg) ;
 }
-.hamburger:hover{
+
+.hamburger:hover {
   border: 10px solid var(--Biege);
+}
+
+/* Media query for mobile devices in landscape orientation */
+@media (max-width: 768px) and (orientation: landscape) {
+  .hamburger {
+    width: 2.5rem;
+    height: 2.5rem;
+    padding: 0.4rem;
+    margin: 0.8rem;
+  }
+
+  .line {
+    height: 6px;
+  }
 }

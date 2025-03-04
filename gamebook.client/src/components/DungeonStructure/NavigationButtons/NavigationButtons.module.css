@@ -3,3 +3,9 @@
   justify-content: space-between;
   padding: 3rem;
 }
+/* Media query for mobile devices in landscape orientation */
+@media (max-width: 768px) and (orientation: landscape) {
+  .nvBtnContainer {
+      padding: 1.5rem;
+  }
+}

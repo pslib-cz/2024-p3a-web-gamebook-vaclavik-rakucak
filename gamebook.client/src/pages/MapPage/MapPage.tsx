@@ -8,10 +8,11 @@ import RouteButton from '../../components/Buttons/routeButtonSmall/routeButton';
 import { useGameContext } from '../../contexts/GameContext';
 import { Dungeon } from '../../types/ViewModels';
 import DungeonCard from '../../components/DungeonCard/DungeonCard';
+import axios from 'axios';
 
 const MapButton: React.FC<Dungeon> = ({ id, name, description, rewardMoney, dmgCondition, imageId }) => {
   const navigate = useNavigate();
-  const { setDungeonId, setCurrentChainIndex, weapon } = useGameContext();
+  const { setDungeonId, setCurrentChainIndex, weapon, setChain } = useGameContext();
   const [isDungeonCardOpen, setIsDungeonCardOpen] = useState(false);
   const [dungeonImageUrl, setDungeonImageUrl] = useState<string>('');
 
@@ -34,10 +35,11 @@ const MapButton: React.FC<Dungeon> = ({ id, name, description, rewardMoney, dmgC
 
   const handleEnterDungeon = (dungeonId: number) => {
     if (weapon ? weapon.dmg : 0 >= dmgCondition) {
-        setDungeonId(dungeonId.toString());
-        setCurrentChainIndex(0);
-        localStorage.setItem('firstEntry', 'true');
-        navigate(`/Dungeon/${dungeonId}/room/0`);
+      setChain(null);
+      setDungeonId(dungeonId.toString());
+      setCurrentChainIndex(0);
+      localStorage.setItem('firstEntry', 'true');
+      navigate(`/Dungeon/${dungeonId}/room/0`);
     }
   };
 
@@ -52,9 +54,9 @@ const MapButton: React.FC<Dungeon> = ({ id, name, description, rewardMoney, dmgC
       />
       {isDungeonCardOpen && (
         <DungeonCard
-          dungeon={{ id, name, description, rewardMoney, dmgCondition, imageId }}
+          dungeon={{ id, name, description, rewardMoney, dmgCondition, imageId}}
           onClose={() => setIsDungeonCardOpen(false)}
-          onEnter={handleEnterDungeon} 
+          onEnter={handleEnterDungeon}
           playerDamage={weapon ? weapon.dmg : 0}
         />
       )}
@@ -81,11 +83,11 @@ const MainMapPage: React.FC = () => {
 
     const fetchDungeons = async () => {
       try {
-        const response = await fetch(`${baseApiUrl}/Dungeons`);
-        if (!response.ok) {
+        const response = await axios.get(`${baseApiUrl}/Dungeons`);
+        if (response.status !== 200) {
           throw new Error('Failed to fetch dungeons');
         }
-        const data: Dungeon[] = await response.json();
+        const data: Dungeon[] = response.data;
         setDungeons(data);
       } catch (error) {
         console.error('Error fetching dungeons:', error);
@@ -94,7 +96,7 @@ const MainMapPage: React.FC = () => {
 
     loadImage();
     fetchDungeons();
-  }, []);
+  }, [baseApiUrl]);
 
   return (
     <div

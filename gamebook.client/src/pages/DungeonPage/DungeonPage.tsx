@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useGameContext } from '../../contexts/GameContext';
 import ChainViewer from '../../components/DungeonStructure/ChainViewer/ChainViewer';
 import { ChainElement } from '../../types/ViewModels';
+import axios from 'axios';
 
 const DungeonPage: React.FC = () => {
     const { dungeonId, type, index } = useParams<{ dungeonId?: string; type?: string; index?: string }>();
@@ -20,20 +21,20 @@ const DungeonPage: React.FC = () => {
                 setDungeonId(dungeonId);
 
                 if (!chain || chain.length === 0) {
-                    const response = await fetch(`${baseApiUrl}/DungeonChain/${dungeonId}`);
+                    const response = await axios.get(`${baseApiUrl}/DungeonChain/${dungeonId}`);
 
-                    if (!response.ok) {
+                    if (response.status !== 200) {
                         throw new Error(`Failed to fetch dungeon data: ${response.statusText}`);
                     }
 
-                    const apiData: ChainElement[] = await response.json();
+                    const apiData: ChainElement[] = response.data;
                     const quest = currentQuests.find(q => q.condition === 'killBoss' && q.dungeonId === parseInt(dungeonId!));
                     if (quest && quest.bossRoomId) {
-                        const bossRoomResponse = await fetch(`${baseApiUrl}/Rooms/${quest.bossRoomId}`);
-                        if (!bossRoomResponse.ok) {
+                        const bossRoomResponse = await axios.get(`${baseApiUrl}/Rooms/${quest.bossRoomId}`);
+                        if (bossRoomResponse.status !== 200) {
                             throw new Error(`Failed to fetch boss room data: ${bossRoomResponse.statusText}`);
                         }
-                        const bossRoomData = await bossRoomResponse.json();
+                        const bossRoomData = bossRoomResponse.data;
                         const bossRoomElement: ChainElement = { type: 'room', data: bossRoomData };
                         apiData.push(bossRoomElement);
                     }

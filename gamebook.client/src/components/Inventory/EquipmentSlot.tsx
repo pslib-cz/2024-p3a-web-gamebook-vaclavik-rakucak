@@ -3,7 +3,7 @@ import { useGameContext } from '../../contexts/GameContext';
 import styles from './EquipmentSlot.module.css';
 import Button from '../Buttons/ButtonSmall/ButtonSmall';
 import { Item } from '../../types/ViewModels';
-import axios from 'axios';
+import { fetchImage } from '../../api/imagesApi';
 import ImageWithBackground from '../ImageWithBackground/ImageWithBackground';
 
 const EquipmentSlot: React.FC = () => {
@@ -11,18 +11,13 @@ const EquipmentSlot: React.FC = () => {
   const [images, setImages] = useState<{ [key: number]: string }>({});
   const [hoveredItem, setHoveredItem] = useState<Item | null>(null);
 
-  const baseApiUrl = import.meta.env.VITE_API_URL;
-
   const fetchImages = async (equippedItems: { weapon: Item | null, shield: Item | null, armor: Item | null }) => {
     const imagePromises = Object.values(equippedItems)
       .filter(item => item !== null)
-      .map((item: Item | null) =>
-        axios.get(`${baseApiUrl}/Images/${item!.imageId}`, { responseType: 'blob' })
-      );
-    const imageResponses = await Promise.all(imagePromises);
+      .map((item: Item | null) => fetchImage(item!.imageId));
+    const imageUrls = await Promise.all(imagePromises);
     const imageMap: { [key: number]: string } = {};
-    imageResponses.forEach((response, index) => {
-      const url = URL.createObjectURL(response.data);
+    imageUrls.forEach((url, index) => {
       const item = Object.values(equippedItems).filter(item => item !== null)[index];
       imageMap[item!.imageId] = url;
     });

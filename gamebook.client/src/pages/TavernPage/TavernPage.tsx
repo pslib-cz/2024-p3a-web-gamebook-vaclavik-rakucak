@@ -6,6 +6,7 @@ import { Quest } from '../../types/ViewModels.ts';
 import Button from '../../components/Buttons/ButtonLarge/ButtonLarge.tsx';
 import { useGameContext } from '../../contexts/GameContext';
 import QuestCard from '../../components/QuestCard/QuestCard.tsx';
+import axios from 'axios';
 
 const TavernPage: React.FC = () => {
   const [backgroundImageUrl, setBackgroundImageUrl] = useState<string>('');
@@ -29,11 +30,11 @@ const TavernPage: React.FC = () => {
   useEffect(() => {
     const fetchAvailableQuests = async () => {
       try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/quests`);
-        if (!response.ok) {
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/quests`);
+        if (response.status !== 200) {
           throw new Error('Failed to fetch quests');
         }
-        const quests: Quest[] = await response.json();
+        const quests: Quest[] = response.data;
         // Set only the first quest as available initially
         setAvailableQuests(quests.filter((quest) => quest.id === 1));
       } catch (error) {
@@ -66,6 +67,7 @@ const TavernPage: React.FC = () => {
         backgroundImage: backgroundImageUrl ? `url(${backgroundImageUrl})` : 'none',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
+        backgroundClip: 'border-box',
       }}
     >
       <div className={styles.back}>
@@ -73,7 +75,7 @@ const TavernPage: React.FC = () => {
       </div>
       {activeQuest ? (
         <div className={styles.activeQuest}>
-          <QuestCard quest={activeQuest}  />
+          <QuestCard quest={activeQuest} />
           <div className={styles.completeButton}>
             {activeQuest.progress >= activeQuest.conditionValue && (
               <Button onClick={() => handleCompleteQuest(activeQuest.id)}>Complete Quest</Button>

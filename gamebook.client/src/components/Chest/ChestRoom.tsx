@@ -4,6 +4,7 @@ import { useGameContext } from '../../contexts/GameContext';
 import Button from '../Buttons/ButtonLarge/ButtonLarge';
 import styles from './ChestRoom.module.css';
 import Modal from '../Modal/Modal';
+import { fetchImage } from '../../api/imagesApi';
 
 type ChestRoomProps = {
     room: Room;
@@ -31,15 +32,14 @@ const ChestRoom: React.FC<ChestRoomProps> = ({ room, onRoomUpdate, onClose }) =>
     }, [room.roomItemId]);
 
     useEffect(() => {
-        const fetchImage = async () => {
+        const fetchRoomImage = async () => {
             if (roomItem && roomItem.imageId) {
-                const response = await fetch(`${import.meta.env.VITE_API_URL}/images/${roomItem.imageId}`);
-                const blob = await response.blob();
-                setImage(URL.createObjectURL(blob));
+                const imageUrl = await fetchImage(roomItem.imageId);
+                setImage(imageUrl);
             }
         };
 
-        fetchImage();
+        fetchRoomImage();
     }, [roomItem]);
 
     const handleChestOpen = async () => {

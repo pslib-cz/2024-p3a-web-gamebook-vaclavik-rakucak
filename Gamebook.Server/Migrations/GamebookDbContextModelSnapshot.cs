@@ -71,6 +71,9 @@ namespace Gamebook.Server.Migrations
                     b.Property<int?>("RewardMoney")
                         .HasColumnType("INTEGER");
 
+                    b.Property<bool?>("isBoss")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ImageId");

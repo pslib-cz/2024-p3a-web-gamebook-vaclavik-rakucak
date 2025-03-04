@@ -61,3 +61,31 @@
 .closeButton:hover {
   border: solid 10px var(--Biege);
 }
+
+/* Media query for mobile devices in landscape orientation */
+@media (max-width: 768px) and (orientation: landscape) {
+  .inventory {
+      width: 90%;
+      height: 70vh;
+      padding: 0.5rem;
+  }
+
+  .equipmentContainer {
+      gap: 5px;
+  }
+
+  .backpackContainer {
+      max-height: 40vh;
+      gap: 5px;
+  }
+
+  .imageContainer {
+      width: 8rem;
+      height: 16rem;
+  }
+
+  .closeButton {
+      padding: 3px 8px;
+      font-size: 14px;
+  }
+}

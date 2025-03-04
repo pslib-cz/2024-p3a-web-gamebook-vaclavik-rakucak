@@ -1,5 +1,5 @@
 import React from 'react';
-import { Fork } from '../../../types/RoomDto'; // Importujeme typ Fork
+import { Fork } from '../../../types/ViewModels';
 import styles from '../ChainViewer/ChainViewer.module.css';
 import { useGameContext } from '../../../contexts/GameContext';
 

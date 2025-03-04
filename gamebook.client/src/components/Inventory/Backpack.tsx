@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import styles from './Backpack.module.css';
 import { useGameContext } from '../../contexts/GameContext';
 import Button from '../Buttons/ButtonSmall/ButtonSmall';
 import { Item } from '../../types/ViewModels';
 import ImageWithBackground from '../ImageWithBackground/ImageWithBackground';
 import Modal from '../Modal/Modal';
+import { fetchImage } from '../../api/imagesApi';
 
 const Backpack: React.FC = () => {
   const [images, setImages] = useState<{ [key: number]: string }>({});
@@ -13,21 +13,16 @@ const Backpack: React.FC = () => {
   const [hoveredItem, setHoveredItem] = useState<Item | null>(null);
   const [modalMessage, setModalMessage] = useState<string | null>(null);
 
-  const baseApiUrl = import.meta.env.VITE_API_URL;
-
   useEffect(() => {
     const fetchImages = async () => {
       const storedItems = sessionStorage.getItem('backpackItems');
       if (storedItems) {
         const items: Item[] = JSON.parse(storedItems);
         if (Array.isArray(items)) {
-          const imagePromises = items.map((item: Item) =>
-            axios.get(`${baseApiUrl}/Images/${item.imageId}`, { responseType: 'blob' })
-          );
-          const imageResponses = await Promise.all(imagePromises);
+          const imagePromises = items.map((item: Item) => fetchImage(item.imageId));
+          const imageUrls = await Promise.all(imagePromises);
           const imageMap: { [key: number]: string } = {};
-          imageResponses.forEach((response, index) => {
-            const url = URL.createObjectURL(response.data);
+          imageUrls.forEach((url, index) => {
             imageMap[items[index].imageId] = url;
           });
           setImages(imageMap);
@@ -62,7 +57,7 @@ const Backpack: React.FC = () => {
     }
   
     if (equippedItem) {
-      setModalMessage(`You have equiped: ${equippedItem.name}, unequip it first`);
+      setModalMessage(`You have equipped: ${equippedItem.name}, unequip it first`);
       return;
     }
   
@@ -96,6 +91,7 @@ const Backpack: React.FC = () => {
 
   const handleUseItem = (item: Item) => {
     if (item.type === 'Key') {
+      // Logika pro použití klíče
     } else {
       changeHealth(item.dmg);
       item.quantity = (item.quantity || 1) - 1;

@@ -87,3 +87,52 @@
   transform: translate(-50%, -50%);
   background-color: transparent;
 }
+
+/* Media query for mobile devices in landscape orientation */
+@media (max-width: 768px) and (orientation: landscape) {
+  .mapButtonIcon {
+      height: 3rem;
+  }
+
+  .Dungeon2, .Dungeon3, .Dungeon4, .Dungeon5, .Dungeon6, .Town, .Town2 {
+      top: auto;
+      left: auto;
+      transform: none;
+      position: relative;
+  }
+
+  .Dungeon2 {
+      top: 50%;
+      left: 10%;
+  }
+
+  .Dungeon3 {
+      top: 20%;
+      left: 30%;
+  }
+
+  .Dungeon4 {
+      top: 20%;
+      left: 60%;
+  }
+
+  .Dungeon5 {
+      top: 45%;
+      left: 70%;
+  }
+
+  .Dungeon6 {
+      top: 10%;
+      left: 50%;
+  }
+
+  .Town {
+      top: 20%;
+      left: 50%;
+  }
+
+  .Town2 {
+      top: 35%;
+      left: 45%;
+  }
+}

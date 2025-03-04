@@ -36,3 +36,22 @@
   transition: all 0.3s ease-in-out;
   z-index: 102;
 }
+/* Media query for mobile devices in landscape orientation */
+@media (max-width: 768px) and (orientation: landscape) {
+  .inventoryButton {
+      top: 5%;
+      padding: 0.3rem;
+      margin: 0.5rem;
+  }
+
+  .inventoryButton img {
+      width: 2.5rem;
+      height: 2.5rem;
+  }
+
+  .inventoryButtonMenu {
+      font-size: 1.5rem;
+      padding: 0.8rem;
+      width: 14rem;
+  }
+}

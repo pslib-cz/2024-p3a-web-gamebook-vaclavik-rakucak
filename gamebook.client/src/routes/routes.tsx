@@ -26,8 +26,12 @@ const AppRoutes: React.FC<RoutesProps> = ({ token, role, onLogin }) => {
   const hide = location.pathname === '/Town/Tavern' 
             || location.pathname === '/Login'
             || location.pathname === '/AdminPanel'
-            || location.pathname === '/';
+            || location.pathname === '/'
+            || location.pathname === '/Text/1'
+            || location.pathname === '/Text/1';
+
   const hideMenu = location.pathname === '/Login' || location.pathname === '/AdminPanel';
+  const hideStats = location.pathname === '/map'
   const [isPauseMenuOpen, setIsPauseMenuOpen] = useState<boolean>(false);
   const togglePauseMenu = () => {
     setIsPauseMenuOpen((prev) => !prev);
@@ -35,7 +39,7 @@ const AppRoutes: React.FC<RoutesProps> = ({ token, role, onLogin }) => {
 
   return (
     <>
-      {!hide && <CoinAndHealthBar />}
+      {!hide || !hideStats && <CoinAndHealthBar />}
       {!hide && <InventoryButton />}
       {!hideMenu && 
         <div style={{ position: 'absolute', top: '0', right: '0', zIndex: 100 }}>
@@ -51,7 +55,7 @@ const AppRoutes: React.FC<RoutesProps> = ({ token, role, onLogin }) => {
         <Route path='/Town' element={<TownPage />} />
         <Route path='/Town/Tavern' element={<TavernPage />} />
         <Route path='/Town/Blacksmith' element={<ShopPage />} />
-        <Route path="/Prologue" element={<TextPage />} />
+        <Route path="/Text/:townId" element={<TextPage />} />
         <Route
           path="/AdminPanel"
           element={

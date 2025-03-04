@@ -97,6 +97,7 @@ export interface Dungeon {
     rewardMoney: number;
     dmgCondition: number;
     imageId: number;
+    isBoss?: boolean;
 };
 
 export interface Quest {

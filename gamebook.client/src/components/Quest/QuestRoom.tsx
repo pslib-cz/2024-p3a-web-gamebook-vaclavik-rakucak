@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { Room, RoomItem, Quest } from '../../types/ViewModels';
 import Button from '../Buttons/ButtonLarge/ButtonLarge';
 import styles from './QuestRoom.module.css';
 import Modal from '../Modal/Modal';
 import { useGameContext } from '../../contexts/GameContext';
+import { fetchImage } from '../../api/imagesApi';
 
 type QuestRoomProps = {
     room: Room;
@@ -16,29 +18,41 @@ const QuestRoom: React.FC<QuestRoomProps> = ({ room, quest, onRoomUpdate, onClos
     const [roomItem, setRoomItem] = useState<RoomItem | null>(null);
     const [image, setImage] = useState<string | null>(null);
     const [modalMessage, setModalMessage] = useState<string | null>(null);
-    const { checkAndUpdateQuests} = useGameContext();
+    const { checkAndUpdateQuests } = useGameContext();
 
     useEffect(() => {
         const fetchRoomItem = async () => {
             if (room.roomItemId) {
-                const response = await fetch(`${import.meta.env.VITE_API_URL}/roomitems/${room.roomItemId}`);
-                const data: RoomItem = await response.json();
-                setRoomItem(data);
+                const roomItemUrl = `${import.meta.env.VITE_API_URL}/roomitems/${room.roomItemId}`;
+                console.log('Fetching room item from URL:', roomItemUrl);
+                try {
+                    const response = await axios.get(roomItemUrl);
+                    const roomItemData: RoomItem = response.data;
+                    console.log('Room item fetched successfully:', roomItemData);
+                    setRoomItem(roomItemData);
+                } catch (error) {
+                    console.error('Error fetching room item:', error);
+                }
             }
         };
 
         fetchRoomItem();
     }, [room.roomItemId]);
+
     useEffect(() => {
-        const fetchImage = async () => {
-            if (roomItem && roomItem.imageId) {
-                const response = await fetch(`${import.meta.env.VITE_API_URL}/images/${roomItem.imageId}`);
-                const blob = await response.blob();
-                setImage(URL.createObjectURL(blob));
+        const fetchImageForRoomItem = async () => {
+            if (roomItem?.imageId) {
+                try {
+                    const imageUrl = await fetchImage(roomItem.imageId);
+                    console.log('Image fetched successfully:', imageUrl);
+                    setImage(imageUrl);
+                } catch (error) {
+                    console.error('Error fetching image:', error);
+                }
             }
         };
 
-        fetchImage();
+        fetchImageForRoomItem();
     }, [roomItem]);
 
     const handleCollect = () => {
@@ -51,6 +65,7 @@ const QuestRoom: React.FC<QuestRoomProps> = ({ room, quest, onRoomUpdate, onClos
             }, 1000);
         }
     };
+
     const handleLeave = () => {
         console.log(quest.roomItemId);
         onClose();
@@ -64,7 +79,7 @@ const QuestRoom: React.FC<QuestRoomProps> = ({ room, quest, onRoomUpdate, onClos
                 <div className={styles.roomItem}>
                     <h3>{roomItem.name}</h3>
                     <p>{roomItem.description}</p>
-                </div>   
+                </div>
             )}
             <div className={styles.imageContainer}>
                 {image && <img src={image} alt="roomItem" className={styles.image} />}

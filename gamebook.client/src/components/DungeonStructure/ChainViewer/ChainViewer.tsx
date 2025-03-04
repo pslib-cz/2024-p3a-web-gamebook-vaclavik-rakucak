@@ -16,6 +16,7 @@ import ChestRoom from '../../Chest/ChestRoom';
 import TrapRoom from '../../Trap/TrapRoom';
 import Modal from '../../Modal/Modal';
 import QuestRoom from '../../Quest/QuestRoom';
+import { fetchImage } from '../../../api/imagesApi';
 
 interface ChainViewerProps {
   dungeonId: number;
@@ -59,7 +60,9 @@ const ChainViewer: React.FC<ChainViewerProps> = ({ dungeonId }) => {
             (currentItem.type === 'hall' || currentItem.type === 'room') &&
             currentItem.data.imageId
         ) {
-            setBackgroundImageUrl(`${baseApiUrl}/images/${currentItem.data.imageId}`);
+            fetchImage(currentItem.data.imageId)
+                .then(url => setBackgroundImageUrl(url))
+                .catch(error => console.error('Failed to fetch background image:', error));
         } else {
             setBackgroundImageUrl('');
         }
@@ -156,9 +159,15 @@ const ChainViewer: React.FC<ChainViewerProps> = ({ dungeonId }) => {
         if (chain && chain.length > 0) {
             const dungeonId = chain[0].data.dungeonId;
             const dungeon = dungeons.find(d => d.id === dungeonId);
+            console.log(dungeon?.isBoss);
             if (dungeon) {
                 changeCoins(dungeon.rewardMoney);
                 checkAndUpdateQuests(dungeonId);
+                if (dungeon.isBoss) {
+                    navigate('/Text/2'); // Navigate to TextPage with townId 2
+                    console.log('Boss defeated');
+                    return;
+                }
             }
         }
         setChain(null);

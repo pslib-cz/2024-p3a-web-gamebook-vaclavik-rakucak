@@ -76,5 +76,43 @@
     height: 500px;
 }
 
-.questImage {
+/* Media query for mobile devices in landscape orientation */
+@media (max-width: 768px) and (orientation: landscape) {
+    .card {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+        height: auto;
+    }
+
+    .questInfo {
+        font-size: 1.5rem;
+        width: 90%;
+    }
+
+    .npcName {
+        font-size: 1.5rem;
+        padding: 0.5rem;
+        border: 10px solid var(--Dark-Brown);
+        border-radius: 20px;
+    }
+
+    .questText {
+        padding: 0.5rem;
+        border: 10px solid var(--Dark-Brown);
+        border-radius: 20px;
+    }
+
+    .questName {
+        font-size: 2rem;
+    }
+
+    .questCondition {
+        padding: 0.5rem;
+        border: 10px solid var(--Dark-Brown);
+        border-radius: 20px;
+    }
+
+    .imageContainer {
+        height: 300px;
+    }
 }

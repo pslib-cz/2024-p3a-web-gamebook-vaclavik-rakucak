@@ -63,3 +63,39 @@
     position: absolute;
     bottom: 3em;
 }
+
+/* Media query for mobile devices in landscape orientation */
+@media (max-width: 768px) and (orientation: landscape) {
+    .fightContainer {
+        flex-direction: row;
+    }
+
+    .monsterInfo {
+        font-size: 1.5rem;
+        padding: 0.8rem;
+    }
+
+    .monsterImageContainer {
+        top: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    .heartImage {
+        width: 40px;
+        height: 40px;
+        padding: 0.8rem;
+    }
+
+    .monsterImage {
+        height: 500px;
+    }
+
+    .healthBarContainer {
+        width: 15rem;
+        padding: 0.8rem;
+    }
+
+    .buttonContainer {
+        bottom: 1.5em;
+    }
+}

@@ -32,3 +32,18 @@
 .modalContentSmall{
     font-size: 1.5rem;
 }
+/* Media query for mobile devices in landscape orientation */
+@media (max-width: 768px) and (orientation: landscape) {
+    .modal {
+        width: 90%;
+        padding: 1rem;
+    }
+
+    .modalContent {
+        font-size: 1.5rem;
+    }
+
+    .modalContentSmall {
+        font-size: 1.2rem;
+    }
+}

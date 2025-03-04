@@ -89,3 +89,29 @@
   flex-direction: column;
   text-align: center;
 }
+
+/* Media query for mobile devices in landscape orientation */
+@media (max-width: 768px) and (orientation: landscape) {
+  .confirmExit {
+      padding: 15px;
+      font-size: 1.5rem;
+  }
+
+  .modalButtons {
+      gap: 5px;
+      margin-top: 5px;
+  }
+
+  .inventoryModal {
+      padding: 15px;
+  }
+
+  .activeQuest {
+      padding: 15px;
+      font-size: 1.5rem;
+  }
+
+  .questInfo {
+      padding: 10px;
+  }
+}
