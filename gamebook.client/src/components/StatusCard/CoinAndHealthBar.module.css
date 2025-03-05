@@ -28,6 +28,7 @@
 .value {
   font-weight: bold;
 }
+
 /* Media query for mobile devices in landscape orientation */
 @media (max-width: 768px) and (orientation: landscape) {
   .bar {

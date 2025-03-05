@@ -67,7 +67,6 @@ const TavernPage: React.FC = () => {
         backgroundImage: backgroundImageUrl ? `url(${backgroundImageUrl})` : 'none',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
-        backgroundClip: 'border-box',
       }}
     >
       <div className={styles.back}>

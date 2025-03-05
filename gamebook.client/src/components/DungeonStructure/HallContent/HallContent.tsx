@@ -1,15 +1,10 @@
 import React from 'react';
-import { Hall } from '../../../types/ViewModels';
-import styles from '../ChainViewer/ChainViewer.module.css';
+import styles from './HallContent.module.css';
 
-interface HallContentProps {
-  hall: Hall;
-}
-
-const HallContent: React.FC<HallContentProps> = ({ hall }) => {
+const HallContent: React.FC = () => {
   return (
     <div className={styles.hallContent}>
-      <h2>Chodba {hall.id}</h2>
+      <p>Hall</p>
     </div>
   );
 };

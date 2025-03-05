@@ -1,0 +1,17 @@
+.hallContent{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.hallContent p{
+    text-align: center;
+    font-size: 2rem;
+    padding: 1rem 3rem;
+    color: var(--Biege);
+    background-color: var(--Brown);
+    border: 10px solid var(--Dark-Brown);
+    border-radius: 30px;
+    margin-top: 2rem;
+}

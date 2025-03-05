@@ -14,7 +14,6 @@ const RoomContent: React.FC<RoomContentProps> = ({ room, onFightStart, onSearch 
 
     return (
         <div className={styles.roomContent}>
-            <h2>Místnost {room.id}</h2>
             <p>{room.description}</p>
             {isActive && (
                 <div className={styles.actionButtons}>

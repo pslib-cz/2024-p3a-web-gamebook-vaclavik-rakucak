@@ -33,7 +33,7 @@ namespace Gamebook.Server.Controllers
         private async Task<List<Equipment>> GetRandomEquipmentByTypeAndPhase(string type, int count, int phase)
         {
             var equipment = await _context.Equipments
-                .Where(e => e.Type == type && e.Phase <= phase)
+                .Where(e => e.Type == type && e.Phase == phase)
                 .Include(e => e.SpecialEffect)
                 .ToListAsync();
 

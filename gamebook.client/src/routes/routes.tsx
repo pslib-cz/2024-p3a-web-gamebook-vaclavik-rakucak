@@ -31,7 +31,7 @@ const AppRoutes: React.FC<RoutesProps> = ({ token, role, onLogin }) => {
             || location.pathname === '/Text/1';
 
   const hideMenu = location.pathname === '/Login' || location.pathname === '/AdminPanel';
-  const hideStats = location.pathname === '/map'
+  const hideStats = location.pathname === '/Map' || location.pathname === '/Town';
   const [isPauseMenuOpen, setIsPauseMenuOpen] = useState<boolean>(false);
   const togglePauseMenu = () => {
     setIsPauseMenuOpen((prev) => !prev);
@@ -39,7 +39,7 @@ const AppRoutes: React.FC<RoutesProps> = ({ token, role, onLogin }) => {
 
   return (
     <>
-      {!hide || !hideStats && <CoinAndHealthBar />}
+      {!hide && !hideStats && <CoinAndHealthBar />}
       {!hide && <InventoryButton />}
       {!hideMenu && 
         <div style={{ position: 'absolute', top: '0', right: '0', zIndex: 100 }}>
