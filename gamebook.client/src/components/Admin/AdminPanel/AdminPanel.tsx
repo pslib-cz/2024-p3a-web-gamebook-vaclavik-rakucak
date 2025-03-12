@@ -184,8 +184,6 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ token }) => {
           apiUrl={`${baseApiUrl}/Towns`}
         />
         <ImageUploadComponent
-          token={token}
-          apiUrl={`${baseApiUrl}/Images`}
         />
         <DeleteComponent
           token={token}

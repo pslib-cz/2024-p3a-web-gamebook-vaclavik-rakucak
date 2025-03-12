@@ -1,17 +1,7 @@
 import React from 'react';
 import styles from './HallContent.module.css';
-import { Hall } from '../../../types/ViewModels';
 
-
-interface HallContentProps {
-
-  hall: Hall;
-
-}
-
-
-
-const HallContent: React.FC<HallContentProps> = ({ hall }) => {
+const HallContent: React.FC = () => {
   return (
     <div className={styles.hallContent}>
       <p>Hall</p>

@@ -1,13 +1,7 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import styles from './ImageUploadComponent.module.css';
 
-interface ImageUploadComponentProps {
-  token: string;
-  apiUrl: string;
-}
-
-const ImageUploadComponent: React.FC<ImageUploadComponentProps> = ({ token, apiUrl }) => {
+const ImageUploadComponent: React.FC = () => {
   const [imageName, setImageName] = useState('');
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
@@ -29,13 +23,6 @@ const ImageUploadComponent: React.FC<ImageUploadComponentProps> = ({ token, apiU
       const formData = new FormData();
       formData.append('name', imageName);
       formData.append('image', imageFile);
-
-      const response = await axios.post(`${apiUrl}/upload`, formData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'multipart/form-data',
-        },
-      });
 
       alert('Image uploaded successfully!');
       setImageName('');

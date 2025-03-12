@@ -285,7 +285,7 @@ const ChainViewer: React.FC<ChainViewerProps> = ({ dungeonId }) => {
             )}
 
             {currentItem && currentItem.type === 'hall' && (
-                <HallContent hall={currentItem.data} />
+                <HallContent />
             )}
             {currentItem && currentItem.type === 'fork' && (
                 <ForkContent fork={currentItem.data} />
