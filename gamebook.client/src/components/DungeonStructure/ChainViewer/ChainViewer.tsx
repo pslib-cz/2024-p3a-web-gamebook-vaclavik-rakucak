@@ -36,7 +36,7 @@ const ChainViewer: React.FC<ChainViewerProps> = ({ dungeonId }) => {
     } = useGameContext();
     const [backgroundImageUrl, setBackgroundImageUrl] = useState<string>('');
     const [isFighting, setIsFighting] = useState<boolean>(false);
-    const [isFightingBoss, setIsFightingBoss] = useState<boolean>(false);
+    const [isBossFight, setIsBossFight] = useState<boolean>(false);
     const [isKeyRoomActive, setIsKeyRoomActive] = useState<boolean>(false);
     const [isChestRoomActive, setIsChestRoomActive] = useState<boolean>(false);
     const [isTrapRoomActive, setIsTrapRoomActive] = useState<boolean>(false);
@@ -117,6 +117,7 @@ const ChainViewer: React.FC<ChainViewerProps> = ({ dungeonId }) => {
 
     const handleFightEnd = (monsterId?: number, playerDied?: boolean, monsterName?: string) => {
         setIsFighting(false);
+        setIsBossFight(false);
         if (playerDied) {
             setChain(null);
             navigate('/map');
@@ -133,27 +134,6 @@ const ChainViewer: React.FC<ChainViewerProps> = ({ dungeonId }) => {
             }
         }
     };
-
-    const handleBossFightEnd = (monsterId?: number, playerDied?: boolean, monsterName?: string) => {
-        setIsFightingBoss(false);
-        if (playerDied) {
-            setChain(null);
-            navigate('/map');
-            clearSessionStorage();  
-            return;
-        }
-        if (monsterId && monsterName) {
-            setDefeatedMonsters([...defeatedMonsters, monsterId]);
-            setModalMessage(`${monsterName} was defeated!`);
-            if (currentItem && currentItem.type === 'room') {
-                currentItem.data.type = 'empty';
-                currentItem.data.active = false; // Update room state to inactive
-                checkAndUpdateQuests(monsterId);
-                console.log(currentQuests);
-                console.log(monsterId);
-            }
-        }
-    }
 
     const handleGoBackToMap = () => {
         if (chain && chain.length > 0) {
@@ -176,11 +156,14 @@ const ChainViewer: React.FC<ChainViewerProps> = ({ dungeonId }) => {
     };
 
     const handleStartFight = () => {
-        if (currentItem && currentItem.type === 'room' && currentItem.data.type === 'monsterRoom') {
-            setIsFighting(true);
-        }
-        else if(currentItem && currentItem.type === 'room' && currentItem.data.type === 'bossRoom') {
-            setIsFightingBoss(true);
+        if (currentItem && currentItem.type === 'room') {
+            if (currentItem.data.type === 'monsterRoom') {
+                setIsFighting(true);
+                setIsBossFight(false);
+            } else if (currentItem.data.type === 'bossRoom') {
+                setIsFighting(true);
+                setIsBossFight(true);
+            }
         }
     };
 
@@ -286,12 +269,8 @@ const ChainViewer: React.FC<ChainViewerProps> = ({ dungeonId }) => {
             )}
             {/* Zobrazení ruzných typu room */}
             {currentItem && currentItem.type === 'room' && isFighting && (
-                <FightComponent onFightEnd={handleFightEnd} dungeonId={dungeonId} />
+                <FightComponent onFightEnd={handleFightEnd} dungeonId={dungeonId} monsterId={isBossFight ? currentItem.data.monsterId : undefined} />
             )}
-            {currentItem && currentItem.type === 'room' && isFightingBoss && (
-                <FightComponent onFightEnd={handleBossFightEnd} monsterId={currentItem.data.monsterId} />
-            )
-            }
 
             {currentItem && currentItem.type === 'room' && isKeyRoomActive && (
                 <KeyRoom room={currentItem.data} onRoomUpdate={handleRoomUpdate} onClose={handleCloseKeyRoom} />
@@ -323,7 +302,7 @@ const ChainViewer: React.FC<ChainViewerProps> = ({ dungeonId }) => {
                 onPrevious={handlePrevious}
                 onNext={handleNext}
                 isFighting={isFighting}
-                isFightBoss={isFightingBoss}
+                isFightBoss={isBossFight}
                 isActive={isActive} 
                 isRoomActive={isRoomActive}
             />
