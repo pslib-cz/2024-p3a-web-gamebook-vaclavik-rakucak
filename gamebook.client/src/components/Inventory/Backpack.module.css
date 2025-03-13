@@ -5,16 +5,16 @@
     width: 100%;
     min-height: 352px;
     overflow-y: auto;
-}
-
-.backpackItem {
+  }
+  
+  .backpackItem {
     position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
-}
-
-.imageContainer {
+  }
+  
+  .imageContainer {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -22,9 +22,9 @@
     height: 4rem;
     background-color: var(--Item-Backround-light);
     border: solid 10px var(--Item-Backround);
-}
-
-.info {
+  }
+  
+  .info {
     position: absolute;
     top: 0;
     left: 100%;
@@ -36,17 +36,17 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-}
-
-.info p {
+  }
+  
+  .info p {
     margin: 0;
-}
-
-.info button {
+  }
+  
+  .info button {
     margin-top: 5px;
-}
-
-.imgContainer {
+  }
+  
+  .imgContainer {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -54,45 +54,45 @@
     height: 4rem;
     background-color: var(--Item-Backround-light);
     border: solid 10px var(--Item-Backround);
-}
-
-.img {
+  }
+  
+  .img {
     width: 100%;
     height: 100%;
-}
-
-.quantity {
+  }
+  
+  .quantity {
     position: absolute;
     top: 45%;
     right: 20%;
     font-size: 1.5rem;
     color: var(--Dark-Brown);
-}
-
-/* Media query for mobile devices in landscape orientation */
-@media (max-width: 768px) and (orientation: landscape) {
+  }
+  
+  /* Media query for mobile devices in landscape orientation */
+  @media (max-width: 950px) and (orientation: landscape) {
     .backpack {
-        grid-template-columns: repeat(4, 1fr);
-        min-height: 176px;
+      grid-template-columns: repeat(4, 1fr);
+      min-height: 300px;
     }
-
+  
     .imageContainer {
-        width: 3rem;
-        height: 3rem;
-        border: solid 8px var(--Item-Backround);
+      width: 3rem;
+      height: 3rem;
+      border: solid 8px var(--Item-Backround);
     }
-
+  
     .info {
-        padding: 8px;
-        border: solid 8px var(--Dark-Brown);
-        border-radius: 8px;
+      padding: 8px;
+      border: solid 8px var(--Dark-Brown);
+      border-radius: 8px;
     }
-
+  
     .info button {
-        margin-top: 3px;
+      margin-top: 3px;
     }
-
+  
     .quantity {
-        font-size: 1.2rem;
+      font-size: 1.2rem;
     }
-}
+  }

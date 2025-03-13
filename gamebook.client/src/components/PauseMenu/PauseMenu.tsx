@@ -40,7 +40,7 @@ const PauseMenu: React.FC<PauseMenuProps> = ({ currentPage, onClose, setChain, s
       setChain(null);
       setCurrentChainIndex(0);
       changeCoins(0);
-      navigate('/map');
+      navigate('/Map');
       onClose();
     } else {
       console.error('Required functions are not provided');
@@ -52,7 +52,7 @@ const PauseMenu: React.FC<PauseMenuProps> = ({ currentPage, onClose, setChain, s
   };
 
   const handleGoToMap = () => {
-    navigate('/map');
+    navigate('/Map');
     onClose();
   };
   const handleAdminClick = () => {

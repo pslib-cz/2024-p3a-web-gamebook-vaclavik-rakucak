@@ -10,8 +10,8 @@
   padding: 1rem;
   border-radius: 20px;
   z-index: 101;
-  width: 50rem; /* Set a fixed width */
-  height: 80vh; /* Set a fixed height */
+  width: 50rem;
+  height: 80vh;
   overflow: hidden;
 }
 
@@ -53,7 +53,6 @@
   padding: 5px 10px;
   cursor: pointer;
   font-size: 16px;
-  border-radius: 5px;
   transition: all 0.3s ease-in-out;
   z-index: 102;
 }
@@ -63,29 +62,35 @@
 }
 
 /* Media query for mobile devices in landscape orientation */
-@media (max-width: 768px) and (orientation: landscape) {
+@media (max-width: 950px) and (orientation: landscape) {
   .inventory {
-      width: 90%;
-      height: 70vh;
-      padding: 0.5rem;
+    width: 90%;
+    height: 70vh;
+    padding: 0.5rem;
+    flex-direction: row;
+    gap: 10px;
+  }
+  .inventory h2 {
+    display: none;
   }
 
   .equipmentContainer {
-      gap: 5px;
+    gap: 5px;
   }
 
   .backpackContainer {
-      max-height: 40vh;
-      gap: 5px;
+    min-height: 300px;
+    max-height: 40vh;
+    gap: 5px;
   }
 
   .imageContainer {
-      width: 8rem;
-      height: 16rem;
+    width: 8rem;
+    height: 16rem;
   }
 
   .closeButton {
-      padding: 3px 8px;
-      font-size: 14px;
+    padding: 3px 8px;
+    font-size: 14px;
   }
 }

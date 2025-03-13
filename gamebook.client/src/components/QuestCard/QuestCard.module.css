@@ -1,118 +1,94 @@
 .card {
+    width: 100%;
+    height: 100%;
     display: grid;
-    grid-template-columns: 500px 2fr;
-    grid-template-rows: 1fr 1fr;
-    grid-gap: 10px;
-    flex-direction: column;
-    text-align: center;
-    height: 100vh;
+    grid-template-columns: 25em 1fr;
+    grid-template-areas: "npcInfo imageContainer";
+    z-index: 1;
 }
 
-.npcInfo{
-    display: flex;
-    align-items: end;
-    justify-content: center;
-}
-.questInfo{
-    display: flex;
-    flex-direction: column;
-    align-items: start;
-    justify-content: center;
-    align-self: center;
-    grid-row: span 2;
-
-    font-size: 2rem;
-    font-weight: bold;
-    color: var(--Biege);
-
-    height: fit-content;
-    width: fit-content;
-    max-width: 1000px;
-}
-
-.npcName{
-    font-size: 2rem;
-    font-weight: bold;
-    color: var(--Biege);
-    background-color: var(--Light-Brown);
-    padding: 1rem;
-    border: 20px solid var(--Dark-Brown);
-    border-radius: 30px;
-}
-.npcDescription{
-    display: none;
-}
-.questText{
-    background-color: var(--Light-Brown);
-    padding: 1rem;
-    border: 20px solid var(--Dark-Brown);
-    border-radius: 30px;
-    width: 100%;
-    text-align: left;
-}
-.questName{
-    font-size: 3rem;
-}
-.questDescription{
-    display: block;
-}
-.questCondition{
-    background-color: var(--Light-Brown);
-    padding: 1rem;
-    border: 20px solid var(--Dark-Brown);
-    border-radius: 30px;
-    width: 100%;
-}
-
-.imageContainer {
+.npcInfo {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    position: fixed;
-    bottom: 0%;
-    left: 0%;
-    width: min-content;
-    height: 500px;
+    height: 100%;
 }
 
-/* Media query for mobile devices in landscape orientation */
-@media (max-width: 768px) and (orientation: landscape) {
+.questInfo {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.npcName {
+    font-size: 2em;
+    font-weight: bold;
+    text-align: center;
+    color: var(--Biege);
+    background-color: var(--Light-Brown);
+    border: 10px solid var(--Dark-Brown);
+    padding: 1rem;
+    border-radius: 20px;
+    
+}
+
+.npcDescription {
+    display: none; /* zatim nevim kam to dat*/
+}
+
+
+.questText {
+    font-size: 2em;
+    color: var(--Biege);
+    background-color: var(--Light-Brown);
+    border: 10px solid var(--Dark-Brown);
+    padding: 1rem;
+    border-radius: 20px;
+    width: 90%;
+}
+
+.questCondition {
+    font-size: 2em;
+    color: var(--Biege);
+    background-color: var(--Light-Brown);
+    border: 10px solid var(--Dark-Brown);
+    padding: 1rem;
+    border-radius: 20px;
+}
+
+.imageContainer {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+.imageContainer img {
+    position: absolute;
+    bottom: 0;
+    object-fit: cover;
+    height: 25em;
+    width: auto;
+}
+
+
+@media (max-width: 950px) and (orientation: landscape) {
     .card {
-        grid-template-columns: 1fr;
-        grid-template-rows: auto;
-        height: auto;
+        grid-template-columns: 10em 1fr;
+        grid-template-areas: "npcInfo";
     }
-
-    .questInfo {
-        font-size: 1.5rem;
-        width: 90%;
+    .imageContainer img {
+        height: 10em;
     }
-
     .npcName {
-        font-size: 1.5rem;
-        padding: 0.5rem;
-        border: 10px solid var(--Dark-Brown);
-        border-radius: 20px;
+        font-size: 1.5em;
     }
-
     .questText {
-        padding: 0.5rem;
-        border: 10px solid var(--Dark-Brown);
-        border-radius: 20px;
+        font-size: 1.5em;
     }
-
-    .questName {
-        font-size: 2rem;
-    }
-
     .questCondition {
-        padding: 0.5rem;
-        border: 10px solid var(--Dark-Brown);
-        border-radius: 20px;
+        font-size: 1.5em;
     }
-
-    .imageContainer {
-        height: 300px;
-    }
+    
 }

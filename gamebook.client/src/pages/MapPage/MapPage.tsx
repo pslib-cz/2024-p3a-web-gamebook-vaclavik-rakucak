@@ -10,10 +10,7 @@ import { Dungeon } from '../../types/ViewModels';
 import DungeonCard from '../../components/DungeonCard/DungeonCard';
 import axios from 'axios';
 
-const MapButton: React.FC<Dungeon> = ({ id, name, description, rewardMoney, dmgCondition, imageId }) => {
-  const navigate = useNavigate();
-  const { setDungeonId, setCurrentChainIndex, weapon, setChain } = useGameContext();
-  const [isDungeonCardOpen, setIsDungeonCardOpen] = useState(false);
+const MapButton: React.FC<Dungeon & { onClick: () => void }> = ({ name, imageId, onClick }) => {
   const [dungeonImageUrl, setDungeonImageUrl] = useState<string>('');
 
   useEffect(() => {
@@ -29,37 +26,15 @@ const MapButton: React.FC<Dungeon> = ({ id, name, description, rewardMoney, dmgC
     loadImage();
   }, [imageId]);
 
-  const handleClick = () => {
-    setIsDungeonCardOpen(true);
-  };
-
-  const handleEnterDungeon = (dungeonId: number) => {
-    if (weapon ? weapon.dmg : 0 >= dmgCondition) {
-      setChain(null);
-      setDungeonId(dungeonId.toString());
-      setCurrentChainIndex(0);
-      localStorage.setItem('firstEntry', 'true');
-      navigate(`/Dungeon/${dungeonId}/room/0`);
-    }
-  };
-
   return (
     <div className={styles.mapButton}>
-      <Button onClick={handleClick}>{name}</Button>
+      <Button onClick={onClick}>{name}</Button>
       <img
         src={dungeonImageUrl}
         alt="dungeon icon"
         className={styles.mapButtonIcon}
-        onClick={handleClick}
+        onClick={onClick}
       />
-      {isDungeonCardOpen && (
-        <DungeonCard
-          dungeon={{ id, name, description, rewardMoney, dmgCondition, imageId}}
-          onClose={() => setIsDungeonCardOpen(false)}
-          onEnter={handleEnterDungeon}
-          playerDamage={weapon ? weapon.dmg : 0}
-        />
-      )}
     </div>
   );
 };
@@ -67,8 +42,10 @@ const MapButton: React.FC<Dungeon> = ({ id, name, description, rewardMoney, dmgC
 const MainMapPage: React.FC = () => {
   const [backgroundImageUrl, setBackgroundImageUrl] = useState<string>('');
   const [dungeons, setDungeons] = useState<Dungeon[]>([]);
-
+  const [selectedDungeon, setSelectedDungeon] = useState<Dungeon | null>(null);
+  const { setDungeonId, setCurrentChainIndex, weapon, setChain } = useGameContext();
   const baseApiUrl = import.meta.env.VITE_API_URL;
+  const navigate = useNavigate();
 
   useEffect(() => {
     const loadImage = async () => {
@@ -98,6 +75,16 @@ const MainMapPage: React.FC = () => {
     fetchDungeons();
   }, [baseApiUrl]);
 
+  const handleEnterDungeon = (dungeonId: number) => {
+    if ((weapon?.dmg ?? 0) >= (selectedDungeon?.dmgCondition ?? Infinity)) {
+      setChain(null);
+      setDungeonId(dungeonId.toString());
+      setCurrentChainIndex(0);
+      localStorage.setItem('firstEntry', 'true');
+      navigate(`/Dungeon/${dungeonId}/room/0`);
+    }
+  };
+
   return (
     <div
       className={styles.container}
@@ -112,7 +99,7 @@ const MainMapPage: React.FC = () => {
       <div className={styles.mapButtonContainer}>
         {dungeons.map((dungeon) => (
           <div key={dungeon.id} className={styles[`Dungeon${dungeon.id}`]}>
-            <MapButton {...dungeon} />
+            <MapButton {...dungeon} onClick={() => setSelectedDungeon(dungeon)} />
           </div>
         ))}
         <div className={styles.Town}>
@@ -122,6 +109,14 @@ const MainMapPage: React.FC = () => {
           <RouteButton route="/Town" nonvisible />
         </div>
       </div>
+      {selectedDungeon && (
+        <DungeonCard
+          dungeon={selectedDungeon}
+          onClose={() => setSelectedDungeon(null)}
+          onEnter={handleEnterDungeon}
+          playerDamage={weapon ? weapon.dmg : 0}
+        />
+      )}
     </div>
   );
 };

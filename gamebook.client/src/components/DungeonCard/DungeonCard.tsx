@@ -24,12 +24,14 @@ const DungeonCard: React.FC<DungeonCardProps> = ({ dungeon, onClose, onEnter, pl
         <p>{dungeon.description}</p>
         <p>Reward: {dungeon.rewardMoney} gold</p>
         <p>Required damage: {dungeon.dmgCondition} and quest</p>
+        <div className={styles.buttons}>
         {canEnter ? (
           <Button onClick={() => onEnter(dungeon.id)}>Enter</Button>
         ) : (
           <Button onClick={() => onEnter(dungeon.id)} disabled>Locked</Button>
         )}
         <Button onClick={onClose}>Close</Button>
+        </div>
       </div>
     </div>
   );

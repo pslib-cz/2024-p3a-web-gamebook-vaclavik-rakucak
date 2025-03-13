@@ -3,12 +3,13 @@
   font-family: "Linden Hill", serif;
   color: var(--Biege);
   background-color: var(--Brown);
-  border: 10px solid var(--Dark-Brown);
-  border-radius: 30px;
+  border: 0.625rem solid var(--Dark-Brown); /* 10px to rem */
+  border-radius: 1.875rem; /* 30px to rem */
   cursor: pointer;
   margin: 1rem;
   padding: 1rem;
-  width: 16rem;
+  width: 100%; /* Use percentage for width */
+  max-width: 16rem; /* Set a max-width */
 }
 
 .button:disabled {
@@ -17,14 +18,14 @@
 }
 
 .button:hover:not(:disabled) {
-  border: 10px solid var(--Biege);
+  border: 0.625rem solid var(--Biege); /* 10px to rem */
 }
 
 /* Media query for mobile devices in landscape orientation */
-@media (max-width: 768px) and (orientation: landscape) {
+@media (max-width: 950px) and (orientation: landscape) {
   .button {
     font-size: 1.5rem;
-    padding: 0.8rem;
-    width: 14rem;
+    padding: 0.1rem;
+    max-width: 14rem; /* Set a max-width */
   }
 }
