@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Gamebook.Server.Data;
 using Gamebook.Server.Models;
 using System.Runtime.Intrinsics.X86;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Gamebook.Server.Controllers
 {
@@ -45,6 +46,7 @@ namespace Gamebook.Server.Controllers
 
         // PUT: api/Monsters/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutMonster(int id, Monster monster)
         {
@@ -76,6 +78,7 @@ namespace Gamebook.Server.Controllers
 
         // POST: api/Monsters
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult<Monster>> PostMonster(Monster monster)
         {
@@ -86,6 +89,7 @@ namespace Gamebook.Server.Controllers
         }
 
         // DELETE: api/Monsters/5
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteMonster(int id)
         {

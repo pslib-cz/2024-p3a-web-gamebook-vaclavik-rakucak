@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Gamebook.Server.Data;
 using Gamebook.Server.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Gamebook.Server.Controllers
 {
@@ -44,6 +45,7 @@ namespace Gamebook.Server.Controllers
 
         // PUT: api/Halls/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutHall(int id, Hall hall)
         {
@@ -75,6 +77,7 @@ namespace Gamebook.Server.Controllers
 
         // POST: api/Halls
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult<Hall>> PostHall(Hall hall)
         {
@@ -85,6 +88,7 @@ namespace Gamebook.Server.Controllers
         }
 
         // DELETE: api/Halls/5
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteHall(int id)
         {

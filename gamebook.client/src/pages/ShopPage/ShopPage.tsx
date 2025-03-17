@@ -167,7 +167,7 @@ const ShopPage: React.FC = () => {
       </div>
       {isModalOpen && (
         <Modal onClose={closeModal}>
-          Nedostatek mincí
+          Not enough coins to buy this item!
         </Modal>
       )}
     </div>

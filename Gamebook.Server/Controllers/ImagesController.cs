@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Gamebook.Server.Data;
 using Gamebook.Server.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Gamebook.Server.Controllers
 {
@@ -22,6 +23,7 @@ namespace Gamebook.Server.Controllers
             _context = context;
         }
 
+        [Authorize]
         [HttpPost("upload")]
         public async Task<IActionResult> UploadImage(IFormFile image, string name)
         {
@@ -61,13 +63,7 @@ namespace Gamebook.Server.Controllers
             {
                 return NotFound();
             }
-
-            // Způsob 1: Vrácení Base64 stringu
-            //string base64String = Convert.ToBase64String(imageEntity.Data);
-            //return Ok(new { base64 = base64String, contentType = imageEntity.ContentType, name = imageEntity.Name });
-
-            // Způsob 2: Vrácení souboru přímo (pro zobrazení v img tagu)
-            return File(imageEntity.Data, imageEntity.ContentType); // tohle je pro zobrazeni v html, ne posilani jako json
+            return File(imageEntity.Data, imageEntity.ContentType);
         }
     }
 }

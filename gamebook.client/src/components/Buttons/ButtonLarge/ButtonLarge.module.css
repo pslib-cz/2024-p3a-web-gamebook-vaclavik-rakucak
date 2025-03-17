@@ -7,7 +7,6 @@
   border-radius: 1.875rem; /* 30px to rem */
   cursor: pointer;
   margin: 1rem;
-  padding: 1rem;
   width: 100%; /* Use percentage for width */
   max-width: 16rem; /* Set a max-width */
 }

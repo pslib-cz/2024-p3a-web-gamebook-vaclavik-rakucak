@@ -35,7 +35,7 @@
     object-fit: cover;
 }
 /* Media query for mobile devices in landscape orientation */
-@media (max-width: 768px) and (orientation: landscape) {
+@media (max-width: 950px) and (orientation: landscape) {
     .trapRoom {
         flex-direction: row;
     }

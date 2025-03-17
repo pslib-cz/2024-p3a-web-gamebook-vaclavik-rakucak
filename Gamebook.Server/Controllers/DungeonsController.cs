@@ -45,6 +45,7 @@ namespace Gamebook.Server.Controllers
 
         // PUT: api/Dungeons/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutDungeon(int id, Dungeon dungeon)
         {
@@ -76,6 +77,7 @@ namespace Gamebook.Server.Controllers
 
         // POST: api/Dungeons
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult<Dungeon>> PostDungeon(Dungeon dungeon)
         {
@@ -86,6 +88,7 @@ namespace Gamebook.Server.Controllers
         }
 
         // DELETE: api/Dungeons/5
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteDungeon(int id)
         {
