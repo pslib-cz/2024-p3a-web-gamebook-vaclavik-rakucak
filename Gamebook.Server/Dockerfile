@@ -5,9 +5,15 @@ EXPOSE 5102
 ENV ASPNETCORE_URLS=http://+:5102
 
 USER app
+
 FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG configuration=Release
 WORKDIR /src
+
+# Install Node.js
+RUN curl -fsSL https://deb.nodesource.com/setup_16.x | bash - \
+    && apt-get install -y nodejs
+
 COPY ["Gamebook.Server/Gamebook.Server.csproj", "Gamebook.Server/"]
 RUN dotnet restore "Gamebook.Server/Gamebook.Server.csproj"
 COPY . .
