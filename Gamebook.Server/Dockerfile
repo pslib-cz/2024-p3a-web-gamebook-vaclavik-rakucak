@@ -10,11 +10,11 @@ FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG configuration=Release
 WORKDIR /src
 
-# Install Node.js 18
-RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
-    && apt-get install -y nodejs
+# Install Node.js and npm
+RUN apt update && apt install -y nodejs npm
 
 COPY ["Gamebook.Server/Gamebook.Server.csproj", "Gamebook.Server/"]
+COPY ["gamebook.client/gamebook.client.esproj", "gamebook.client/"]
 RUN dotnet restore "Gamebook.Server/Gamebook.Server.csproj"
 COPY . .
 WORKDIR "/src/Gamebook.Server"
