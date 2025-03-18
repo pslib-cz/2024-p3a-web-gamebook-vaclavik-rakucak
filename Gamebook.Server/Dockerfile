@@ -1,6 +1,7 @@
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 WORKDIR /app
-EXPOSE 5102
+EXPOSE 8080
+EXPOSE 8081
 
 ENV ASPNETCORE_URLS=http://+:5102
 
@@ -26,7 +27,7 @@ ARG configuration=Release
 RUN dotnet publish "Gamebook.Server.csproj" -c $configuration -o /app/publish /p:UseAppHost=false
 
 # Print the contents of the /app/publish directory
-RUN ls -la /app/publish
+COPY data /app/data
 
 FROM base AS final
 WORKDIR /app
