@@ -6,7 +6,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <SpaRoot>..\gamebook.client</SpaRoot>
     <SpaProxyLaunchCommand>npm run dev</SpaProxyLaunchCommand>
-    <SpaProxyServerUrl>https://localhost:63851</SpaProxyServerUrl>
+    <SpaProxyServerUrl>https://localhost:62986</SpaProxyServerUrl>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
 
   <ItemGroup>
@@ -30,5 +31,11 @@
     <ProjectReference Include="..\gamebook.client\gamebook.client.esproj">
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
+  </ItemGroup
+
+  <ItemGroup>
+    <Content Include="..\.dockerignore">
+      <Link>.dockerignore</Link>
+    </Content>
   </ItemGroup>
 </Project>
