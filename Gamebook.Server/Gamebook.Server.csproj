@@ -31,7 +31,7 @@
     <ProjectReference Include="..\gamebook.client\gamebook.client.esproj">
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
-  </ItemGroup
+  </ItemGroup>
 
   <ItemGroup>
     <Content Include="..\.dockerignore">
