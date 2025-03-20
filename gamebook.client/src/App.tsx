@@ -12,7 +12,7 @@ const App: React.FC = () => {
     setToken(token);
     setRole(role);
   };
-
+  console.log(import.meta.env.VITE_API_URL)
   return (
     <BrowserRouter>
       <GameProvider>
