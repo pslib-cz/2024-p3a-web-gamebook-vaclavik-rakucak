@@ -16,7 +16,7 @@ type NpcQuestCardProps = {
 };
 
 const NpcQuestCard: React.FC<NpcQuestCardProps> = ({ quest }) => {
-  const baseApiUrl = import.meta.env.VITE_API_URL;
+  const baseApiUrl = '/api';
   const [npcData, setNpcData] = useState<Npc | null>(null);
   const [npcLoading, setNpcLoading] = useState<boolean>(false);
   const [npcError, setNpcError] = useState<string | null>(null);

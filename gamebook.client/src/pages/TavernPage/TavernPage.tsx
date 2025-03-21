@@ -30,7 +30,7 @@ const TavernPage: React.FC = () => {
   useEffect(() => {
     const fetchAvailableQuests = async () => {
       try {
-        const response = await axios.get(`${import.meta.env.VITE_API_URL}/quests`);
+        const response = await axios.get(`/api/quests`);
         if (response.status !== 200) {
           throw new Error('Failed to fetch quests');
         }

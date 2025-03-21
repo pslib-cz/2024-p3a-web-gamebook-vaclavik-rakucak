@@ -44,7 +44,7 @@ const MainMapPage: React.FC = () => {
   const [dungeons, setDungeons] = useState<Dungeon[]>([]);
   const [selectedDungeon, setSelectedDungeon] = useState<Dungeon | null>(null);
   const { setDungeonId, setCurrentChainIndex, weapon, setChain } = useGameContext();
-  const baseApiUrl = import.meta.env.VITE_API_URL;
+  const baseApiUrl = '/api';
   const navigate = useNavigate();
 
   useEffect(() => {

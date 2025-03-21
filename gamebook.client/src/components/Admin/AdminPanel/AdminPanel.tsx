@@ -10,7 +10,7 @@ interface AdminPanelProps {
 }
 
 const AdminPanel: React.FC<AdminPanelProps> = ({ token }) => {
-  const baseApiUrl = import.meta.env.VITE_API_URL;
+  const baseApiUrl = '/api';
   const navigate = useNavigate();
 
   const roomItemFields = [

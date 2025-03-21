@@ -76,7 +76,7 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
   useEffect(() => {
     const fetchAvailableQuests = async () => {
       try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/quests`);
+        const response = await fetch(`/api/quests`);
         if (!response.ok) {
           throw new Error('Failed to fetch quests');
         }

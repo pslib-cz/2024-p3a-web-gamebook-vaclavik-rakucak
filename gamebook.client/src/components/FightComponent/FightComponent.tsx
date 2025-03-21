@@ -23,7 +23,7 @@ const FightComponent: React.FC<FightComponentProps> = ({ onFightEnd, dungeonId, 
   const [monsterImage, setMonsterImage] = useState<string | null>(null);
   const [isPlayerDead, setIsPlayerDead] = useState<boolean>(false);
 
-  const baseApiUrl = import.meta.env.VITE_API_URL;
+  const baseApiUrl = '/api';
 
   useEffect(() => {
     const fetchMonsterData = async () => {

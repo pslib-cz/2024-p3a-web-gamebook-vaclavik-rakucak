@@ -26,7 +26,7 @@ const ShopPage: React.FC = () => {
     setIsModalOpen(false);
   };
 
-  const baseApiUrl = import.meta.env.VITE_API_URL;
+  const baseApiUrl = '/api';
 
   useEffect(() => {
     const fetchEquipment = async () => {

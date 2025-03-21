@@ -22,7 +22,7 @@ const TrapRoom: React.FC<TrapRoomProps> = ({ room, onRoomUpdate }) => {
     useEffect(() => {
         const fetchRoomItem = async () => {
             if (room.roomItemId) {
-                const response = await axios.get(`${import.meta.env.VITE_API_URL}/roomitems/${room.roomItemId}`);
+                const response = await axios.get(`/api/roomitems/${room.roomItemId}`);
                 const data: RoomItem = response.data;
                 setRoomItem(data);
             }

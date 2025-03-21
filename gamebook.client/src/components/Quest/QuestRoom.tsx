@@ -23,7 +23,7 @@ const QuestRoom: React.FC<QuestRoomProps> = ({ room, quest, onRoomUpdate, onClos
     useEffect(() => {
         const fetchRoomItem = async () => {
             if (room.roomItemId) {
-                const roomItemUrl = `${import.meta.env.VITE_API_URL}/roomitems/${room.roomItemId}`;
+                const roomItemUrl = `/api/roomitems/${room.roomItemId}`;
                 console.log('Fetching room item from URL:', roomItemUrl);
                 try {
                     const response = await axios.get(roomItemUrl);

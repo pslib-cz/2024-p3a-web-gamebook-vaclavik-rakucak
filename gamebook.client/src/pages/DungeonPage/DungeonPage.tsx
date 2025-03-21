@@ -10,7 +10,7 @@ const DungeonPage: React.FC = () => {
     const { chain, setChain, currentChainIndex, setCurrentChainIndex, setDungeonId, setPlayerHealth, setCoins, setDefeatedMonsters, currentQuests } = useGameContext();
     const navigate = useNavigate();
 
-    const baseApiUrl = import.meta.env.VITE_API_URL;
+    const baseApiUrl = '/api';
 
     useEffect(() => {
         const fetchData = async () => {

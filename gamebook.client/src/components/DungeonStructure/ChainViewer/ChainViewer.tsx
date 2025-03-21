@@ -50,7 +50,7 @@ const ChainViewer: React.FC<ChainViewerProps> = ({ dungeonId }) => {
         sessionStorage.removeItem('shopEquipment');
     };
 
-    const baseApiUrl = import.meta.env.VITE_API_URL;
+    const baseApiUrl = '/api';
 
     useEffect(() => {
         const currentItem = chain ? chain[currentChainIndex] : null;

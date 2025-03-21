@@ -20,7 +20,7 @@ const KeyRoom: React.FC<KeyRoomProps> = ({ room, onRoomUpdate, onClose }) => {
     useEffect(() => {
         const fetchKey = async () => {
             if (room.keyId) {
-                const keyUrl = `${import.meta.env.VITE_API_URL}/keys/${room.keyId}`;
+                const keyUrl = `/api/keys/${room.keyId}`;
                 console.log('Fetching key from URL:', keyUrl);
                 try {
                     const response = await axios.get(keyUrl);
