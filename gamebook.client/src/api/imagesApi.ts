@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = import.meta.env.VITE_API_URL + '/images';
+const BASE_URL ='/api/images';
 
 export const fetchImage = async (imageId: number) => {
   try {
